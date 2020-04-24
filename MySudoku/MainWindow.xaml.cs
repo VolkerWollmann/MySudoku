@@ -20,6 +20,7 @@ namespace MySudoku
 	/// </summary>
 	public partial class MainWindow : Window
 	{
+		public const int InvalidSudokuDigit=-1;
 		public MainWindow()
 		{
 			InitializeComponent();
@@ -33,5 +34,36 @@ namespace MySudoku
 				}
 			}
 		}
+
+		/// <summary>
+		/// Transforms the key for 1-9, otherwise -1
+		/// </summary>
+		/// <param name="key">pressed key</param>
+		/// <returns>return -1, 1-9</returns>
+		private int SudokuDigitFromKey( Key key )
+		{
+			if (key >= Key.D1 && key <= Key.D9 )
+			{
+				return (key - Key.D0);
+			}
+
+			if (key >=  Key.NumPad1  && key <= Key.NumPad9 )
+			{
+				return (key - Key.NumPad0);
+			}
+
+			return -1;
+		}
+		private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+		{
+			// Key to sukdou digit
+			int sudokuDigit = SudokuDigitFromKey(e.Key);
+			if ( sudokuDigit != InvalidSudokuDigit )
+			{
+				SudokuCell.Set(sudokuDigit);
+			}
+			
+		}
+
 	}
 }

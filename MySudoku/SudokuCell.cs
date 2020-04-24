@@ -63,5 +63,14 @@ namespace MySudoku
 
 			previousStackPanel = stackPanel;
 		}
+
+		public static void Set( int sudokuDigit)
+		{
+			if (previousStackPanel != null)
+			{
+				TextBlock tb = previousStackPanel.Children.OfType<TextBlock>().First();
+				tb.Text = sudokuDigit.ToString();
+			}
+		}
 	}
 }
