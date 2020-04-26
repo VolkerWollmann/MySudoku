@@ -10,11 +10,10 @@ using System.Windows.Media;
 namespace MySudoku
 {
     
-	public class SudokuCell
+	public class SudokuCellViewModel
 	{
-		public static StackPanel previousStackPanel = null;
-
-		public SudokuCell(int row, int column, Grid gameGrid )
+		public const int InvalidSudokuDigit = -1;
+		public static StackPanel GetSudokuCell(int row, int column, GameGridViewModel gameGridViewModel)
 		{
 			// set the text box
 			TextBlock tb = new TextBlock();
@@ -32,10 +31,14 @@ namespace MySudoku
 			stackPanel.Children.Add(tb);
 			stackPanel.MouseLeftButtonDown += StackPanel_MouseLeftButtonDown;
 			stackPanel.Background = new SolidColorBrush(Colors.White);
-			gameGrid.Children.Add(stackPanel);
-			Grid.SetRow(stackPanel, row);
-			Grid.SetColumn(stackPanel, column);
 
+			stackPanel.Tag = gameGridViewModel;
+
+			return stackPanel;
+		}
+
+		public static Border GetBorder()
+		{
 			Border border = new Border()
 			{
 				BorderThickness = new Thickness
@@ -48,29 +51,27 @@ namespace MySudoku
 				BorderBrush = new SolidColorBrush(Colors.Black),
 			};
 
-			gameGrid.Children.Add(border);
-			Grid.SetRow(border, row);
-			Grid.SetColumn(border, column);
+			return border;
 		}
+			
 
-		private void StackPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
+		private static void StackPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			if (previousStackPanel != null)
-				previousStackPanel.Background = new SolidColorBrush(Colors.White);
+			//if (CurrentCell != null)
+			//	CurrentCell.Background = new SolidColorBrush(Colors.White);
 
 			StackPanel stackPanel = (StackPanel)sender;
-			stackPanel.Background = new SolidColorBrush(Colors.LightGreen);
+			GameGridViewModel gameGridViewModel = (GameGridViewModel)stackPanel.Tag;
 
-			previousStackPanel = stackPanel;
+			gameGridViewModel.MarkCell(stackPanel);
+		 
+			//CurrentCell = stackPanel;
 		}
 
-		public static void Set( int sudokuDigit)
+		public static void Set(StackPanel stackPanel, int sudokuDigit)
 		{
-			if (previousStackPanel != null)
-			{
-				TextBlock tb = previousStackPanel.Children.OfType<TextBlock>().First();
-				tb.Text = sudokuDigit.ToString();
-			}
+			TextBlock tb = stackPanel.Children.OfType<TextBlock>().First();
+			tb.Text = sudokuDigit.ToString();
 		}
 	}
 }
