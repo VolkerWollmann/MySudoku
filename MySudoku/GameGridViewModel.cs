@@ -11,8 +11,9 @@ namespace MySudoku
 {
 	public class GameGridViewModel
 	{
-		public enum MyEnum
+		public enum MoveDirection
 		{
+			None,
 			Up,
 			Down,
 			Left,
@@ -59,6 +60,94 @@ namespace MySudoku
 			CurrentCell.Background = new SolidColorBrush(Colors.LightGreen);
 		}
 
+		private void Move(MoveDirection moveDirection)
+		{
+			StackPanel newCell = null;
+			bool found = false;
+			int currentRow=0, currentColumn=0;
+
+			for (int row = 0; row < 9; row++)
+			{
+				for (int column = 0; column < 9; column++)
+				{
+					if (StackPanelGrid[row, column] == CurrentCell )
+					{
+						currentRow = row;
+						currentColumn = column;
+						found = true;
+						break;
+					}
+				}
+
+				if (found)
+					break;
+			}
+
+			bool moved = false;
+			if (found)
+			{
+				if (moveDirection == MoveDirection.Up)
+				{
+					if (currentRow > 0)
+					{
+						moved = true;
+						currentRow--;
+					}
+				}
+				else if (moveDirection == MoveDirection.Down)
+				{
+					if (currentRow < 8)
+					{
+						moved = true;
+						currentRow++;
+					}
+				}
+				else if (moveDirection == MoveDirection.Left)
+				{
+					if (currentColumn > 0)
+					{
+						moved = true;
+						currentColumn--;
+					}
+				}
+				else if (moveDirection == MoveDirection.Right)
+				{
+					if (currentColumn < 8)
+					{
+						moved = true;
+						currentColumn++;
+					}
+				}
+
+				if (moved)
+				{
+					newCell = StackPanelGrid[currentRow, currentColumn];
+					MarkCell(newCell);
+				}
+			}
+		}
+
+		private MoveDirection MoveDirectionFromKey(Key key)
+		{
+			switch(key)
+			{
+				case Key.Up:
+					return MoveDirection.Up;
+
+				case Key.Down:
+					return MoveDirection.Down;
+
+				case Key.Left:
+					return MoveDirection.Left;
+
+				case Key.Right:
+					return MoveDirection.Right;
+
+				default:
+					return MoveDirection.None;
+			}
+		}
+
 		/// <summary>
 		/// Transforms the key for 1-9, otherwise -1
 		/// </summary>
@@ -87,6 +176,12 @@ namespace MySudoku
 			{
 				if ( CurrentCell != null )
 					SudokuCellViewModel.Set(CurrentCell,sudokuDigit);
+				return;
+			}
+			MoveDirection moveDirection = MoveDirectionFromKey(key);
+			if ( moveDirection != MoveDirection.None )
+			{
+				Move(moveDirection);
 			}
 		}
 	}
