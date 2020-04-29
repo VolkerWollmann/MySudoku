@@ -21,18 +21,18 @@ namespace MySudoku
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		GameGridViewModel gameGridViewModel;
+		GameGridView gameGridView;
 		public MainWindow()
 		{
 			InitializeComponent();
-			gameGridViewModel = new GameGridViewModel(GameGrid);
+			gameGridView = new GameGridView(GameGrid);
 		}
 
 
 
 		private void MainWindow_KeyUp(object sender, KeyEventArgs e)
 		{
-			gameGridViewModel.Set(e.Key);
+			gameGridView.Set(e.Key);
 		}
 
 	}

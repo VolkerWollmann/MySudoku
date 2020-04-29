@@ -10,10 +10,10 @@ using System.Windows.Media;
 namespace MySudoku
 {
     
-	public class SudokuCellViewModel
+	public class SudokuCellView
 	{
 		public const int InvalidSudokuDigit = -1;
-		public static StackPanel GetSudokuCell(int row, int column, GameGridViewModel gameGridViewModel)
+		public static StackPanel GetSudokuCell(int row, int column, GameGridView gameGridView)
 		{
 			// set the text box
 			TextBlock tb = new TextBlock();
@@ -32,7 +32,7 @@ namespace MySudoku
 			stackPanel.MouseLeftButtonDown += StackPanel_MouseLeftButtonDown;
 			stackPanel.Background = new SolidColorBrush(Colors.White);
 
-			stackPanel.Tag = gameGridViewModel;
+			stackPanel.Tag = gameGridView;
 
 			return stackPanel;
 		}
@@ -61,7 +61,7 @@ namespace MySudoku
 			//	CurrentCell.Background = new SolidColorBrush(Colors.White);
 
 			StackPanel stackPanel = (StackPanel)sender;
-			GameGridViewModel gameGridViewModel = (GameGridViewModel)stackPanel.Tag;
+			GameGridView gameGridViewModel = (GameGridView)stackPanel.Tag;
 
 			gameGridViewModel.MarkCell(stackPanel);
 		 

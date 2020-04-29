@@ -9,7 +9,7 @@ using System.Windows.Media;
 
 namespace MySudoku
 {
-	public class GameGridViewModel
+	public class GameGridView
 	{
 		public enum MoveDirection
 		{
@@ -25,7 +25,7 @@ namespace MySudoku
 		private Grid GameGrid;
 
 		StackPanel[,] StackPanelGrid;
-		public GameGridViewModel(Grid gameGrid)
+		public GameGridView(Grid gameGrid)
 		{
 			GameGrid = gameGrid;
 			StackPanelGrid = new StackPanel[9, 9];
@@ -34,15 +34,15 @@ namespace MySudoku
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					StackPanel stackPanel = SudokuCellViewModel.GetSudokuCell(row, column, this);
+					StackPanel stackPanel = SudokuCellView.GetSudokuCell(row, column, this);
 					StackPanelGrid[row, column] = stackPanel;
 
-					gameGrid.Children.Add(stackPanel);
+					GameGrid.Children.Add(stackPanel);
 					Grid.SetRow(stackPanel, row);
 					Grid.SetColumn(stackPanel, column);
 
-					Border border = SudokuCellViewModel.GetBorder();
-					gameGrid.Children.Add(border);
+					Border border = SudokuCellView.GetBorder();
+					GameGrid.Children.Add(border);
 					Grid.SetRow(border, row);
 					Grid.SetColumn(border, column);
 				}
@@ -172,10 +172,10 @@ namespace MySudoku
 		{
 			// Key to sukdou digit
 			int sudokuDigit = SudokuDigitFromKey(key);
-			if (sudokuDigit != SudokuCellViewModel.InvalidSudokuDigit)
+			if (sudokuDigit != SudokuCellView.InvalidSudokuDigit)
 			{
 				if ( CurrentCell != null )
-					SudokuCellViewModel.Set(CurrentCell,sudokuDigit);
+					SudokuCellView.Set(CurrentCell,sudokuDigit);
 				return;
 			}
 			MoveDirection moveDirection = MoveDirectionFromKey(key);
