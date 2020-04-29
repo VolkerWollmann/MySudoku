@@ -16,20 +16,29 @@ namespace MySudoku
 		public const int InvalidSudokuDigit = -1;
 		public static StackPanel GetSudokuCell(int row, int column, GameGridView gameGridView)
 		{
-			// set the text box
-			TextBlock tb = new TextBlock();
-			tb.Text = "-";
-			tb.Name = "N" + row.ToString() + "_" + column.ToString();
-			tb.FontSize = 16;
-			//tb.MouseLeftButtonDown += Tb_MouseLeftButtonDown;
-			tb.HorizontalAlignment = HorizontalAlignment.Center;
-			tb.VerticalAlignment = VerticalAlignment.Center;
+			// set the value text block
+			TextBlock vtb = new TextBlock();
+			vtb.Text = "-";
+			vtb.Name = "V_" + row.ToString() + "_" + column.ToString();
+			vtb.FontSize = 16;
+			vtb.HorizontalAlignment = HorizontalAlignment.Center;
+			vtb.VerticalAlignment = VerticalAlignment.Center;
+
+			// set the set value text box
+			TextBox stb = new TextBox();
+			stb.Text = "{1,2,3,4,5,6,7,8,9}";
+			stb.Name = "S_" + row.ToString() + "_" + column.ToString();
+			stb.TextWrapping = TextWrapping.Wrap;
+			stb.FontSize = 10;
+			stb.HorizontalAlignment = HorizontalAlignment.Center;
+			stb.VerticalAlignment = VerticalAlignment.Center;
 
 			// set the panel
 			StackPanel stackPanel = new StackPanel();
 			stackPanel.VerticalAlignment = VerticalAlignment.Stretch;
 			stackPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
-			stackPanel.Children.Add(tb);
+			stackPanel.Children.Add(vtb);
+			stackPanel.Children.Add(stb);
 			stackPanel.MouseLeftButtonDown += StackPanel_MouseLeftButtonDown;
 			stackPanel.Background = new SolidColorBrush(Colors.White);
 			stackPanel.Tag = gameGridView;
@@ -39,8 +48,8 @@ namespace MySudoku
 			SudokuCell sudokuCell = new SudokuCell();
 			Binding myBinding = new Binding(SudokuCell.SudokuCellValueName);
 			myBinding.Source = sudokuCell;
-			tb.SetBinding(TextBlock.TextProperty, myBinding);
-			tb.Tag = sudokuCell;
+			vtb.SetBinding(TextBlock.TextProperty, myBinding);
+			vtb.Tag = sudokuCell;
 
 			return stackPanel;
 		}
@@ -78,7 +87,8 @@ namespace MySudoku
 
 		public static void Set(StackPanel stackPanel, int sudokuDigit)
 		{
-			TextBlock tb = stackPanel.Children.OfType<TextBlock>().First();
+			TextBlock tb = stackPanel.Children.OfType<TextBlock>().
+				Where(e => e.Name.StartsWith("V_")).First();
 			SudokuCell sudokuCell = (SudokuCell)tb.Tag;
 			sudokuCell.SetValue(sudokuDigit);
 		}

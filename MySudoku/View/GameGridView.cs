@@ -53,11 +53,19 @@ namespace MySudoku
 		public void MarkCell(StackPanel stackPanel)
 		{
 			if (CurrentCell != null)
+			{
 				CurrentCell.Background = new SolidColorBrush(Colors.White);
+				TextBox tb1 = CurrentCell.Children.OfType<TextBox>().
+				Where(e => e.Name.StartsWith("S_")).First();
+				tb1.Background = new SolidColorBrush(Colors.White);
+			}
 
 			CurrentCell = stackPanel;
 
 			CurrentCell.Background = new SolidColorBrush(Colors.LightGreen);
+			TextBox tb2 = CurrentCell.Children.OfType<TextBox>().
+				Where(e => e.Name.StartsWith("S_")).First();
+			tb2.Background = new SolidColorBrush(Colors.LightGreen);
 		}
 
 		private void Move(MoveDirection moveDirection)
