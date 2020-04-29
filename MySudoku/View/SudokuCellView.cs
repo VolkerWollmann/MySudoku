@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace MySudoku
@@ -17,8 +18,8 @@ namespace MySudoku
 		{
 			// set the text box
 			TextBlock tb = new TextBlock();
-			tb.Text = row.ToString() + column.ToString();
-			tb.Name = "N" + tb.Text;
+			tb.Text = "-";
+			tb.Name = "N" + row.ToString() + "_" + column.ToString();
 			tb.FontSize = 16;
 			//tb.MouseLeftButtonDown += Tb_MouseLeftButtonDown;
 			tb.HorizontalAlignment = HorizontalAlignment.Center;
@@ -31,8 +32,15 @@ namespace MySudoku
 			stackPanel.Children.Add(tb);
 			stackPanel.MouseLeftButtonDown += StackPanel_MouseLeftButtonDown;
 			stackPanel.Background = new SolidColorBrush(Colors.White);
-
 			stackPanel.Tag = gameGridView;
+
+
+			// bind SudokuCellView to the SudokuCellModel
+			SudokuCell sudokuCell = new SudokuCell();
+			Binding myBinding = new Binding(SudokuCell.SudokuCellValueName);
+			myBinding.Source = sudokuCell;
+			tb.SetBinding(TextBlock.TextProperty, myBinding);
+			tb.Tag = sudokuCell;
 
 			return stackPanel;
 		}
@@ -71,7 +79,8 @@ namespace MySudoku
 		public static void Set(StackPanel stackPanel, int sudokuDigit)
 		{
 			TextBlock tb = stackPanel.Children.OfType<TextBlock>().First();
-			tb.Text = sudokuDigit.ToString();
+			SudokuCell sudokuCell = (SudokuCell)tb.Tag;
+			sudokuCell.SetValue(sudokuDigit);
 		}
 	}
 }

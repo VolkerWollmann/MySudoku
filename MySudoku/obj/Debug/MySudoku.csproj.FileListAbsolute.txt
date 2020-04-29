@@ -1,7 +1,6 @@
 E:\Data\MySudoku\MySudoku\bin\Debug\MySudoku.exe.config
 E:\Data\MySudoku\MySudoku\bin\Debug\MySudoku.exe
 E:\Data\MySudoku\MySudoku\bin\Debug\MySudoku.pdb
-E:\Data\MySudoku\MySudoku\obj\Debug\MySudoku.csprojAssemblyReference.cache
 E:\Data\MySudoku\MySudoku\obj\Debug\MainWindow.g.cs
 E:\Data\MySudoku\MySudoku\obj\Debug\App.g.cs
 E:\Data\MySudoku\MySudoku\obj\Debug\MySudoku_MarkupCompile.cache
@@ -13,3 +12,4 @@ E:\Data\MySudoku\MySudoku\obj\Debug\MySudoku.csproj.GenerateResource.cache
 E:\Data\MySudoku\MySudoku\obj\Debug\MySudoku.csproj.CoreCompileInputs.cache
 E:\Data\MySudoku\MySudoku\obj\Debug\MySudoku.exe
 E:\Data\MySudoku\MySudoku\obj\Debug\MySudoku.pdb
+E:\Data\MySudoku\MySudoku\obj\Debug\MySudoku.csprojAssemblyReference.cache
