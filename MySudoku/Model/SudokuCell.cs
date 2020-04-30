@@ -35,6 +35,9 @@ namespace MySudoku
 		{
 			get
 			{
+				if (value > 0)
+					return "";
+
 				string result = "{";
 				for( int i=0; i< possibleValues.Count -1; i++ )
 				{
@@ -62,6 +65,9 @@ namespace MySudoku
 
 		public void SetValue(int newValue)
 		{
+			if (!possibleValues.Contains(newValue))
+				return;
+
 			value = newValue;
 			possibleValues = new List<int> { newValue };
 			OnPropertyChanged(SudokuCellValueName);
