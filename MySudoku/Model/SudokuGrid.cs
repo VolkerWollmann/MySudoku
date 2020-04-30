@@ -17,10 +17,23 @@ namespace MySudoku
 
 		public void Exclude(int row, int column, int value)
 		{
+			// Exclude from rows and columns
 			for (int i = 0; i < 9; i++)
 			{
 				grid[row, i].Exclude(value);
 				grid[i, column].Exclude(value);
+			}
+
+			// Exclude from square
+			int rowBase = (row / 3) * 3;
+			int columnBase = (column / 3) * 3;
+
+			for (int i = rowBase; i < rowBase + 3;  i++)
+			{
+				for ( int j = columnBase; j < columnBase+3; j++  )
+				{
+					grid[i,j].Exclude(value);
+				}
 			}
 		}
 		public SudokuGrid()
