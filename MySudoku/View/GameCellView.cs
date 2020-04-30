@@ -61,15 +61,15 @@ namespace MySudoku
 			return stackPanel;
 		}
 
-		public static Border GetBorder()
+		public static Border GetBorder(SudokuCell sudokuCell)
 		{
 			Border border = new Border()
 			{
 				BorderThickness = new Thickness
 				{
 					Left = 1,
-					Right = 1,
-					Bottom = 1,
+					Right = (sudokuCell.Column == 2) || (sudokuCell.Column == 5) ? 3 : 1,
+					Bottom = (sudokuCell.Row == 2) || (sudokuCell.Row == 5) ? 3 : 1,
 					Top = 1
 				},
 				BorderBrush = new SolidColorBrush(Colors.Black),

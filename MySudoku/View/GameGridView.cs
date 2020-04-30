@@ -38,14 +38,15 @@ namespace MySudoku
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					StackPanel stackPanel = GameCellView.GetStackPanel(this, sudokuGrid.GetSudokuCell(row, column));
+					SudokuCell sudokuCell = sudokuGrid.GetSudokuCell(row, column);
+					StackPanel stackPanel = GameCellView.GetStackPanel(this, sudokuCell);
 					StackPanelGrid[row, column] = stackPanel;
 
 					GameGrid.Children.Add(stackPanel);
 					Grid.SetRow(stackPanel, row);
 					Grid.SetColumn(stackPanel, column);
 
-					Border border = GameCellView.GetBorder();
+					Border border = GameCellView.GetBorder(sudokuCell);
 					GameGrid.Children.Add(border);
 					Grid.SetRow(border, row);
 					Grid.SetColumn(border, column);
