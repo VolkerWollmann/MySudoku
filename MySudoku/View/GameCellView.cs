@@ -77,8 +77,8 @@ namespace MySudoku
 
 			return border;
 		}
-			
 
+		#region Input
 		private static void StackPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
 			//if (CurrentCell != null)
@@ -99,5 +99,6 @@ namespace MySudoku
 			SudokuCell sudokuCell = (SudokuCell)tb.Tag;
 			sudokuCell.SetValue(sudokuDigit);
 		}
+		#endregion
 	}
 }

@@ -59,6 +59,7 @@ namespace MySudoku
 			sudokuGrid.Clear();
 		}
 
+		#region Input
 		public void MarkCell(StackPanel stackPanel)
 		{
 			if (CurrentCell != null)
@@ -199,5 +200,7 @@ namespace MySudoku
 				Move(moveDirection);
 			}
 		}
+		#endregion
+
 	}
 }
