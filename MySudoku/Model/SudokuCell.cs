@@ -9,6 +9,11 @@ namespace MySudoku
 {
 	public class SudokuCell : INotifyPropertyChanged
 	{
+		SudokuGrid grid;
+
+		public int Row { get; private set; }
+		public int Column { get; private set; }
+
 		int value = 0;
 		List<int> possibleValues;
 
@@ -46,6 +51,14 @@ namespace MySudoku
 			}
 		}
 
+		public void Exclude(int valueToExclude)
+		{
+			if (value == valueToExclude)
+				return;
+
+			possibleValues.Remove(valueToExclude);
+			OnPropertyChanged(SudokuCellPossibleValuesName);
+		}
 
 		public void SetValue(int newValue)
 		{
@@ -53,10 +66,15 @@ namespace MySudoku
 			possibleValues = new List<int> { newValue };
 			OnPropertyChanged(SudokuCellValueName);
 			OnPropertyChanged(SudokuCellPossibleValuesName);
+			grid.Exclude(Row, Column, value);
 		}
 
-		public SudokuCell()
+		public SudokuCell(SudokuGrid parent, int myRow, int myColumn)
 		{
+			grid = parent;
+			Row = myRow;
+			Column = myColumn;
+
 			possibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 		}
 

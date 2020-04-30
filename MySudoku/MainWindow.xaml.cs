@@ -28,8 +28,6 @@ namespace MySudoku
 			gameGridView = new GameGridView(GameGrid);
 		}
 
-
-
 		private void MainWindow_KeyUp(object sender, KeyEventArgs e)
 		{
 			gameGridView.Set(e.Key);

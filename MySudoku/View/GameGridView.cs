@@ -24,9 +24,13 @@ namespace MySudoku
 
 		private Grid GameGrid;
 
+		private SudokuGrid sudokuGrid;
+
 		StackPanel[,] StackPanelGrid;
 		public GameGridView(Grid gameGrid)
 		{
+			sudokuGrid = new SudokuGrid();
+
 			GameGrid = gameGrid;
 			StackPanelGrid = new StackPanel[9, 9];
 
@@ -34,14 +38,14 @@ namespace MySudoku
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					StackPanel stackPanel = SudokuCellView.GetSudokuCell(row, column, this);
+					StackPanel stackPanel = GameCellView.GetStackPanel(this, sudokuGrid.GetSudokuCell(row, column));
 					StackPanelGrid[row, column] = stackPanel;
 
 					GameGrid.Children.Add(stackPanel);
 					Grid.SetRow(stackPanel, row);
 					Grid.SetColumn(stackPanel, column);
 
-					Border border = SudokuCellView.GetBorder();
+					Border border = GameCellView.GetBorder();
 					GameGrid.Children.Add(border);
 					Grid.SetRow(border, row);
 					Grid.SetColumn(border, column);
@@ -55,17 +59,15 @@ namespace MySudoku
 			if (CurrentCell != null)
 			{
 				CurrentCell.Background = new SolidColorBrush(Colors.White);
-				TextBox tb1 = CurrentCell.Children.OfType<TextBox>().
-				Where(e => e.Name.StartsWith("S_")).First();
-				tb1.Background = new SolidColorBrush(Colors.White);
+				CurrentCell.Children.OfType<TextBlock>().ToList().ForEach(
+					tb => { tb.Background = new SolidColorBrush(Colors.White); });
 			}
 
 			CurrentCell = stackPanel;
 
 			CurrentCell.Background = new SolidColorBrush(Colors.LightGreen);
-			TextBlock tb2 = CurrentCell.Children.OfType<TextBlock>().
-				Where(e => e.Name.StartsWith("S_")).First();
-			tb2.Background = new SolidColorBrush(Colors.LightGreen);
+			CurrentCell.Children.OfType<TextBlock>().ToList().ForEach(
+					tb => { tb.Background = new SolidColorBrush(Colors.LightGreen); });
 		}
 
 		private void Move(MoveDirection moveDirection)
@@ -180,10 +182,10 @@ namespace MySudoku
 		{
 			// Key to sukdou digit
 			int sudokuDigit = SudokuDigitFromKey(key);
-			if (sudokuDigit != SudokuCellView.InvalidSudokuDigit)
+			if (sudokuDigit != GameCellView.InvalidSudokuDigit)
 			{
 				if ( CurrentCell != null )
-					SudokuCellView.Set(CurrentCell,sudokuDigit);
+					GameCellView.Set(CurrentCell,sudokuDigit);
 				return;
 			}
 			MoveDirection moveDirection = MoveDirectionFromKey(key);

@@ -56,8 +56,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\SudokuCell.cs" />
+    <Compile Include="Model\SudokuGrid.cs" />
     <Compile Include="View\GameGridView.cs" />
-    <Compile Include="View\SudokuCellView.cs" />
+    <Compile Include="View\GameCellView.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

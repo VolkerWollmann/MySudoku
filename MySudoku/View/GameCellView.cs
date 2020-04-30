@@ -11,15 +11,15 @@ using System.Windows.Media;
 namespace MySudoku
 {
     
-	public class SudokuCellView
+	public class GameCellView
 	{
 		public const int InvalidSudokuDigit = -1;
-		public static StackPanel GetSudokuCell(int row, int column, GameGridView gameGridView)
+		public static StackPanel GetStackPanel(GameGridView gameGridView, SudokuCell sudokuCell)
 		{
 			// set the value text block for the value
 			TextBlock vtb = new TextBlock();
 			vtb.Text = "-";
-			vtb.Name = "V_" + row.ToString() + "_" + column.ToString();
+			vtb.Name = "V_" + sudokuCell.Row.ToString() + "_" + sudokuCell.Column.ToString();
 			vtb.FontSize = 16;
 			vtb.HorizontalAlignment = HorizontalAlignment.Center;
 			vtb.VerticalAlignment = VerticalAlignment.Center;
@@ -27,7 +27,7 @@ namespace MySudoku
 			// set the set value text block for the possible values
 			TextBlock pvtb = new TextBlock();
 			pvtb.Text = "{1,2,3,4,5,6,7,8,9}";
-			pvtb.Name = "S_" + row.ToString() + "_" + column.ToString();
+			pvtb.Name = "S_" + sudokuCell.Row.ToString() + "_" + sudokuCell.Column.ToString();
 			pvtb.TextWrapping = TextWrapping.Wrap;
 			pvtb.FontSize = 10;
 			pvtb.HorizontalAlignment = HorizontalAlignment.Center;
@@ -44,7 +44,7 @@ namespace MySudoku
 			stackPanel.Tag = gameGridView;
 
 
-			SudokuCell sudokuCell = new SudokuCell();
+			//SudokuCell sudokuCell = ;
 
 			// bind SudokuCellView to the SudokuCellModel for the value
 			Binding valueBinding = new Binding(SudokuCell.SudokuCellValueName);
