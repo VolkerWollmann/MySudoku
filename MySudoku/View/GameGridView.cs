@@ -63,7 +63,7 @@ namespace MySudoku
 			CurrentCell = stackPanel;
 
 			CurrentCell.Background = new SolidColorBrush(Colors.LightGreen);
-			TextBox tb2 = CurrentCell.Children.OfType<TextBox>().
+			TextBlock tb2 = CurrentCell.Children.OfType<TextBlock>().
 				Where(e => e.Name.StartsWith("S_")).First();
 			tb2.Background = new SolidColorBrush(Colors.LightGreen);
 		}

@@ -16,7 +16,7 @@ namespace MySudoku
 		public const int InvalidSudokuDigit = -1;
 		public static StackPanel GetSudokuCell(int row, int column, GameGridView gameGridView)
 		{
-			// set the value text block
+			// set the value text block for the value
 			TextBlock vtb = new TextBlock();
 			vtb.Text = "-";
 			vtb.Name = "V_" + row.ToString() + "_" + column.ToString();
@@ -24,32 +24,39 @@ namespace MySudoku
 			vtb.HorizontalAlignment = HorizontalAlignment.Center;
 			vtb.VerticalAlignment = VerticalAlignment.Center;
 
-			// set the set value text box
-			TextBox stb = new TextBox();
-			stb.Text = "{1,2,3,4,5,6,7,8,9}";
-			stb.Name = "S_" + row.ToString() + "_" + column.ToString();
-			stb.TextWrapping = TextWrapping.Wrap;
-			stb.FontSize = 10;
-			stb.HorizontalAlignment = HorizontalAlignment.Center;
-			stb.VerticalAlignment = VerticalAlignment.Center;
+			// set the set value text block for the possible values
+			TextBlock pvtb = new TextBlock();
+			pvtb.Text = "{1,2,3,4,5,6,7,8,9}";
+			pvtb.Name = "S_" + row.ToString() + "_" + column.ToString();
+			pvtb.TextWrapping = TextWrapping.Wrap;
+			pvtb.FontSize = 10;
+			pvtb.HorizontalAlignment = HorizontalAlignment.Center;
+			pvtb.VerticalAlignment = VerticalAlignment.Center;
 
 			// set the panel
 			StackPanel stackPanel = new StackPanel();
 			stackPanel.VerticalAlignment = VerticalAlignment.Stretch;
 			stackPanel.HorizontalAlignment = HorizontalAlignment.Stretch;
 			stackPanel.Children.Add(vtb);
-			stackPanel.Children.Add(stb);
+			stackPanel.Children.Add(pvtb);
 			stackPanel.MouseLeftButtonDown += StackPanel_MouseLeftButtonDown;
 			stackPanel.Background = new SolidColorBrush(Colors.White);
 			stackPanel.Tag = gameGridView;
 
 
-			// bind SudokuCellView to the SudokuCellModel
 			SudokuCell sudokuCell = new SudokuCell();
-			Binding myBinding = new Binding(SudokuCell.SudokuCellValueName);
-			myBinding.Source = sudokuCell;
-			vtb.SetBinding(TextBlock.TextProperty, myBinding);
+
+			// bind SudokuCellView to the SudokuCellModel for the value
+			Binding valueBinding = new Binding(SudokuCell.SudokuCellValueName);
+			valueBinding.Source = sudokuCell;
+			vtb.SetBinding(TextBlock.TextProperty, valueBinding);
 			vtb.Tag = sudokuCell;
+
+			// bind SudokuCellView to the SudokuCellModel for the possible values
+			Binding possibleValuesBinding = new Binding(SudokuCell.SudokuCellPossibleValuesName);
+			possibleValuesBinding.Source = sudokuCell;
+			pvtb.SetBinding(TextBlock.TextProperty, possibleValuesBinding);
+			pvtb.Tag = sudokuCell;
 
 			return stackPanel;
 		}
