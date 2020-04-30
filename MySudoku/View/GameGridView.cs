@@ -54,6 +54,10 @@ namespace MySudoku
 			}
 		}
 
+		public void Clear()
+		{
+			sudokuGrid.Clear();
+		}
 
 		public void MarkCell(StackPanel stackPanel)
 		{

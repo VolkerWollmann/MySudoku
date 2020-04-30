@@ -33,5 +33,9 @@ namespace MySudoku
 			gameGridView.Set(e.Key);
 		}
 
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			gameGridView.Clear();
+		}
 	}
 }

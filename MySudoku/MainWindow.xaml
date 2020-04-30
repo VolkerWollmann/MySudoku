@@ -14,7 +14,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" MinHeight="50" />
         </Grid.RowDefinitions>
-        <Button Grid.Column="1" Grid.Row="0">Clear</Button>
+        <Button Grid.Column="1" Grid.Row="0" Click="Button_Click">Clear</Button>
         <Grid Name="GameGrid" Grid.Column="0" Grid.Row="0" MinWidth="450" MinHeight="450"
               >
             <Grid.ColumnDefinitions>
