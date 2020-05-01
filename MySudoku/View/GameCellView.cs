@@ -81,15 +81,11 @@ namespace MySudoku
 		#region Input
 		private static void StackPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
-			//if (CurrentCell != null)
-			//	CurrentCell.Background = new SolidColorBrush(Colors.White);
-
 			StackPanel stackPanel = (StackPanel)sender;
 			GameGridView gameGridViewModel = (GameGridView)stackPanel.Tag;
 
 			gameGridViewModel.MarkCell(stackPanel);
 		 
-			//CurrentCell = stackPanel;
 		}
 
 		public static void Set(StackPanel stackPanel, int sudokuDigit)
