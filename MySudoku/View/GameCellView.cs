@@ -7,10 +7,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Media;
+using MySudoku.Controls;
 
 namespace MySudoku
 {
-    
 	public class GameCellView
 	{
 		public const int InvalidSudokuDigit = -1;
@@ -61,6 +61,12 @@ namespace MySudoku
 			return stackPanel;
 		}
 
+		public static SudokuCellControl GetSudokuCellControl(GameGridView gameGridView, SudokuCell sudokuCell)
+		{
+			SudokuCellControl sudokuCellControl = new SudokuCellControl();
+			return sudokuCellControl;
+		}
+
 		public static Border GetBorder(SudokuCell sudokuCell)
 		{
 			Border border = new Border()
@@ -84,20 +90,20 @@ namespace MySudoku
 			//if (CurrentCell != null)
 			//	CurrentCell.Background = new SolidColorBrush(Colors.White);
 
-			StackPanel stackPanel = (StackPanel)sender;
-			GameGridView gameGridViewModel = (GameGridView)stackPanel.Tag;
+			SudokuCellControl sudokuCellControl = (SudokuCellControl)sender;
+			GameGridView gameGridViewModel = (GameGridView)sudokuCellControl.Tag;
 
-			gameGridViewModel.MarkCell(stackPanel);
+			gameGridViewModel.MarkCell(sudokuCellControl);
 		 
 			//CurrentCell = stackPanel;
 		}
 
-		public static void Set(StackPanel stackPanel, int sudokuDigit)
+		public static void Set(SudokuCellControl sudokuCellControl, int sudokuDigit)
 		{
-			TextBlock tb = stackPanel.Children.OfType<TextBlock>().
-				Where(e => e.Name.StartsWith("V_")).First();
-			SudokuCell sudokuCell = (SudokuCell)tb.Tag;
-			sudokuCell.SetValue(sudokuDigit);
+			//TextBlock tb = stackPanel.Children.OfType<TextBlock>().
+			//	Where(e => e.Name.StartsWith("V_")).First();
+			//SudokuCell sudokuCell = (SudokuCell)tb.Tag;
+			//sudokuCell.SetValue(sudokuDigit);
 		}
 		#endregion
 	}
