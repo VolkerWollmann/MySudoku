@@ -21,7 +21,7 @@ namespace MySudoku.Controls
 	public partial class SudokuCellControl : UserControl
 	{
 		private GameGridView gameGridView;
-		private SudokuCell sudokuCell;
+		public SudokuCell SudokuCell { get; private set; }
 		public string Value {
 			set
 			{
@@ -50,14 +50,44 @@ namespace MySudoku.Controls
 		public SudokuCellControl(GameGridView _gameGridView, SudokuCell _sudokuCell) : this()
 		{
 			gameGridView = _gameGridView;
-			sudokuCell = _sudokuCell;
+			SudokuCell = _sudokuCell;
+
+			// bind SudokuCellView to the SudokuCellModel for the value
+			Binding valueBinding = new Binding(SudokuCell.SudokuCellValueName);
+			valueBinding.Source = SudokuCell;
+			TextBlockValue.SetBinding(TextBlock.TextProperty, valueBinding);
+
+			// bind SudokuCellView to the SudokuCellModel for the possible values
+			Binding possibleValuesBinding = new Binding(SudokuCell.SudokuCellPossibleValuesName);
+			possibleValuesBinding.Source = SudokuCell;
+			TextBlockPossibleValueSet.SetBinding(TextBlock.TextProperty, possibleValuesBinding);
 		}
 		public SudokuCellControl()
 		{
 			InitializeComponent();
-			this.DataContext = this;
 			Value = "0";
 			PossibleValueSet = "{-}";
+
+			SudokuCellControlPanel.MouseLeftButtonDown += SudokuCellControlPanel_MouseLeftButtonDown;
+		}
+
+		public void Mark()
+		{
+			SudokuCellControlPanel.Background = new SolidColorBrush(Colors.LightGreen);
+			TextBlockValue.Background = new SolidColorBrush(Colors.LightGreen);
+			TextBlockPossibleValueSet.Background = new SolidColorBrush(Colors.LightGreen);
+		}
+
+		public void UnMark()
+		{
+			SudokuCellControlPanel.Background = new SolidColorBrush(Colors.White);
+			TextBlockValue.Background = new SolidColorBrush(Colors.White);
+			TextBlockPossibleValueSet.Background = new SolidColorBrush(Colors.White);
+		}
+
+		private void SudokuCellControlPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+		{
+			gameGridView.MarkCell(this);
 		}
 	}
 }

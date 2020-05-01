@@ -64,17 +64,11 @@ namespace MySudoku
 		public void MarkCell(SudokuCellControl sudokuCellControl)
 		{
 			if (CurrentSudokuCellControl != null)
-			{
-				//CurrentCell.Background = new SolidColorBrush(Colors.White);
-				//CurrentCell.Children.OfType<TextBlock>().ToList().ForEach(
-				//	tb => { tb.Background = new SolidColorBrush(Colors.White); });
-			}
+				CurrentSudokuCellControl.UnMark();
 
 			CurrentSudokuCellControl = sudokuCellControl;
 
-			//CurrentCell.Background = new SolidColorBrush(Colors.LightGreen);
-			//CurrentCell.Children.OfType<TextBlock>().ToList().ForEach(
-			//		tb => { tb.Background = new SolidColorBrush(Colors.LightGreen); });
+			CurrentSudokuCellControl.Mark();
 		}
 
 		private void Move(MoveDirection moveDirection)
@@ -182,17 +176,17 @@ namespace MySudoku
 				return (key - Key.NumPad0);
 			}
 
-			return -1;
+			return SudokuCell.InvalidSudokuDigit;
 		}
 
 		public void Set(Key key)
 		{
 			// Key to sukdou digit
 			int sudokuDigit = SudokuDigitFromKey(key);
-			if (sudokuDigit != GameCellView.InvalidSudokuDigit)
+			if (sudokuDigit != SudokuCell.InvalidSudokuDigit)
 			{
-				if ( CurrentSudokuCellControl != null )
-					GameCellView.Set(CurrentSudokuCellControl, sudokuDigit);
+				if (CurrentSudokuCellControl != null)
+					CurrentSudokuCellControl.SudokuCell.SetValue(sudokuDigit);
 				return;
 			}
 			MoveDirection moveDirection = MoveDirectionFromKey(key);

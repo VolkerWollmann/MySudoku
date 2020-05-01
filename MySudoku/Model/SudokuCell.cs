@@ -9,6 +9,8 @@ namespace MySudoku
 {
 	public class SudokuCell : INotifyPropertyChanged
 	{
+		public const int InvalidSudokuDigit = -1;
+
 		SudokuGrid grid;
 
 		public int Row { get; private set; }
