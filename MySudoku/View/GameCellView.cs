@@ -39,6 +39,7 @@ namespace MySudoku
 
 		#region Input
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 		private static void StackPanel_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
 		{
@@ -49,6 +50,8 @@ namespace MySudoku
 		 
 		}
 >>>>>>> Eleminate Comment
+=======
+>>>>>>> SudokuCellUserControl
 
 		#endregion
 	}
