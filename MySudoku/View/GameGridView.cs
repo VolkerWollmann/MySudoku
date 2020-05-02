@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using MySudoku.Controls;
 
 namespace MySudoku
 {
@@ -20,31 +21,31 @@ namespace MySudoku
 			Right
 		};
 
-		public static StackPanel CurrentCell { get; set; } = null;
+		public static SudokuCellControl  CurrentSudokuCellControl { get; set; } = null;
 
 		private Grid GameGrid;
 
 		private SudokuGrid sudokuGrid;
 
-		StackPanel[,] StackPanelGrid;
+		SudokuCellControl [,] SudokuCellControlGrid;
 		public GameGridView(Grid gameGrid)
 		{
 			sudokuGrid = new SudokuGrid();
 
 			GameGrid = gameGrid;
-			StackPanelGrid = new StackPanel[9, 9];
+			SudokuCellControlGrid = new SudokuCellControl[9, 9];
 
 			for (int row = 0; row < 9; row++)
 			{
 				for (int column = 0; column < 9; column++)
 				{
 					SudokuCell sudokuCell = sudokuGrid.GetSudokuCell(row, column);
-					StackPanel stackPanel = GameCellView.GetStackPanel(this, sudokuCell);
-					StackPanelGrid[row, column] = stackPanel;
+					SudokuCellControl sudokuCellControl = GameCellView.GetSudokuCellControl(this, sudokuCell);
+					SudokuCellControlGrid[row, column] = sudokuCellControl;
 
-					GameGrid.Children.Add(stackPanel);
-					Grid.SetRow(stackPanel, row);
-					Grid.SetColumn(stackPanel, column);
+					GameGrid.Children.Add(sudokuCellControl);
+					Grid.SetRow(sudokuCellControl, row);
+					Grid.SetColumn(sudokuCellControl, column);
 
 					Border border = GameCellView.GetBorder(sudokuCell);
 					GameGrid.Children.Add(border);
@@ -60,25 +61,19 @@ namespace MySudoku
 		}
 
 		#region Input
-		public void MarkCell(StackPanel stackPanel)
+		public void MarkCell(SudokuCellControl sudokuCellControl)
 		{
-			if (CurrentCell != null)
-			{
-				CurrentCell.Background = new SolidColorBrush(Colors.White);
-				CurrentCell.Children.OfType<TextBlock>().ToList().ForEach(
-					tb => { tb.Background = new SolidColorBrush(Colors.White); });
-			}
+			if (CurrentSudokuCellControl != null)
+				CurrentSudokuCellControl.UnMark();
 
-			CurrentCell = stackPanel;
+			CurrentSudokuCellControl = sudokuCellControl;
 
-			CurrentCell.Background = new SolidColorBrush(Colors.LightGreen);
-			CurrentCell.Children.OfType<TextBlock>().ToList().ForEach(
-					tb => { tb.Background = new SolidColorBrush(Colors.LightGreen); });
+			CurrentSudokuCellControl.Mark();
 		}
 
 		private void Move(MoveDirection moveDirection)
 		{
-			StackPanel newCell = null;
+			SudokuCellControl newCell = null;
 			bool found = false;
 			int currentRow=0, currentColumn=0;
 
@@ -86,7 +81,7 @@ namespace MySudoku
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					if (StackPanelGrid[row, column] == CurrentCell )
+					if (SudokuCellControlGrid[row, column] == CurrentSudokuCellControl)
 					{
 						currentRow = row;
 						currentColumn = column;
@@ -137,7 +132,7 @@ namespace MySudoku
 
 				if (moved)
 				{
-					newCell = StackPanelGrid[currentRow, currentColumn];
+					newCell = SudokuCellControlGrid[currentRow, currentColumn];
 					MarkCell(newCell);
 				}
 			}
@@ -181,17 +176,17 @@ namespace MySudoku
 				return (key - Key.NumPad0);
 			}
 
-			return -1;
+			return SudokuCell.InvalidSudokuDigit;
 		}
 
 		public void Set(Key key)
 		{
 			// Key to sukdou digit
 			int sudokuDigit = SudokuDigitFromKey(key);
-			if (sudokuDigit != GameCellView.InvalidSudokuDigit)
+			if (sudokuDigit != SudokuCell.InvalidSudokuDigit)
 			{
-				if ( CurrentCell != null )
-					GameCellView.Set(CurrentCell,sudokuDigit);
+				if (CurrentSudokuCellControl != null)
+					CurrentSudokuCellControl.SudokuCell.SetValue(sudokuDigit);
 				return;
 			}
 			MoveDirection moveDirection = MoveDirectionFromKey(key);

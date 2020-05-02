@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-E:\Data\MySudoku\MySudoku\obj\Debug\
+E:\Data\VolkerWollmann\MySudoku\MySudoku\obj\Debug\
 MySudoku
 none
 false
 DEBUG;TRACE
-E:\Data\MySudoku\MySudoku\App.xaml
-11151548125
+E:\Data\VolkerWollmann\MySudoku\MySudoku\App.xaml
+2-1608690092
 
-10-1043377231
-13-1505183044
-MainWindow.xaml;
+111615845506
+151397803362
+Controls\SudokuCellControl.xaml;MainWindow.xaml;
 
-False
+True
 
