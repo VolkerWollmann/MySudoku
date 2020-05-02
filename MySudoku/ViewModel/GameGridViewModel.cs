@@ -10,7 +10,7 @@ using MySudoku.Controls;
 
 namespace MySudoku
 {
-	public class GameGridView
+	public class GameGridViewModel
 	{
 		public enum MoveDirection
 		{
@@ -28,7 +28,7 @@ namespace MySudoku
 		private SudokuGrid sudokuGrid;
 
 		SudokuCellControl [,] SudokuCellControlGrid;
-		public GameGridView(Grid gameGrid)
+		public GameGridViewModel(Grid gameGrid)
 		{
 			sudokuGrid = new SudokuGrid();
 

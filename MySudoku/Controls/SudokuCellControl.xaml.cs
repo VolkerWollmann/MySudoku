@@ -20,7 +20,7 @@ namespace MySudoku.Controls
 	/// </summary>
 	public partial class SudokuCellControl : UserControl
 	{
-		private GameGridView gameGridView;
+		private GameGridViewModel gameGridView;
 		public SudokuCell SudokuCell { get; private set; }
 		public string Value {
 			set
@@ -47,7 +47,7 @@ namespace MySudoku.Controls
 			}
 		}
 
-		public SudokuCellControl(GameGridView _gameGridView, SudokuCell _sudokuCell) : this()
+		public SudokuCellControl(GameGridViewModel _gameGridView, SudokuCell _sudokuCell) : this()
 		{
 			gameGridView = _gameGridView;
 			SudokuCell = _sudokuCell;

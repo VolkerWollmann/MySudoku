@@ -21,21 +21,21 @@ namespace MySudoku
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		GameGridView gameGridView;
+		GameGridViewModel gameGridViewModel;
 		public MainWindow()
 		{
 			InitializeComponent();
-			gameGridView = new GameGridView(GameGrid);
+			gameGridViewModel = new GameGridViewModel(GameGrid);
 		}
 
 		private void MainWindow_KeyUp(object sender, KeyEventArgs e)
 		{
-			gameGridView.Set(e.Key);
+			gameGridViewModel.Set(e.Key);
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			gameGridView.Clear();
+			gameGridViewModel.Clear();
 		}
 	}
 }
