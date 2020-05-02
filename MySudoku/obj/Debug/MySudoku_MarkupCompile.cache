@@ -7,6 +7,7 @@ C#
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 E:\Data\temp\master\VolkerWollmann\MySudoku\MySudoku\obj\Debug\
 =======
 E:\Data\VolkerWollmann\MySudoku\MySudoku\obj\Debug\
@@ -17,6 +18,9 @@ E:\Data\temp\master\VolkerWollmann\MySudoku\MySudoku\obj\Debug\
 =======
 E:\Data\VolkerWollmann\MySudoku\MySudoku\obj\Debug\
 >>>>>>> SudokuCellUserControl
+=======
+E:\Data\temp\master\VolkerWollmann\MySudoku\MySudoku\obj\Debug\
+>>>>>>> a29ca3de3a74837ae6b5ae53f50ec5ebbbaf4103
 MySudoku
 none
 false
@@ -24,6 +28,9 @@ DEBUG;TRACE
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> a29ca3de3a74837ae6b5ae53f50ec5ebbbaf4103
 =======
 >>>>>>> a29ca3de3a74837ae6b5ae53f50ec5ebbbaf4103
 E:\Data\temp\master\VolkerWollmann\MySudoku\MySudoku\App.xaml
@@ -39,6 +46,7 @@ E:\Data\VolkerWollmann\MySudoku\MySudoku\App.xaml
 E:\Data\VolkerWollmann\MySudoku\MySudoku\App.xaml
 2-1608690092
 
+<<<<<<< HEAD
 10-1872724977
 151397803362
 Controls\SudokuCellControl.xaml;MainWindow.xaml;
@@ -50,6 +58,8 @@ Controls\SudokuCellControl.xaml;MainWindow.xaml;
 Controls\SudokuCellControl.xaml;MainWindow.xaml;
 >>>>>>> SudokuCellUserControl
 
+=======
+>>>>>>> a29ca3de3a74837ae6b5ae53f50ec5ebbbaf4103
 =======
 >>>>>>> a29ca3de3a74837ae6b5ae53f50ec5ebbbaf4103
 True
