@@ -52,6 +52,17 @@ namespace MySudoku.Controls
 			gameGridView = _gameGridView;
 			SudokuCell = _sudokuCell;
 
+			// Set border
+			SudokuCellControlBorder.BorderThickness = new Thickness
+			{
+				Left = 1,
+				Right = (SudokuCell.Column == 2) || (SudokuCell.Column == 5) ? 3 : 1,
+				Bottom = (SudokuCell.Row == 2) || (SudokuCell.Row == 5) ? 3 : 1,
+				Top = 1
+			};
+
+			SudokuCellControlBorder.BorderBrush = new SolidColorBrush(Colors.Black);
+
 			// bind SudokuCellView to the SudokuCellModel for the value
 			Binding valueBinding = new Binding(SudokuCell.SudokuCellValueName);
 			valueBinding.Source = SudokuCell;

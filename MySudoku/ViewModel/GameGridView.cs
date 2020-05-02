@@ -40,17 +40,13 @@ namespace MySudoku
 				for (int column = 0; column < 9; column++)
 				{
 					SudokuCell sudokuCell = sudokuGrid.GetSudokuCell(row, column);
-					SudokuCellControl sudokuCellControl = GameCellView.GetSudokuCellControl(this, sudokuCell);
+					SudokuCellControl sudokuCellControl = new SudokuCellControl(this, sudokuCell);
 					SudokuCellControlGrid[row, column] = sudokuCellControl;
 
 					GameGrid.Children.Add(sudokuCellControl);
 					Grid.SetRow(sudokuCellControl, row);
 					Grid.SetColumn(sudokuCellControl, column);
 
-					Border border = GameCellView.GetBorder(sudokuCell);
-					GameGrid.Children.Add(border);
-					Grid.SetRow(border, row);
-					Grid.SetColumn(border, column);
 				}
 			}
 		}

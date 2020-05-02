@@ -62,8 +62,7 @@
     </Compile>
     <Compile Include="Model\SudokuCell.cs" />
     <Compile Include="Model\SudokuGrid.cs" />
-    <Compile Include="View\GameGridView.cs" />
-    <Compile Include="View\GameCellView.cs" />
+    <Compile Include="ViewModel\GameGridView.cs" />
     <Page Include="Controls\SudokuCellControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

@@ -6,14 +6,16 @@
              xmlns:local="clr-namespace:MySudoku.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="100" d:DesignWidth="100">
-    <StackPanel Name="SudokuCellControlPanel" Orientation="Vertical" Background="White" >
-        <TextBlock Name="TextBlockValue" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White"
-                   >
+    <Border Name="SudokuCellControlBorder" >
+        <StackPanel Name="SudokuCellControlPanel" Orientation="Vertical" Background="White" >
+
+            <TextBlock Name="TextBlockValue" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
                 -
-        </TextBlock>
-        <TextBlock Name="TextBlockPossibleValueSet" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" 
+            </TextBlock>
+            <TextBlock Name="TextBlockPossibleValueSet" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" 
                        TextWrapping="Wrap" Background="White" Text="{Binding Path=PossibleValueSet}" >
                 - - -
-        </TextBlock>
-    </StackPanel>
+            </TextBlock>
+        </StackPanel>
+    </Border>
 </UserControl>
