@@ -1,28 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MySudoku.Controls
 {
 	/// <summary>
-	/// Interaction logic for SudokuCellControl.xaml
+	/// Interaction logic for SudokuCellUserControl.xaml
 	/// </summary>
-	public partial class SudokuCellControl : UserControl
+	public partial class SudokuCellUserControl : UserControl
 	{
 		private SudokuGridUserControl sudokuGridUserControl;
-		public SudokuCell SudokuCell { get; private set; }
-
+		
 		public int Row { get; private set; }
 		public int Column { get; private set; }
 
@@ -51,7 +41,7 @@ namespace MySudoku.Controls
 			}
 		}
 
-		public SudokuCellControl(SudokuGridUserControl _sudokuGridUserControl, int _row, int _column) : this()
+		public SudokuCellUserControl(SudokuGridUserControl _sudokuGridUserControl, int _row, int _column) : this()
 		{
 			sudokuGridUserControl = _sudokuGridUserControl;
 			Row = _row;
@@ -81,7 +71,7 @@ namespace MySudoku.Controls
 		}
 
 
-		public SudokuCellControl()
+		public SudokuCellUserControl()
 		{
 			InitializeComponent();
 			Value = "0";

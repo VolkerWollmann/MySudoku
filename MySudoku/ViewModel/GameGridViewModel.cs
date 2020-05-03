@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 using MySudoku.Controls;
+using MySudoku.Model;
 
-namespace MySudoku
+namespace MySudoku.ViewModel
 {
 	public class GameGridViewModel
 	{
@@ -61,7 +55,7 @@ namespace MySudoku
 			Grid.SetRow(sudokuGridUserControl, 0);
 			Grid.SetColumn(sudokuGridUserControl, 0);
 
-		
+		    // prepare the binding
 			for (int row = 0; row < 9; row++)
 			{
 				for (int column = 0; column < 9; column++)

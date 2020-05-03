@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySudoku;
+using MySudoku.ViewModel;
 
 namespace MySudoku
 {

@@ -20,25 +20,25 @@ namespace MySudoku.Controls
 	/// </summary>
 	public partial class SudokuGridUserControl : UserControl
 	{
-		SudokuCellControl[,] SudokuCellControlGrid;
-		public SudokuCellControl CurrentSudokuCellControl { get; private set; } = null;
+		SudokuCellUserControl[,] SudokuCellUserControlGrid;
+		public SudokuCellUserControl CurrentSudokuCellUserControl { get; private set; } = null;
 
 		public SudokuGridUserControl()
 		{
 			InitializeComponent();
 
-			SudokuCellControlGrid = new SudokuCellControl[9, 9];
+			SudokuCellUserControlGrid = new SudokuCellUserControl[9, 9];
 
 			for (int row = 0; row < 9; row++)
 			{
 				for (int column = 0; column < 9; column++)
 				{		
-					SudokuCellControl sudokuCellControl = new SudokuCellControl(this, row, column);
-					SudokuCellControlGrid[row, column] = sudokuCellControl;
+					SudokuCellUserControl sudokuCellUserControl = new SudokuCellUserControl(this, row, column);
+					SudokuCellUserControlGrid[row, column] = sudokuCellUserControl;
 
-					SudokuGrid.Children.Add(sudokuCellControl);
-					Grid.SetRow(sudokuCellControl, row);
-					Grid.SetColumn(sudokuCellControl, column);
+					SudokuGrid.Children.Add(sudokuCellUserControl);
+					Grid.SetRow(sudokuCellUserControl, row);
+					Grid.SetColumn(sudokuCellUserControl, column);
 
 				}
 			}
@@ -46,22 +46,22 @@ namespace MySudoku.Controls
 
 		public void BindValue(int row, int column, Binding binding)
 		{
-			SudokuCellControlGrid[row, column].BindValue(binding);
+			SudokuCellUserControlGrid[row, column].BindValue(binding);
 		}
 
 		public void BindPossibleValues(int row, int column, Binding binding)
 		{
-			SudokuCellControlGrid[row, column].BindPossibleValues(binding);
+			SudokuCellUserControlGrid[row, column].BindPossibleValues(binding);
 		}
 
 		public void MarkCell(int row, int column)
 		{
-			if (CurrentSudokuCellControl != null)
-				CurrentSudokuCellControl.UnMark();
+			if (CurrentSudokuCellUserControl != null)
+				CurrentSudokuCellUserControl.UnMark();
 
-			CurrentSudokuCellControl = SudokuCellControlGrid[row, column];
+			CurrentSudokuCellUserControl = SudokuCellUserControlGrid[row, column];
 
-			CurrentSudokuCellControl.Mark();
+			CurrentSudokuCellUserControl.Mark();
 
 		}
 
@@ -70,10 +70,10 @@ namespace MySudoku.Controls
 			row = -1;
 			column = -1;
 
-			if (CurrentSudokuCellControl != null)
+			if (CurrentSudokuCellUserControl != null)
 			{
-				row = CurrentSudokuCellControl.Row;
-				column = CurrentSudokuCellControl.Column;
+				row = CurrentSudokuCellUserControl.Row;
+				column = CurrentSudokuCellUserControl.Column;
 			}
 		}
 	}
