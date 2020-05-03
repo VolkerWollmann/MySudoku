@@ -21,17 +21,15 @@ namespace MySudoku
 			Right
 		};
 
-		public static SudokuCellControl  CurrentSudokuCellControl { get; set; } = null;
-
 		// Grid from program
 		private Grid mySudokuGrid;
 
 		// The game grid from the model
 		private SudokuGrid sudokuGrid;
 
-		// The view controls
+		// The view control
+
 		SudokuGridUserControl sudokuGridUserControl; 
-		SudokuCellControl [,] SudokuCellControlGrid;
 		public GameGridViewModel(Grid _mySudokuGrid)
 		{
 			mySudokuGrid = _mySudokuGrid;
@@ -45,19 +43,13 @@ namespace MySudoku
 			Grid.SetRow(sudokuGridUserControl, 0);
 			Grid.SetColumn(sudokuGridUserControl, 0);
 
-			SudokuCellControlGrid = new SudokuCellControl[9, 9];
-
+		
 			for (int row = 0; row < 9; row++)
 			{
 				for (int column = 0; column < 9; column++)
 				{
 					SudokuCell sudokuCell = sudokuGrid.GetSudokuCell(row, column);
-					SudokuCellControl sudokuCellControl = new SudokuCellControl(this, sudokuCell);
-					SudokuCellControlGrid[row, column] = sudokuCellControl;
-
-					sudokuGridUserControl.SudokuGrid.Children.Add(sudokuCellControl);
-					Grid.SetRow(sudokuCellControl, row);
-					Grid.SetColumn(sudokuCellControl, column);
+					sudokuGridUserControl.Bind(row, column, sudokuCell);
 
 				}
 			}
@@ -69,79 +61,51 @@ namespace MySudoku
 		}
 
 		#region Input
-		public void MarkCell(SudokuCellControl sudokuCellControl)
-		{
-			if (CurrentSudokuCellControl != null)
-				CurrentSudokuCellControl.UnMark();
-
-			CurrentSudokuCellControl = sudokuCellControl;
-
-			CurrentSudokuCellControl.Mark();
-		}
 
 		private void Move(MoveDirection moveDirection)
 		{
-			SudokuCellControl newCell = null;
-			bool found = false;
-			int currentRow=0, currentColumn=0;
-
-			for (int row = 0; row < 9; row++)
-			{
-				for (int column = 0; column < 9; column++)
-				{
-					if (SudokuCellControlGrid[row, column] == CurrentSudokuCellControl)
-					{
-						currentRow = row;
-						currentColumn = column;
-						found = true;
-						break;
-					}
-				}
-
-				if (found)
-					break;
-			}
+			int row, column;
+			sudokuGridUserControl.GetCurrentCoordiantes(out row, out column);
 
 			bool moved = false;
-			if (found)
+			if ((row >= 0) && (column>=0))
 			{
 				if (moveDirection == MoveDirection.Up)
 				{
-					if (currentRow > 0)
+					if (row > 0)
 					{
 						moved = true;
-						currentRow--;
+						row--;
 					}
 				}
 				else if (moveDirection == MoveDirection.Down)
 				{
-					if (currentRow < 8)
+					if (row < 8)
 					{
 						moved = true;
-						currentRow++;
+						row++;
 					}
 				}
 				else if (moveDirection == MoveDirection.Left)
 				{
-					if (currentColumn > 0)
+					if (column > 0)
 					{
 						moved = true;
-						currentColumn--;
+						column--;
 					}
 				}
 				else if (moveDirection == MoveDirection.Right)
 				{
-					if (currentColumn < 8)
+					if (column < 8)
 					{
 						moved = true;
-						currentColumn++;
+						column++;
 					}
 				}
 
 				if (moved)
 				{
-					newCell = SudokuCellControlGrid[currentRow, currentColumn];
-					MarkCell(newCell);
+					sudokuGridUserControl.MarkCell(row, column);
 				}
 			}
 		}
@@ -193,8 +157,14 @@ namespace MySudoku
 			int sudokuDigit = SudokuDigitFromKey(key);
 			if (sudokuDigit != SudokuCell.InvalidSudokuDigit)
 			{
-				if (CurrentSudokuCellControl != null)
-					CurrentSudokuCellControl.SudokuCell.SetValue(sudokuDigit);
+				int row, column;
+				sudokuGridUserControl.GetCurrentCoordiantes(out row, out column);
+
+				if ((row >= 0) && (column >= 0))
+				{
+					sudokuGrid.SetValue(row, column, sudokuDigit);
+				}
+
 				return;
 			}
 			MoveDirection moveDirection = MoveDirectionFromKey(key);

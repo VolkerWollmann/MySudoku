@@ -20,9 +20,57 @@ namespace MySudoku.Controls
 	/// </summary>
 	public partial class SudokuGridUserControl : UserControl
 	{
+		SudokuCellControl[,] SudokuCellControlGrid;
+		public SudokuCellControl CurrentSudokuCellControl { get; private set; } = null;
+
 		public SudokuGridUserControl()
 		{
 			InitializeComponent();
+
+			SudokuCellControlGrid = new SudokuCellControl[9, 9];
+
+			for (int row = 0; row < 9; row++)
+			{
+				for (int column = 0; column < 9; column++)
+				{		
+					SudokuCellControl sudokuCellControl = new SudokuCellControl(this, row, column);
+					SudokuCellControlGrid[row, column] = sudokuCellControl;
+
+
+					SudokuGrid.Children.Add(sudokuCellControl);
+					Grid.SetRow(sudokuCellControl, row);
+					Grid.SetColumn(sudokuCellControl, column);
+
+				}
+			}
+		}
+
+		public void Bind(int row, int column, SudokuCell _sudokuCell)
+		{
+			SudokuCellControlGrid[row, column].Bind(_sudokuCell);
+		}
+
+		public void MarkCell(int row, int column)
+		{
+			if (CurrentSudokuCellControl != null)
+				CurrentSudokuCellControl.UnMark();
+
+			CurrentSudokuCellControl = SudokuCellControlGrid[row, column];
+
+			CurrentSudokuCellControl.Mark();
+
+		}
+
+		public void GetCurrentCoordiantes(out int row, out int column)
+		{
+			row = -1;
+			column = -1;
+
+			if (CurrentSudokuCellControl != null)
+			{
+				row = CurrentSudokuCellControl.Row;
+				column = CurrentSudokuCellControl.Column;
+			}
 		}
 	}
 }

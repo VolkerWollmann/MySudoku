@@ -37,6 +37,11 @@ namespace MySudoku
 			}
 		}
 
+		public void SetValue(int row, int column, int value)
+		{
+			grid[row, column].SetValue(value);
+		}
+
 		public void Clear()
 		{
 			for (int row = 0; row < 9; row++)

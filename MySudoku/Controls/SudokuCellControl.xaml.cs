@@ -20,8 +20,12 @@ namespace MySudoku.Controls
 	/// </summary>
 	public partial class SudokuCellControl : UserControl
 	{
-		private GameGridViewModel gameGridView;
+		private SudokuGridUserControl sudokuGridUserControl;
 		public SudokuCell SudokuCell { get; private set; }
+
+		public int Row { get; private set; }
+		public int Column { get; private set; }
+
 		public string Value {
 			set
 			{
@@ -47,23 +51,30 @@ namespace MySudoku.Controls
 			}
 		}
 
-		public SudokuCellControl(GameGridViewModel _gameGridView, SudokuCell _sudokuCell) : this()
+		public SudokuCellControl(SudokuGridUserControl _sudokuGridUserControl, int _row, int _column) : this()
 		{
-			gameGridView = _gameGridView;
-			SudokuCell = _sudokuCell;
+			sudokuGridUserControl = _sudokuGridUserControl;
+			Row = _row;
+			Column = _column;
 
 			// Set border
 			SudokuCellControlBorder.BorderThickness = new Thickness
 			{
 				Left = 1,
-				Right = (SudokuCell.Column == 2) || (SudokuCell.Column == 5) ? 3 : 1,
-				Bottom = (SudokuCell.Row == 2) || (SudokuCell.Row == 5) ? 3 : 1,
+				Right = (Column == 2) || (Column == 5) ? 3 : 1,
+				Bottom = (Row == 2) || (Row == 5) ? 3 : 1,
 				Top = 1
 			};
 
 			SudokuCellControlBorder.BorderBrush = new SolidColorBrush(Colors.Black);
+		}
 
-			// bind SudokuCellView to the SudokuCellModel for the value
+		
+		public void Bind(SudokuCell _sudokuCell)
+		{
+			SudokuCell = _sudokuCell;
+			
+		    // bind SudokuCellView to the SudokuCellModel for the value
 			Binding valueBinding = new Binding(SudokuCell.SudokuCellValueName);
 			valueBinding.Source = SudokuCell;
 			TextBlockValue.SetBinding(TextBlock.TextProperty, valueBinding);
@@ -98,7 +109,7 @@ namespace MySudoku.Controls
 
 		private void SudokuCellControlPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			gameGridView.MarkCell(this);
+			sudokuGridUserControl.MarkCell(Row, Column);
 		}
 	}
 }
