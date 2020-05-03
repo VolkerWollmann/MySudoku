@@ -69,21 +69,18 @@ namespace MySudoku.Controls
 			SudokuCellControlBorder.BorderBrush = new SolidColorBrush(Colors.Black);
 		}
 
-		
-		public void Bind(SudokuCell _sudokuCell)
+	
+		public void BindValue(Binding binding)
 		{
-			SudokuCell = _sudokuCell;
-			
-		    // bind SudokuCellView to the SudokuCellModel for the value
-			Binding valueBinding = new Binding(SudokuCell.SudokuCellValueName);
-			valueBinding.Source = SudokuCell;
-			TextBlockValue.SetBinding(TextBlock.TextProperty, valueBinding);
-
-			// bind SudokuCellView to the SudokuCellModel for the possible values
-			Binding possibleValuesBinding = new Binding(SudokuCell.SudokuCellPossibleValuesName);
-			possibleValuesBinding.Source = SudokuCell;
-			TextBlockPossibleValueSet.SetBinding(TextBlock.TextProperty, possibleValuesBinding);
+			TextBlockValue.SetBinding(TextBlock.TextProperty, binding);
 		}
+
+		public void BindPossibleValues(Binding binding)
+		{
+			TextBlockPossibleValueSet.SetBinding(TextBlock.TextProperty, binding);
+		}
+
+
 		public SudokuCellControl()
 		{
 			InitializeComponent();

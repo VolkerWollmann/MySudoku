@@ -36,7 +36,6 @@ namespace MySudoku.Controls
 					SudokuCellControl sudokuCellControl = new SudokuCellControl(this, row, column);
 					SudokuCellControlGrid[row, column] = sudokuCellControl;
 
-
 					SudokuGrid.Children.Add(sudokuCellControl);
 					Grid.SetRow(sudokuCellControl, row);
 					Grid.SetColumn(sudokuCellControl, column);
@@ -45,9 +44,14 @@ namespace MySudoku.Controls
 			}
 		}
 
-		public void Bind(int row, int column, SudokuCell _sudokuCell)
+		public void BindValue(int row, int column, Binding binding)
 		{
-			SudokuCellControlGrid[row, column].Bind(_sudokuCell);
+			SudokuCellControlGrid[row, column].BindValue(binding);
+		}
+
+		public void BindPossibleValues(int row, int column, Binding binding)
+		{
+			SudokuCellControlGrid[row, column].BindPossibleValues(binding);
 		}
 
 		public void MarkCell(int row, int column)

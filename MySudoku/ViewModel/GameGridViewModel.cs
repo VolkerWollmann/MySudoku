@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using MySudoku.Controls;
@@ -28,10 +30,26 @@ namespace MySudoku
 		private SudokuGrid sudokuGrid;
 
 		// The view control
+		SudokuGridUserControl sudokuGridUserControl;
 
-		SudokuGridUserControl sudokuGridUserControl; 
-		public GameGridViewModel(Grid _mySudokuGrid)
+		// The binding information
+		SudokuData[,] sudokuDatas = new SudokuData[9, 9];
+
+		private void UpdateValues()
 		{
+			for (int row = 0; row < 9; row++)
+			{
+				for (int column = 0; column < 9; column++)
+				{
+					SudokuCell sudokuCell = sudokuGrid.GetSudokuCell(row, column);
+					sudokuDatas[row, column].SetValue(sudokuCell.SudokuCellValue);
+					sudokuDatas[row, column].SetPossibleValues(sudokuCell.SudokuCellPossibleValues);
+				}
+			}
+		}
+
+  		public GameGridViewModel(Grid _mySudokuGrid)
+		{ 
 			mySudokuGrid = _mySudokuGrid;
 
 			// prepare model
@@ -48,11 +66,19 @@ namespace MySudoku
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					SudokuCell sudokuCell = sudokuGrid.GetSudokuCell(row, column);
-					sudokuGridUserControl.Bind(row, column, sudokuCell);
+					sudokuDatas[row, column] = new SudokuData();
 
+					Binding valueBinding = new Binding("Value");
+					valueBinding.Source = sudokuDatas[row, column];
+					sudokuGridUserControl.BindValue(row, column, valueBinding);
+
+					Binding possibleValuesBinding = new Binding("PossibleValues");
+					possibleValuesBinding.Source = sudokuDatas[row, column];
+					sudokuGridUserControl.BindPossibleValues(row, column, possibleValuesBinding);
 				}
 			}
+
+			UpdateValues();
 		}
 
 		public void Clear()
@@ -163,6 +189,7 @@ namespace MySudoku
 				if ((row >= 0) && (column >= 0))
 				{
 					sudokuGrid.SetValue(row, column, sudokuDigit);
+					UpdateValues();
 				}
 
 				return;
