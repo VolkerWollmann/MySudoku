@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MySudoku"
         mc:Ignorable="d"
         Title="WO Sudoku" Height="800" Width="850" MinHeight="500" MinWidth="550" KeyUp="MainWindow_KeyUp" >
-    <Grid x:Name="SudokuGrid" MinWidth="550" MinHeight="450">
+    <Grid x:Name="MySudokuGrid" MinWidth="550" MinHeight="450">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="9*" MinWidth="50"  />
             <ColumnDefinition Width="100" MinWidth="100" MaxWidth="100" />
@@ -15,30 +15,5 @@
             <RowDefinition Height="1*" MinHeight="50" />
         </Grid.RowDefinitions>
         <Button Grid.Column="1" Grid.Row="0" Click="Button_Click">Clear</Button>
-        <Grid Name="GameGrid" Grid.Column="0" Grid.Row="0" MinWidth="450" MinHeight="450"
-              >
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-                <ColumnDefinition Width="1*"></ColumnDefinition>
-            </Grid.ColumnDefinitions>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-                <RowDefinition Height="1*"></RowDefinition>
-            </Grid.RowDefinitions>
-        </Grid>
     </Grid>
 </Window>

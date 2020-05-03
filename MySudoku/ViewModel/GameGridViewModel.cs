@@ -23,16 +23,28 @@ namespace MySudoku
 
 		public static SudokuCellControl  CurrentSudokuCellControl { get; set; } = null;
 
-		private Grid GameGrid;
+		// Grid from program
+		private Grid mySudokuGrid;
 
+		// The game grid from the model
 		private SudokuGrid sudokuGrid;
 
+		// The view controls
+		SudokuGridUserControl sudokuGridUserControl; 
 		SudokuCellControl [,] SudokuCellControlGrid;
-		public GameGridViewModel(Grid gameGrid)
+		public GameGridViewModel(Grid _mySudokuGrid)
 		{
+			mySudokuGrid = _mySudokuGrid;
+
+			// prepare model
 			sudokuGrid = new SudokuGrid();
 
-			GameGrid = gameGrid;
+			// prepare view
+			sudokuGridUserControl = new SudokuGridUserControl();
+			mySudokuGrid.Children.Add(sudokuGridUserControl);
+			Grid.SetRow(sudokuGridUserControl, 0);
+			Grid.SetColumn(sudokuGridUserControl, 0);
+
 			SudokuCellControlGrid = new SudokuCellControl[9, 9];
 
 			for (int row = 0; row < 9; row++)
@@ -43,7 +55,7 @@ namespace MySudoku
 					SudokuCellControl sudokuCellControl = new SudokuCellControl(this, sudokuCell);
 					SudokuCellControlGrid[row, column] = sudokuCellControl;
 
-					GameGrid.Children.Add(sudokuCellControl);
+					sudokuGridUserControl.SudokuGrid.Children.Add(sudokuCellControl);
 					Grid.SetRow(sudokuCellControl, row);
 					Grid.SetColumn(sudokuCellControl, column);
 

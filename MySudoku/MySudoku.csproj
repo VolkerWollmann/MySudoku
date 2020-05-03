@@ -60,10 +60,17 @@
     <Compile Include="Controls\SudokuCellControl.xaml.cs">
       <DependentUpon>SudokuCellControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\SudokuGridUserControl.xaml.cs">
+      <DependentUpon>SudokuGridUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Model\SudokuCell.cs" />
     <Compile Include="Model\SudokuGrid.cs" />
     <Compile Include="ViewModel\GameGridViewModel.cs" />
     <Page Include="Controls\SudokuCellControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SudokuGridUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -25,7 +25,7 @@ namespace MySudoku
 		public MainWindow()
 		{
 			InitializeComponent();
-			gameGridViewModel = new GameGridViewModel(GameGrid);
+			gameGridViewModel = new GameGridViewModel(MySudokuGrid);
 		}
 
 		private void MainWindow_KeyUp(object sender, KeyEventArgs e)
