@@ -5,10 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MySudoku
+namespace MySudoku.Model
 {
-	public class SudokuCell : INotifyPropertyChanged
-	{
+	public class SudokuCell
+	{ 
 		public const int InvalidSudokuDigit = -1;
 
 		SudokuGrid grid;
@@ -22,37 +22,19 @@ namespace MySudoku
 
 		public const string SudokuCellValueName = "SudokuCellValue";
 		public const string SudokuCellPossibleValuesName = "SudokuCellPossibleValues";
-		public string SudokuCellValue
+		public int SudokuCellValue
 		{
 			get
 			{
-				if (value == 0)
-					return "-";
-				else
-					return value.ToString();
+				return value;
 			}
 		}
 
-		public string SudokuCellPossibleValues
+		public List<int> SudokuCellPossibleValues
 		{
 			get
 			{
-				if (value > 0)
-					return "";
-
-				string result = "{";
-				for( int i=0; i< possibleValues.Count -1; i++ )
-				{
-					result = result + " " + possibleValues[i] + ",";
-				}
-				if ( possibleValues.Count > 0 )
-				{
-					result = result + " " + possibleValues.Last();
-				}
-
-				result = result + "}";
-
-				return result;
+				return possibleValues;
 			}
 		}
 
@@ -62,7 +44,6 @@ namespace MySudoku
 				return;
 
 			possibleValues.Remove(valueToExclude);
-			OnPropertyChanged(SudokuCellPossibleValuesName);
 		}
 
 		public void SetValue(int newValue)
@@ -72,8 +53,6 @@ namespace MySudoku
 
 			value = newValue;
 			possibleValues = new List<int> { newValue };
-			OnPropertyChanged(SudokuCellValueName);
-			OnPropertyChanged(SudokuCellPossibleValuesName);
 			grid.Exclude(Row, Column, value);
 		}
 
@@ -91,22 +70,7 @@ namespace MySudoku
 		{
 			value = 0;
 			possibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-			OnPropertyChanged(SudokuCellValueName);
-			OnPropertyChanged(SudokuCellPossibleValuesName);
 		}
 		
-
-		public event PropertyChangedEventHandler PropertyChanged;
-
-		private void OnPropertyChanged(string info)
-		{
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(info));
-			}
-		}
-
-
 	}
 }

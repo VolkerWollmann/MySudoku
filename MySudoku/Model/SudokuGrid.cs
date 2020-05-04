@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MySudoku
+﻿namespace MySudoku.Model
 {
 	public class SudokuGrid
 	{
@@ -35,6 +29,11 @@ namespace MySudoku
 					grid[i,j].Exclude(value);
 				}
 			}
+		}
+
+		public void SetValue(int row, int column, int value)
+		{
+			grid[row, column].SetValue(value);
 		}
 
 		public void Clear()

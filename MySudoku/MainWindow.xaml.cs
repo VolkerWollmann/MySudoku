@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using MySudoku;
+using MySudoku.ViewModel;
 
 namespace MySudoku
 {
@@ -25,7 +26,7 @@ namespace MySudoku
 		public MainWindow()
 		{
 			InitializeComponent();
-			gameGridViewModel = new GameGridViewModel(GameGrid);
+			gameGridViewModel = new GameGridViewModel(MySudokuGrid);
 		}
 
 		private void MainWindow_KeyUp(object sender, KeyEventArgs e)

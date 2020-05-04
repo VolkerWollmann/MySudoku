@@ -1,27 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MySudoku.Controls
 {
 	/// <summary>
-	/// Interaction logic for SudokuCellControl.xaml
+	/// Interaction logic for SudokuCellUserControl.xaml
 	/// </summary>
-	public partial class SudokuCellControl : UserControl
+	public partial class SudokuCellUserControl : UserControl
 	{
-		private GameGridViewModel gameGridView;
-		public SudokuCell SudokuCell { get; private set; }
+		private SudokuGridUserControl sudokuGridUserControl;
+		
+		public int Row { get; private set; }
+		public int Column { get; private set; }
+
 		public string Value {
 			set
 			{
@@ -47,33 +41,37 @@ namespace MySudoku.Controls
 			}
 		}
 
-		public SudokuCellControl(GameGridViewModel _gameGridView, SudokuCell _sudokuCell) : this()
+		public SudokuCellUserControl(SudokuGridUserControl _sudokuGridUserControl, int _row, int _column) : this()
 		{
-			gameGridView = _gameGridView;
-			SudokuCell = _sudokuCell;
+			sudokuGridUserControl = _sudokuGridUserControl;
+			Row = _row;
+			Column = _column;
 
 			// Set border
 			SudokuCellControlBorder.BorderThickness = new Thickness
 			{
 				Left = 1,
-				Right = (SudokuCell.Column == 2) || (SudokuCell.Column == 5) ? 3 : 1,
-				Bottom = (SudokuCell.Row == 2) || (SudokuCell.Row == 5) ? 3 : 1,
+				Right = (Column == 2) || (Column == 5) ? 3 : 1,
+				Bottom = (Row == 2) || (Row == 5) ? 3 : 1,
 				Top = 1
 			};
 
 			SudokuCellControlBorder.BorderBrush = new SolidColorBrush(Colors.Black);
-
-			// bind SudokuCellView to the SudokuCellModel for the value
-			Binding valueBinding = new Binding(SudokuCell.SudokuCellValueName);
-			valueBinding.Source = SudokuCell;
-			TextBlockValue.SetBinding(TextBlock.TextProperty, valueBinding);
-
-			// bind SudokuCellView to the SudokuCellModel for the possible values
-			Binding possibleValuesBinding = new Binding(SudokuCell.SudokuCellPossibleValuesName);
-			possibleValuesBinding.Source = SudokuCell;
-			TextBlockPossibleValueSet.SetBinding(TextBlock.TextProperty, possibleValuesBinding);
 		}
-		public SudokuCellControl()
+
+	
+		public void BindValue(Binding binding)
+		{
+			TextBlockValue.SetBinding(TextBlock.TextProperty, binding);
+		}
+
+		public void BindPossibleValues(Binding binding)
+		{
+			TextBlockPossibleValueSet.SetBinding(TextBlock.TextProperty, binding);
+		}
+
+
+		public SudokuCellUserControl()
 		{
 			InitializeComponent();
 			Value = "0";
@@ -98,7 +96,7 @@ namespace MySudoku.Controls
 
 		private void SudokuCellControlPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			gameGridView.MarkCell(this);
+			sudokuGridUserControl.MarkCell(Row, Column);
 		}
 	}
 }
