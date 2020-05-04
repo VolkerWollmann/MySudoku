@@ -3,6 +3,8 @@ using System.Windows.Data;
 using System.Windows.Input;
 using MySudoku.Controls;
 using MySudoku.Model;
+using MySudoku.Interfaces;
+using System.Windows;
 
 namespace MySudoku.ViewModel
 {
@@ -21,10 +23,10 @@ namespace MySudoku.ViewModel
 		private Grid mySudokuGrid;
 
 		// The game grid from the model
-		private SudokuGrid sudokuGrid;
+		private ISudokuModel sudokuGrid;
 
 		// The view control
-		SudokuGridUserControl sudokuGridUserControl;
+		ISudokuGridControl sudokuGridUserControl;
 
 		// The binding information
 		SudokuData[,] sudokuDatas = new SudokuData[9, 9];
@@ -35,9 +37,8 @@ namespace MySudoku.ViewModel
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					SudokuCell sudokuCell = sudokuGrid.GetSudokuCell(row, column);
-					sudokuDatas[row, column].SetValue(sudokuCell.SudokuCellValue);
-					sudokuDatas[row, column].SetPossibleValues(sudokuCell.SudokuCellPossibleValues);
+					sudokuDatas[row, column].SetValue(sudokuGrid.GetCellValue(row,column));
+					sudokuDatas[row, column].SetPossibleValues(sudokuGrid.GetSudokuCellPossibleValues(row,column));
 				}
 			}
 		}
@@ -50,10 +51,11 @@ namespace MySudoku.ViewModel
 			sudokuGrid = new SudokuGrid();
 
 			// prepare view
-			sudokuGridUserControl = new SudokuGridUserControl();
-			mySudokuGrid.Children.Add(sudokuGridUserControl);
-			Grid.SetRow(sudokuGridUserControl, 0);
-			Grid.SetColumn(sudokuGridUserControl, 0);
+			sudokuGridUserControl = (ISudokuGridControl) new SudokuGridUserControl();
+			
+			mySudokuGrid.Children.Add(sudokuGridUserControl.GetUIElement());
+			Grid.SetRow(sudokuGridUserControl.GetUIElement(), 0);
+			Grid.SetColumn(sudokuGridUserControl.GetUIElement(), 0);
 
 		    // prepare the binding
 			for (int row = 0; row < 9; row++)
@@ -85,7 +87,7 @@ namespace MySudoku.ViewModel
 		private void Move(MoveDirection moveDirection)
 		{
 			int row, column;
-			sudokuGridUserControl.GetCurrentCoordiantes(out row, out column);
+			sudokuGridUserControl.GetCurrentCellCoordiantes(out row, out column);
 
 			bool moved = false;
 			if ((row >= 0) && (column>=0))
@@ -168,17 +170,17 @@ namespace MySudoku.ViewModel
 				return (key - Key.NumPad0);
 			}
 
-			return SudokuCell.InvalidSudokuDigit;
+			return sudokuGrid.GetInvalidSudokuDigit();
 		}
 
 		public void Set(Key key)
 		{
 			// Key to sukdou digit
 			int sudokuDigit = SudokuDigitFromKey(key);
-			if (sudokuDigit != SudokuCell.InvalidSudokuDigit)
+			if (sudokuDigit != sudokuGrid.GetInvalidSudokuDigit())
 			{
 				int row, column;
-				sudokuGridUserControl.GetCurrentCoordiantes(out row, out column);
+				sudokuGridUserControl.GetCurrentCellCoordiantes(out row, out column);
 
 				if ((row >= 0) && (column >= 0))
 				{

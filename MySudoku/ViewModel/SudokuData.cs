@@ -21,22 +21,24 @@ namespace MySudoku.ViewModel
 
 		public void SetPossibleValues(List<int> possibleValues)
 		{
-			if (Value != "-")
+			if (possibleValues.Count() == 1)
 				PossibleValues = "";
-
-			string result = "{";
-			for (int i = 0; i < possibleValues.Count - 1; i++)
+			else
 			{
-				result = result + " " + possibleValues[i] + ",";
-			}
-			if (possibleValues.Count > 0)
-			{
-				result = result + " " + possibleValues.Last();
-			}
+				string result = "{";
+				for (int i = 0; i < possibleValues.Count - 1; i++)
+				{
+					result = result + " " + possibleValues[i] + ",";
+				}
+				if (possibleValues.Count > 0)
+				{
+					result = result + " " + possibleValues.Last();
+				}
 
-			result = result + "}";
+				result = result + "}";
 
-			PossibleValues = result;
+				PossibleValues = result;
+			}
 			OnPropertyChanged("PossibleValues");
 		}
 

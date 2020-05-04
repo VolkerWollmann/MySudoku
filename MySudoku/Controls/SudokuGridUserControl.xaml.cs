@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-
+using MySudoku.Interfaces;
 namespace MySudoku.Controls
 {
 	/// <summary>
 	/// Interaction logic for SudokuGridUserControl.xaml
 	/// </summary>
-	public partial class SudokuGridUserControl : UserControl
+	public partial class SudokuGridUserControl : UserControl, ISudokuGridControl
 	{
 		SudokuCellUserControl[,] SudokuCellUserControlGrid;
 		public SudokuCellUserControl CurrentSudokuCellUserControl { get; private set; } = null;
@@ -44,6 +33,11 @@ namespace MySudoku.Controls
 			}
 		}
 
+		public UIElement GetUIElement()
+		{
+			return this as UIElement;
+		}
+
 		public void BindValue(int row, int column, Binding binding)
 		{
 			SudokuCellUserControlGrid[row, column].BindValue(binding);
@@ -65,7 +59,7 @@ namespace MySudoku.Controls
 
 		}
 
-		public void GetCurrentCoordiantes(out int row, out int column)
+		public void GetCurrentCellCoordiantes(out int row, out int column)
 		{
 			row = -1;
 			column = -1;

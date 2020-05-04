@@ -1,15 +1,29 @@
-﻿namespace MySudoku.Model
+﻿using System.Collections.Generic;
+using MySudoku.Interfaces;
+
+namespace MySudoku.Model
 {
-	public class SudokuGrid
+	public class SudokuGrid : ISudokuModel
 	{
 		SudokuCell[,] grid;
 
-		public SudokuCell GetSudokuCell(int row, int column)
+		private const int InvalidSudokuDigit = -1;
+
+		public int GetInvalidSudokuDigit()
 		{
-			return grid[row, column];
+			return InvalidSudokuDigit;
+		}
+		public int GetCellValue(int row, int column)
+		{
+			return grid[row, column].SudokuCellValue;
 		}
 
-		public void Exclude(int row, int column, int value)
+		public List<int> GetSudokuCellPossibleValues(int row, int column)
+		{
+			return grid[row, column].SudokuCellPossibleValues;
+		}
+
+		internal void Exclude(int row, int column, int value)
 		{
 			// Exclude from rows and columns
 			for (int i = 0; i < 9; i++)

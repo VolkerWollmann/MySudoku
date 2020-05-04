@@ -7,10 +7,8 @@ using System.Threading.Tasks;
 
 namespace MySudoku.Model
 {
-	public class SudokuCell
+	internal class SudokuCell
 	{ 
-		public const int InvalidSudokuDigit = -1;
-
 		SudokuGrid grid;
 
 		public int Row { get; private set; }
