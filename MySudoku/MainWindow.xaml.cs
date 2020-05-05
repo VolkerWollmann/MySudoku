@@ -29,11 +29,6 @@ namespace MySudoku
 			gameGridViewModel = new GameGridViewModel(MySudokuGrid);
 		}
 
-		private void MainWindow_KeyUp(object sender, KeyEventArgs e)
-		{
-			gameGridViewModel.Set(e.Key);
-		}
-
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
 			gameGridViewModel.Clear();

@@ -5,6 +5,7 @@ using MySudoku.Controls;
 using MySudoku.Model;
 using MySudoku.Interfaces;
 using System.Windows;
+using System;
 
 namespace MySudoku.ViewModel
 {
@@ -75,6 +76,9 @@ namespace MySudoku.ViewModel
 			}
 
 			UpdateValues();
+
+			// prepare Key operation
+			sudokuGridUserControl.SetKeyEventHandler(KeyUp);
 		}
 
 		public void Clear()
@@ -198,5 +202,9 @@ namespace MySudoku.ViewModel
 		}
 		#endregion
 
+		private void KeyUp(object sender, Key key)
+		{
+			Set(key);
+		}
 	}
 }

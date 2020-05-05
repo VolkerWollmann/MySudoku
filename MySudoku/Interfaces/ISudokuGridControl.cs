@@ -1,11 +1,15 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace MySudoku.Interfaces
 {
 	public interface ISudokuGridControl
 	{
 		UIElement GetUIElement();
+
+		void SetKeyEventHandler(EventHandler<Key> eventHandlerKey);
 
 		void BindValue(int row, int column, Binding binding);
 

@@ -78,6 +78,13 @@ namespace MySudoku.Controls
 			PossibleValueSet = "{-}";
 
 			SudokuCellControlPanel.MouseLeftButtonDown += SudokuCellControlPanel_MouseLeftButtonDown;
+
+			this.KeyUp += SudokuCellUserControl_KeyUp;
+		}
+
+		private void SudokuCellUserControl_KeyUp(object sender, KeyEventArgs e)
+		{
+			sudokuGridUserControl.EventHandlerKey(sender, e.Key);
 		}
 
 		public void Mark()
@@ -97,6 +104,7 @@ namespace MySudoku.Controls
 		private void SudokuCellControlPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			sudokuGridUserControl.MarkCell(Row, Column);
+			TextBoxFocus.Focus();
 		}
 	}
 }

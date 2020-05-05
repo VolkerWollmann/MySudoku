@@ -1,6 +1,8 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using MySudoku.Interfaces;
 namespace MySudoku.Controls
 {
@@ -12,6 +14,7 @@ namespace MySudoku.Controls
 		SudokuCellUserControl[,] SudokuCellUserControlGrid;
 		public SudokuCellUserControl CurrentSudokuCellUserControl { get; private set; } = null;
 
+		public EventHandler<Key> EventHandlerKey;
 		public SudokuGridUserControl()
 		{
 			InitializeComponent();
@@ -69,6 +72,11 @@ namespace MySudoku.Controls
 				row = CurrentSudokuCellUserControl.Row;
 				column = CurrentSudokuCellUserControl.Column;
 			}
+		}
+
+		void ISudokuGridControl.SetKeyEventHandler(EventHandler<Key> eventHandlerKey)
+		{
+			EventHandlerKey += eventHandlerKey;
 		}
 	}
 }
