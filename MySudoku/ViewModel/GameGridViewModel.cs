@@ -32,6 +32,9 @@ namespace MySudoku.ViewModel
 		// The binding information
 		ViewModelCellData[,] sudokuDatas = new ViewModelCellData[9, 9];
 
+		// Command Control
+		ISudokuCommands sudokuCommand;
+
 		private void UpdateValues()
 		{
 			for (int row = 0; row < 9; row++)
@@ -75,10 +78,19 @@ namespace MySudoku.ViewModel
 				}
 			}
 
-			UpdateValues();
-
 			// prepare Key operation
 			sudokuGridView.SetKeyEventHandler(KeyUp);
+
+			sudokuCommand = new SudokuCommandUserControl();
+
+			sudokuGrid.Children.Add(sudokuCommand.GetUIElement());
+			Grid.SetRow(sudokuCommand.GetUIElement(), 0);
+			Grid.SetColumn(sudokuCommand.GetUIElement(), 1);
+
+			sudokuCommand.SetClearCommandEventHandler(ClearCommand);
+
+			UpdateValues();
+
 		}
 
 		public void Clear()
@@ -205,6 +217,12 @@ namespace MySudoku.ViewModel
 		private void KeyUp(object sender, Key key)
 		{
 			Set(key);
+		}
+
+		private void ClearCommand(object sender, EventArgs e)
+		{
+			sudokuGame.Clear();
+			UpdateValues();
 		}
 	}
 }

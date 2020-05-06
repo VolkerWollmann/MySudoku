@@ -12,13 +12,11 @@ namespace MySudoku.ViewModel
 	public class ViewModelInitialize
 	{
 		private static GameGridViewModel gameGridViewModel;
-		private static GameCommandViewModel gameCommandViewModel;
 		private static ISudokuGameModel sudokuGame;
 		public static void InitializeViewModels(Grid grid)
 		{
 			sudokuGame = new SudokuGame();
 			gameGridViewModel = new GameGridViewModel(grid, sudokuGame);
-			gameCommandViewModel = new GameCommandViewModel(grid, sudokuGame);
 		}
 	}
 }

@@ -71,7 +71,6 @@
     <Compile Include="Interfaces\ISudokuGameModel.cs" />
     <Compile Include="Model\SudokuCell.cs" />
     <Compile Include="Model\SudokuGame.cs" />
-    <Compile Include="ViewModel\GameCommandViewModel.cs" />
     <Compile Include="ViewModel\GameGridViewModel.cs" />
     <Compile Include="ViewModel\ViewModelCellData.cs" />
     <Compile Include="ViewModel\ViewModelInitialize.cs" />
