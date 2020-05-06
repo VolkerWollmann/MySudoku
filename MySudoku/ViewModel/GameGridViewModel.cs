@@ -24,13 +24,13 @@ namespace MySudoku.ViewModel
 		private Grid mySudokuGrid;
 
 		// The game grid from the model
-		private ISudokuModel sudokuGrid;
+		private ISudokuGameModel sudokuGame;
 
 		// The view control
-		ISudokuGridControl sudokuGridUserControl;
+		ISudokuGridView sudokuGridUserControl;
 
 		// The binding information
-		SudokuData[,] sudokuDatas = new SudokuData[9, 9];
+		ViewModelCellData[,] sudokuDatas = new ViewModelCellData[9, 9];
 
 		private void UpdateValues()
 		{
@@ -38,8 +38,8 @@ namespace MySudoku.ViewModel
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					sudokuDatas[row, column].SetValue(sudokuGrid.GetCellValue(row,column));
-					sudokuDatas[row, column].SetPossibleValues(sudokuGrid.GetSudokuCellPossibleValues(row,column));
+					sudokuDatas[row, column].SetValue(sudokuGame.GetCellValue(row,column));
+					sudokuDatas[row, column].SetPossibleValues(sudokuGame.GetSudokuCellPossibleValues(row,column));
 				}
 			}
 		}
@@ -49,10 +49,10 @@ namespace MySudoku.ViewModel
 			mySudokuGrid = _mySudokuGrid;
 
 			// prepare model
-			sudokuGrid = new SudokuGrid();
+			sudokuGame = new SudokuGame();
 
 			// prepare view
-			sudokuGridUserControl = (ISudokuGridControl) new SudokuGridUserControl();
+			sudokuGridUserControl = (ISudokuGridView) new SudokuGridUserControl();
 			
 			mySudokuGrid.Children.Add(sudokuGridUserControl.GetUIElement());
 			Grid.SetRow(sudokuGridUserControl.GetUIElement(), 0);
@@ -63,7 +63,7 @@ namespace MySudoku.ViewModel
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					sudokuDatas[row, column] = new SudokuData();
+					sudokuDatas[row, column] = new ViewModelCellData();
 
 					Binding valueBinding = new Binding("Value");
 					valueBinding.Source = sudokuDatas[row, column];
@@ -83,7 +83,7 @@ namespace MySudoku.ViewModel
 
 		public void Clear()
 		{
-			sudokuGrid.Clear();
+			sudokuGame.Clear();
 		}
 
 		#region Input
@@ -174,21 +174,21 @@ namespace MySudoku.ViewModel
 				return (key - Key.NumPad0);
 			}
 
-			return sudokuGrid.GetInvalidSudokuDigit();
+			return sudokuGame.GetInvalidSudokuDigit();
 		}
 
 		public void Set(Key key)
 		{
 			// Key to sukdou digit
 			int sudokuDigit = SudokuDigitFromKey(key);
-			if (sudokuDigit != sudokuGrid.GetInvalidSudokuDigit())
+			if (sudokuDigit != sudokuGame.GetInvalidSudokuDigit())
 			{
 				int row, column;
 				sudokuGridUserControl.GetCurrentCellCoordiantes(out row, out column);
 
 				if ((row >= 0) && (column >= 0))
 				{
-					sudokuGrid.SetValue(row, column, sudokuDigit);
+					sudokuGame.SetValue(row, column, sudokuDigit);
 					UpdateValues();
 				}
 

@@ -9,7 +9,7 @@ namespace MySudoku.Model
 {
 	internal class SudokuCell
 	{ 
-		SudokuGrid grid;
+		SudokuGame grid;
 
 		public int Row { get; private set; }
 		public int Column { get; private set; }
@@ -54,7 +54,7 @@ namespace MySudoku.Model
 			grid.Exclude(Row, Column, value);
 		}
 
-		public SudokuCell(SudokuGrid parent, int myRow, int myColumn)
+		public SudokuCell(SudokuGame parent, int myRow, int myColumn)
 		{
 			grid = parent;
 			Row = myRow;

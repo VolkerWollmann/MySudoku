@@ -9,7 +9,7 @@ namespace MySudoku.Controls
 	/// <summary>
 	/// Interaction logic for SudokuGridUserControl.xaml
 	/// </summary>
-	public partial class SudokuGridUserControl : UserControl, ISudokuGridControl
+	public partial class SudokuGridUserControl : UserControl, ISudokuGridView
 	{
 		SudokuCellUserControl[,] SudokuCellUserControlGrid;
 		public SudokuCellUserControl CurrentSudokuCellUserControl { get; private set; } = null;
@@ -74,7 +74,7 @@ namespace MySudoku.Controls
 			}
 		}
 
-		void ISudokuGridControl.SetKeyEventHandler(EventHandler<Key> eventHandlerKey)
+		void ISudokuGridView.SetKeyEventHandler(EventHandler<Key> eventHandlerKey)
 		{
 			EventHandlerKey += eventHandlerKey;
 		}

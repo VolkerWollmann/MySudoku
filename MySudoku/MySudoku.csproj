@@ -57,18 +57,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Interfaces\ISudokuGridControl.cs" />
+    <Compile Include="Interfaces\ISudokuGridView.cs" />
     <Compile Include="Controls\SudokuCellUserControl.xaml.cs">
       <DependentUpon>SudokuCellUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\SudokuGridUserControl.xaml.cs">
       <DependentUpon>SudokuGridUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\ISudokuModel.cs" />
+    <Compile Include="Interfaces\ISudokuGameModel.cs" />
     <Compile Include="Model\SudokuCell.cs" />
-    <Compile Include="Model\SudokuGrid.cs" />
+    <Compile Include="Model\SudokuGame.cs" />
     <Compile Include="ViewModel\GameGridViewModel.cs" />
-    <Compile Include="ViewModel\SudokuData.cs" />
+    <Compile Include="ViewModel\ViewModelCellData.cs" />
     <Page Include="Controls\SudokuCellUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

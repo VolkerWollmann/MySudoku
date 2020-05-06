@@ -3,7 +3,7 @@ using MySudoku.Interfaces;
 
 namespace MySudoku.Model
 {
-	public class SudokuGrid : ISudokuModel
+	public class SudokuGame : ISudokuGameModel
 	{
 		SudokuCell[,] grid;
 
@@ -61,7 +61,7 @@ namespace MySudoku.Model
 			}
 		}
 
-		public SudokuGrid()
+		public SudokuGame()
 		{
 			grid = new SudokuCell[9, 9];
 			for(int row = 0; row<9; row++)

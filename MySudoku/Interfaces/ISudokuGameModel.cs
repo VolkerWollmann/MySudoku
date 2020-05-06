@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MySudoku.Interfaces
 {
-	public interface ISudokuModel
+	public interface ISudokuGameModel
 	{
 		int GetInvalidSudokuDigit();
 

@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MySudoku.ViewModel
 {
-	public class SudokuData : INotifyPropertyChanged 
+	public class ViewModelCellData : INotifyPropertyChanged 
 	{
 		public string Value { private set; get; }
 		public string PossibleValues { private set; get; }
@@ -42,7 +42,7 @@ namespace MySudoku.ViewModel
 			OnPropertyChanged("PossibleValues");
 		}
 
-		public SudokuData()
+		public ViewModelCellData()
 		{
 			Value = "";
 			PossibleValues = "";
