@@ -22,16 +22,10 @@ namespace MySudoku
 	/// </summary>
 	public partial class MainWindow : Window
 	{
-		GameGridViewModel gameGridViewModel;
 		public MainWindow()
 		{
 			InitializeComponent();
-			gameGridViewModel = new GameGridViewModel(MySudokuGrid);
-		}
-
-		private void Button_Click(object sender, RoutedEventArgs e)
-		{
-			gameGridViewModel.Clear();
+			ViewModelInitialize.InitializeViewModels(MySudokuGrid);
 		}
 	}
 }

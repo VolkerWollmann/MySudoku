@@ -21,13 +21,13 @@ namespace MySudoku.ViewModel
 		};
 
 		// Grid from program
-		private Grid mySudokuGrid;
+		private Grid sudokuGrid;
 
 		// The game grid from the model
 		private ISudokuGameModel sudokuGame;
 
 		// The view control
-		ISudokuGridView sudokuGridUserControl;
+		ISudokuGridView sudokuGridView;
 
 		// The binding information
 		ViewModelCellData[,] sudokuDatas = new ViewModelCellData[9, 9];
@@ -44,19 +44,19 @@ namespace MySudoku.ViewModel
 			}
 		}
 
-  		public GameGridViewModel(Grid _mySudokuGrid)
+  		public GameGridViewModel(Grid _sudokuGrid, ISudokuGameModel _sudokuGame)
 		{ 
-			mySudokuGrid = _mySudokuGrid;
+			sudokuGrid = _sudokuGrid;
 
 			// prepare model
-			sudokuGame = new SudokuGame();
+			sudokuGame = _sudokuGame;
 
 			// prepare view
-			sudokuGridUserControl = (ISudokuGridView) new SudokuGridUserControl();
+			sudokuGridView = (ISudokuGridView) new SudokuGridUserControl();
 			
-			mySudokuGrid.Children.Add(sudokuGridUserControl.GetUIElement());
-			Grid.SetRow(sudokuGridUserControl.GetUIElement(), 0);
-			Grid.SetColumn(sudokuGridUserControl.GetUIElement(), 0);
+			sudokuGrid.Children.Add(sudokuGridView.GetUIElement());
+			Grid.SetRow(sudokuGridView.GetUIElement(), 0);
+			Grid.SetColumn(sudokuGridView.GetUIElement(), 0);
 
 		    // prepare the binding
 			for (int row = 0; row < 9; row++)
@@ -67,18 +67,18 @@ namespace MySudoku.ViewModel
 
 					Binding valueBinding = new Binding("Value");
 					valueBinding.Source = sudokuDatas[row, column];
-					sudokuGridUserControl.BindValue(row, column, valueBinding);
+					sudokuGridView.BindValue(row, column, valueBinding);
 
 					Binding possibleValuesBinding = new Binding("PossibleValues");
 					possibleValuesBinding.Source = sudokuDatas[row, column];
-					sudokuGridUserControl.BindPossibleValues(row, column, possibleValuesBinding);
+					sudokuGridView.BindPossibleValues(row, column, possibleValuesBinding);
 				}
 			}
 
 			UpdateValues();
 
 			// prepare Key operation
-			sudokuGridUserControl.SetKeyEventHandler(KeyUp);
+			sudokuGridView.SetKeyEventHandler(KeyUp);
 		}
 
 		public void Clear()
@@ -91,7 +91,7 @@ namespace MySudoku.ViewModel
 		private void Move(MoveDirection moveDirection)
 		{
 			int row, column;
-			sudokuGridUserControl.GetCurrentCellCoordiantes(out row, out column);
+			sudokuGridView.GetCurrentCellCoordiantes(out row, out column);
 
 			bool moved = false;
 			if ((row >= 0) && (column>=0))
@@ -131,7 +131,7 @@ namespace MySudoku.ViewModel
 
 				if (moved)
 				{
-					sudokuGridUserControl.MarkCell(row, column);
+					sudokuGridView.MarkCell(row, column);
 				}
 			}
 		}
@@ -184,7 +184,7 @@ namespace MySudoku.ViewModel
 			if (sudokuDigit != sudokuGame.GetInvalidSudokuDigit())
 			{
 				int row, column;
-				sudokuGridUserControl.GetCurrentCellCoordiantes(out row, out column);
+				sudokuGridView.GetCurrentCellCoordiantes(out row, out column);
 
 				if ((row >= 0) && (column >= 0))
 				{

@@ -57,6 +57,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\SudokuCommandUserControl.xaml.cs">
+      <DependentUpon>SudokuCommandUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Interfaces\ISudokuCommands.cs" />
     <Compile Include="Interfaces\ISudokuGridView.cs" />
     <Compile Include="Controls\SudokuCellUserControl.xaml.cs">
       <DependentUpon>SudokuCellUserControl.xaml</DependentUpon>
@@ -67,9 +71,15 @@
     <Compile Include="Interfaces\ISudokuGameModel.cs" />
     <Compile Include="Model\SudokuCell.cs" />
     <Compile Include="Model\SudokuGame.cs" />
+    <Compile Include="ViewModel\GameCommandViewModel.cs" />
     <Compile Include="ViewModel\GameGridViewModel.cs" />
     <Compile Include="ViewModel\ViewModelCellData.cs" />
+    <Compile Include="ViewModel\ViewModelInitialize.cs" />
     <Page Include="Controls\SudokuCellUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\SudokuCommandUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
