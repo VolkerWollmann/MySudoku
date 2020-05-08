@@ -77,10 +77,9 @@ namespace MySudoku.Model
 			if (History.Count() == 0)
 				return;
 
-			ClearGrid();
-
 			List<Tuple<int, int, int>> Replay;
 			Replay = History.Take(History.Count() - 1).ToList();
+			Clear();
 			Replay.ForEach(elem => { SetValue(elem.Item1, elem.Item2, elem.Item3); });
 		}
 

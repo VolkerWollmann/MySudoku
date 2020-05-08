@@ -6,13 +6,14 @@ namespace MySudoku.ViewModel
 {
 	public class ViewModelCellData : INotifyPropertyChanged 
 	{
+		private const string NotSet = "-";
 		public string Value { private set; get; }
 		public string PossibleValues { private set; get; }
 
 		public void SetValue(int value)
 		{
 			if (value == 0)
-				Value = "-";
+				Value = NotSet;
 			else
 				Value = value.ToString();
 
@@ -21,7 +22,7 @@ namespace MySudoku.ViewModel
 
 		public void SetPossibleValues(List<int> possibleValues)
 		{
-			if (possibleValues.Count() == 1)
+			if ((possibleValues.Count() == 1) && (Value!= NotSet))
 				PossibleValues = "";
 			else
 			{
