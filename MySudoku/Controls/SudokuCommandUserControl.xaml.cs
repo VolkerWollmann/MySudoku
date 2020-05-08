@@ -22,6 +22,7 @@ namespace MySudoku.Controls
 	public partial class SudokuCommandUserControl : UserControl, ISudokuCommands
 	{
 		private EventHandler ClearCommandEventHandler;
+		private EventHandler BackCommmandEventHandler;
 		public SudokuCommandUserControl()
 		{
 			InitializeComponent();
@@ -39,7 +40,19 @@ namespace MySudoku.Controls
 
 		private void ButtonCommandClear_Click(object sender, RoutedEventArgs e)
 		{
-			ClearCommandEventHandler(sender, e);
+			if(ClearCommandEventHandler!=null)
+				ClearCommandEventHandler(sender, e);
+		}
+
+		private void ButtonCommandBack_Click(object sender, RoutedEventArgs e)
+		{
+			if (BackCommmandEventHandler != null)
+				BackCommmandEventHandler(sender, e);
+		}
+
+		public void SetBackCommandEventHandler(EventHandler eventHandler)
+		{
+			BackCommmandEventHandler += eventHandler;
 		}
 	}
 }

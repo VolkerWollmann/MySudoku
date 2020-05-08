@@ -12,5 +12,7 @@ namespace MySudoku.Interfaces
 		UIElement GetUIElement();
 
 		void SetClearCommandEventHandler(EventHandler eventHandler);
+
+		void SetBackCommandEventHandler(EventHandler eventHandler);
 	}
 }

@@ -6,8 +6,13 @@
              xmlns:local="clr-namespace:MySudoku.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
-    <StackPanel Name="SudokuCommandUserControlPanel" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" >
-        <Button Name="ButtonCommandClear" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" Height="50"  Click="ButtonCommandClear_Click" >
+    <StackPanel Name="SudokuCommandUserControlPanel" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  >
+        <Button Name="ButtonCommandBack"  Height="50"  Click="ButtonCommandBack_Click"
+                Margin="10,10,10,10">
+            Back
+        </Button>
+        <Button Name="ButtonCommandClear" Height="50"  Click="ButtonCommandClear_Click"
+                Margin="10,10,10,10">
             Clear
         </Button>
     </StackPanel>

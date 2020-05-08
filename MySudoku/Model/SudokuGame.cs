@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using MySudoku.Interfaces;
 
 namespace MySudoku.Model
@@ -8,6 +10,8 @@ namespace MySudoku.Model
 		SudokuCell[,] grid;
 
 		private const int InvalidSudokuDigit = -1;
+
+		private List<Tuple<int,int,int>> History;
 
 		public int GetInvalidSudokuDigit()
 		{
@@ -48,9 +52,10 @@ namespace MySudoku.Model
 		public void SetValue(int row, int column, int value)
 		{
 			grid[row, column].SetValue(value);
+			History.Add(new Tuple<int, int, int>(row, column, value));
 		}
 
-		public void Clear()
+		private void ClearGrid()
 		{
 			for (int row = 0; row < 9; row++)
 			{
@@ -61,9 +66,28 @@ namespace MySudoku.Model
 			}
 		}
 
+		public void Clear()
+		{
+			ClearGrid();
+			History = new List<Tuple<int, int, int>>();
+		}
+
+		public void Back()
+		{
+			if (History.Count() == 0)
+				return;
+
+			ClearGrid();
+
+			List<Tuple<int, int, int>> Replay;
+			Replay = History.Take(History.Count() - 1).ToList();
+			Replay.ForEach(elem => { SetValue(elem.Item1, elem.Item2, elem.Item3); });
+		}
+
 		public SudokuGame()
 		{
 			grid = new SudokuCell[9, 9];
+
 			for(int row = 0; row<9; row++)
 			{
 				for(int column=0; column<9; column++)
@@ -71,6 +95,8 @@ namespace MySudoku.Model
 					grid[row, column] = new SudokuCell(this, row, column );
 				}
 			}
+
+			History = new List<Tuple<int, int, int>>();
 		}
 	}
 }

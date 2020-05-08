@@ -17,5 +17,7 @@ namespace MySudoku.Interfaces
 		void SetValue(int row, int column, int value);
 
 		void Clear();
+
+		void Back();
 	}
 }
