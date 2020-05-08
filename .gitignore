@@ -3,3 +3,17 @@
 ################################################################################
 
 /.vs
+/MySudoku/obj/Debug/App.g.cs
+/MySudoku/obj/Debug/MainWindow.g.cs
+/MySudoku/obj/Debug/Controls/SudokuCellUserControl.g.cs
+/MySudoku/obj/Debug/Controls/SudokuGridUserControl.g.cs
+/MySudoku/obj/Debug/Controls/SudokuCommandUserControl.g.cs
+/MySudoku/obj/Debug/MySudoku_MarkupCompile.cache
+/MySudoku/obj/Debug/MySudoku_MarkupCompile.lref
+/MySudoku/obj/Release/Controls/SudokuCellUserControl.g.cs
+/MySudoku/obj/Release/Controls/SudokuCommandUserControl.g.cs
+/MySudoku/obj/Release/Controls/SudokuGridUserControl.g.cs
+/MySudoku/obj/Release/App.g.cs
+/MySudoku/obj/Release/MainWindow.g.cs
+/MySudoku/obj/Release/MySudoku_MarkupCompile.cache
+/MySudoku/obj/Release/MySudoku_MarkupCompile.lref
