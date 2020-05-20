@@ -7,51 +7,49 @@ using System.Threading.Tasks;
 
 namespace MySudoku.Model
 {
+	/// <summary>
+	/// A sudoku cell is empty or holds one number.
+	/// In both cases it holds the possible values for this cell.
+	/// </summary>
 	internal class SudokuCell
 	{ 
+		// parent of the cell
 		SudokuGame grid;
 
 		public int Row { get; private set; }
 		public int Column { get; private set; }
 
-		int value = 0;
-		List<int> possibleValues;
-
-
 		public const string SudokuCellValueName = "SudokuCellValue";
 		public const string SudokuCellPossibleValuesName = "SudokuCellPossibleValues";
-		public int SudokuCellValue
-		{
-			get
-			{
-				return value;
-			}
-		}
+		public int SudokuCellValue { private set; get; }
 
-		public List<int> SudokuCellPossibleValues
+		public List<int> SudokuCellPossibleValues { private set; get; }
+
+
+		/// <summary>
+		/// The field is valid, if it set or there is a least one possible value for the field
+		/// </summary>
+		public bool IsValid()
 		{
-			get
-			{
-				return possibleValues;
-			}
-		}
+			return (SudokuCellValue == 0) || (SudokuCellPossibleValues.Count() >= 1);
+ 		}
 
 		public void Exclude(int valueToExclude)
 		{
-			if (value == valueToExclude)
+			if (SudokuCellValue == valueToExclude)
 				return;
 
-			possibleValues.Remove(valueToExclude);
+			SudokuCellPossibleValues.Remove(valueToExclude);
 		}
 
 		public void SetValue(int newValue)
 		{
-			if (!possibleValues.Contains(newValue))
+			if (!SudokuCellPossibleValues.Contains(newValue))
 				return;
 
-			value = newValue;
-			possibleValues = new List<int> { newValue };
-			grid.Exclude(Row, Column, value);
+			SudokuCellValue = newValue;
+			SudokuCellPossibleValues = new List<int> { newValue };
+			grid.Exclude(Row, Column, SudokuCellValue);
 		}
 
 		public SudokuCell(SudokuGame parent, int myRow, int myColumn)
@@ -61,13 +59,13 @@ namespace MySudoku.Model
 			Column = myColumn;
 
 
-			possibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+			SudokuCellPossibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 		}
 
 		public void Clear()
 		{
-			value = 0;
-			possibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+			SudokuCellValue = 0;
+			SudokuCellPossibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 		}
 		
 	}

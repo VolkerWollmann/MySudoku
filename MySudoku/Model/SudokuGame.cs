@@ -5,6 +5,11 @@ using MySudoku.Interfaces;
 
 namespace MySudoku.Model
 {
+	/// <summary>
+	/// The sudoku game is a model of 9x9 cells. 
+	/// The cells are empty or hold a digit 1-9
+	/// and a set of possible digits
+	/// </summary>
 	public class SudokuGame : ISudokuGameModel
 	{
 		SudokuCell[,] grid;
@@ -27,6 +32,22 @@ namespace MySudoku.Model
 			return grid[row, column].SudokuCellPossibleValues;
 		}
 
+		/// <summary>
+		/// Check, that for every empty field a least one possible values exists
+		/// </summary>
+		/// <returns></returns>
+		public bool IsValid()
+		{
+			for(int row=0; row<9; row++)
+			{
+				for(int column=0; column<9; column++)
+				{
+					if (!grid[row, column].IsValid())
+						return false;
+				}
+			}
+			return true;
+		}
 		internal void Exclude(int row, int column, int value)
 		{
 			// Exclude from rows and columns
@@ -90,6 +111,7 @@ namespace MySudoku.Model
 
 		public SudokuGame()
 		{
+			// Initialize the the array of sudoku cells
 			grid = new SudokuCell[9, 9];
 
 			for(int row = 0; row<9; row++)
@@ -100,6 +122,7 @@ namespace MySudoku.Model
 				}
 			}
 
+			// Initalize the history
 			History = new List<Tuple<int, int, int>>();
 		}
 	}
