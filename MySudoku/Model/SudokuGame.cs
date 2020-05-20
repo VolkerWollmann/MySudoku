@@ -38,15 +38,7 @@ namespace MySudoku.Model
 		/// <returns></returns>
 		public bool IsValid()
 		{
-			for(int row=0; row<9; row++)
-			{
-				for(int column=0; column<9; column++)
-				{
-					if (!grid[row, column].IsValid())
-						return false;
-				}
-			}
-			return true;
+			return grid.Cast<SudokuCell>().All(c => c.IsValid());
 		}
 		internal void Exclude(int row, int column, int value)
 		{
@@ -114,7 +106,7 @@ namespace MySudoku.Model
 			// Initialize the the array of sudoku cells
 			grid = new SudokuCell[9, 9];
 
-			for(int row = 0; row<9; row++)
+			for (int row = 0; row<9; row++)
 			{
 				for(int column=0; column<9; column++)
 				{
