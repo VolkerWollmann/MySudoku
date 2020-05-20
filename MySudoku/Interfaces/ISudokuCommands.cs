@@ -13,6 +13,8 @@ namespace MySudoku.Interfaces
 
 		void SetClearCommandEventHandler(EventHandler eventHandler);
 
+		void SetNewCommandEventHandler(EventHandler eventHandler);
+
 		void SetBackCommandEventHandler(EventHandler eventHandler);
 	}
 }

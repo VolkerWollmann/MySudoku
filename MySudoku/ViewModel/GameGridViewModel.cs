@@ -49,14 +49,16 @@ namespace MySudoku.ViewModel
 
 		public GameGridViewModel(Grid _sudokuGrid, ISudokuGameModel _sudokuGame)
 		{
+			// grid form the program
 			sudokuGrid = _sudokuGrid;
 
 			// prepare model
 			sudokuGame = _sudokuGame;
 
-			// prepare view
+			// prepare game grid (view)
 			sudokuGridView = (ISudokuGridView)new SudokuGridUserControl();
 
+			// add game grid to progam
 			sudokuGrid.Children.Add(sudokuGridView.GetUIElement());
 			Grid.SetRow(sudokuGridView.GetUIElement(), 0);
 			Grid.SetColumn(sudokuGridView.GetUIElement(), 0);
@@ -81,14 +83,18 @@ namespace MySudoku.ViewModel
 			// prepare Key operation
 			sudokuGridView.SetKeyEventHandler(KeyUp);
 
+			// create the game button user control (view)
 			sudokuCommand = new SudokuCommandUserControl();
 
+			// add command panel to program
 			sudokuGrid.Children.Add(sudokuCommand.GetUIElement());
 			Grid.SetRow(sudokuCommand.GetUIElement(), 0);
 			Grid.SetColumn(sudokuCommand.GetUIElement(), 1);
 
+			// bind command to buttons
 			sudokuCommand.SetClearCommandEventHandler(ClearCommand);
 			sudokuCommand.SetBackCommandEventHandler(BackCommand);
+			sudokuCommand.SetNewCommandEventHandler(NewCommand);
 
 			UpdateValues();
 
@@ -215,9 +221,16 @@ namespace MySudoku.ViewModel
 			Set(key);
 		}
 
+		#region commands
 		private void ClearCommand(object sender, EventArgs e)
 		{
 			sudokuGame.Clear();
+			UpdateValues();
+		}
+
+		private void NewCommand(object sender, EventArgs e)
+		{
+			sudokuGame.New();
 			UpdateValues();
 		}
 
@@ -226,5 +239,7 @@ namespace MySudoku.ViewModel
 			sudokuGame.Back();
 			UpdateValues();
 		}
+
+		#endregion
 	}
 }

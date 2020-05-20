@@ -18,6 +18,8 @@ namespace MySudoku.Interfaces
 
 		void Clear();
 
+		void New();
+
 		void Back();
 	}
 }

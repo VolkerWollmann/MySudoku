@@ -72,6 +72,11 @@ namespace MySudoku.Model
 			History = new List<Tuple<int, int, int>>();
 		}
 
+		public void New()
+		{
+
+		}
+
 		public void Back()
 		{
 			if (History.Count() == 0)
