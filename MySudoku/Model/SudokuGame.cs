@@ -5,6 +5,9 @@ using MySudoku.Interfaces;
 
 namespace MySudoku.Model
 {
+
+	using IntegerTriple = Tuple<int, int, int>;
+
 	/// <summary>
 	/// The sudoku game is a model of 9x9 cells. 
 	/// The cells are empty or hold a digit 1-9
@@ -16,7 +19,11 @@ namespace MySudoku.Model
 
 		private const int InvalidSudokuDigit = -1;
 
-		private List<Tuple<int,int,int>> History;
+		private List<IntegerTriple> History;
+
+		#region Methods
+
+		private SudokuCell this[int i, int j] => grid[i, j];
 
 		public int GetInvalidSudokuDigit()
 		{
@@ -62,10 +69,9 @@ namespace MySudoku.Model
 			}
 		}
 
-		public void SetValue(int row, int column, int value)
+		private SudokuGame Copy()
 		{
-			grid[row, column].SetValue(value);
-			History.Add(new Tuple<int, int, int>(row, column, value));
+			return new SudokuGame(this);
 		}
 
 		private void ClearGrid()
@@ -79,17 +85,42 @@ namespace MySudoku.Model
 			}
 		}
 
+		#endregion
+
+		#region Commands
+		/// <summary>
+		/// Clears the game
+		/// </summary>
 		public void Clear()
 		{
 			ClearGrid();
-			History = new List<Tuple<int, int, int>>();
+			History = new List<IntegerTriple>();
 		}
 
+		/// <summary>
+		/// Populates the game with a new start situation
+		/// </summary>
 		public void New()
 		{
+			// Create a blank game
 
+			// populate the 3x3 sub matrixs on the main diagonal
+
+			// Fill the empty
 		}
 
+		/// <summary>
+		/// Set the value in the field with the given row and column
+		/// </summary>
+		public void SetValue(int row, int column, int value)
+		{
+			grid[row, column].SetValue(value);
+			History.Add(new IntegerTriple(row, column, value));
+		}
+
+		/// <summary>
+		/// Goes one move back
+		/// </summary>
 		public void Back()
 		{
 			if (History.Count() == 0)
@@ -101,6 +132,9 @@ namespace MySudoku.Model
 			Replay.ForEach(elem => { SetValue(elem.Item1, elem.Item2, elem.Item3); });
 		}
 
+		#endregion
+
+		#region Constructors
 		public SudokuGame()
 		{
 			// Initialize the the array of sudoku cells
@@ -115,7 +149,22 @@ namespace MySudoku.Model
 			}
 
 			// Initalize the history
-			History = new List<Tuple<int, int, int>>();
+			History = new List<IntegerTriple>();
 		}
+
+		private SudokuGame(SudokuGame original)
+		{
+			grid = new SudokuCell[9, 9];
+			for (int row = 0; row < 9; row++)
+			{
+				for (int column = 0; column < 9; column++)
+				{
+					grid[row, column] = original[row, column].Copy(this);
+				}
+			}
+
+			History = new List<IntegerTriple>(original.History);
+		}
+		#endregion
 	}
 }

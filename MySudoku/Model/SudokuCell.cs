@@ -14,7 +14,7 @@ namespace MySudoku.Model
 	internal class SudokuCell
 	{ 
 		// parent of the cell
-		SudokuGame grid;
+		SudokuGame Parent;
 
 		public int Row { get; private set; }
 		public int Column { get; private set; }
@@ -49,23 +49,35 @@ namespace MySudoku.Model
 
 			SudokuCellValue = newValue;
 			SudokuCellPossibleValues = new List<int> { newValue };
-			grid.Exclude(Row, Column, SudokuCellValue);
+			Parent.Exclude(Row, Column, SudokuCellValue);
 		}
 
-		public SudokuCell(SudokuGame parent, int myRow, int myColumn)
+		public SudokuCell(SudokuGame parent, int row, int column)
 		{
-			grid = parent;
-			Row = myRow;
-			Column = myColumn;
-
+			this.Parent = parent;
+			Row = row;
+			Column = column;
 
 			SudokuCellPossibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 		}
 
+		private SudokuCell(SudokuGame parent, SudokuCell original)
+		{
+			Parent = parent;
+			Row = original.Row;
+			Column = original.Column;
+			SudokuCellValue = original.SudokuCellValue;
+			SudokuCellPossibleValues = original.SudokuCellPossibleValues;
+		}
 		public void Clear()
 		{
 			SudokuCellValue = 0;
 			SudokuCellPossibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		}
+
+		internal SudokuCell Copy(SudokuGame parent)
+		{
+			return new SudokuCell(parent, this);
 		}
 		
 	}
