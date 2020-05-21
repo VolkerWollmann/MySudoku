@@ -27,11 +27,11 @@ namespace MySudoku.Model
 
 
 		/// <summary>
-		/// The field is valid, if it set or there is a least one possible value for the field
+		/// The field is valid, if it is set or there is a least one possible value for the field
 		/// </summary>
 		public bool IsValid()
 		{
-			return (SudokuCellValue == 0) || (SudokuCellPossibleValues.Count() >= 1);
+			return (SudokuCellValue > 0) || (SudokuCellPossibleValues.Count() >= 1);
  		}
 
 		public void Exclude(int valueToExclude)
@@ -52,13 +52,17 @@ namespace MySudoku.Model
 			Parent.Exclude(Row, Column, SudokuCellValue);
 		}
 
+		public static List<int> GetInitalPossibleValueList()
+		{
+			return new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+		}
 		public SudokuCell(SudokuGame parent, int row, int column)
 		{
 			this.Parent = parent;
 			Row = row;
 			Column = column;
 
-			SudokuCellPossibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+			SudokuCellPossibleValues = GetInitalPossibleValueList();
 		}
 
 		private SudokuCell(SudokuGame parent, SudokuCell original)
@@ -72,7 +76,7 @@ namespace MySudoku.Model
 		public void Clear()
 		{
 			SudokuCellValue = 0;
-			SudokuCellPossibleValues = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+			SudokuCellPossibleValues = GetInitalPossibleValueList();
 		}
 
 		internal SudokuCell Copy(SudokuGame parent)

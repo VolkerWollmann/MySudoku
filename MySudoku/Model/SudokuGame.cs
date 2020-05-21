@@ -25,6 +25,11 @@ namespace MySudoku.Model
 
 		private SudokuCell this[int i, int j] => grid[i, j];
 
+		private List<SudokuCell> GetCellList()
+		{
+			return grid.Cast<SudokuCell>().ToList();
+		}
+
 		public int GetInvalidSudokuDigit()
 		{
 			return InvalidSudokuDigit;
@@ -87,6 +92,90 @@ namespace MySudoku.Model
 
 		#endregion
 
+		#region Generation
+
+		private void PopulateSubmatrix(int startRow, int EndRow, int startColumn, int EndColumn)
+		{
+			List<int> shuffledValues = RandomListAccess.GetShuffledList(SudokuCell.GetInitalPossibleValueList());
+			int i = 0;
+			for( int row=startRow; row <= EndRow; row++)
+			{
+				for(int column=startColumn; column<=EndColumn; column++)
+				{
+					this[row, column].SetValue(shuffledValues[i++]);
+				}
+			}
+		}
+
+		private bool Search(ref SudokuGame sudokuGame)
+		{
+			var notValid = sudokuGame.GetCellList().Where(cell => !cell.IsValid()).ToList();
+			var noPossibleValues = sudokuGame.GetCellList().Where(cell => cell.SudokuCellPossibleValues.Count==0).ToList();
+			// check, if this game might be filled
+			if ( (!sudokuGame.IsValid()) || (sudokuGame.GetCellList().Any(cell => cell.SudokuCellPossibleValues.Count == 0)))
+				return false;
+
+			// Get a shuffled list all fields must be filled
+			List<SudokuCell> cellsToFill = sudokuGame.GetCellList().Where(cell => (cell.SudokuCellValue == 0)).ToList();
+			cellsToFill = RandomListAccess.GetShuffledList(cellsToFill);
+
+			// nothing left to fill : it is a valid solution
+			if (cellsToFill.Count == 0)
+				return true;
+
+			foreach( SudokuCell cell in cellsToFill)
+			{
+				foreach( int possibleValue in cell.SudokuCellPossibleValues )
+				{
+					//make copy of the game
+					SudokuGame tryGame = sudokuGame.Copy();
+
+					// try the value
+					tryGame.SetValue(cell.Row, cell.Column, possibleValue );
+					
+					// now try one recursion deeper, with one field more set
+					bool subSearchValid = Search(ref tryGame);
+					if (subSearchValid)
+					{
+						// the value contributes to a valid solution
+						sudokuGame = tryGame;
+						return true;
+					}
+				}
+			}
+
+			// no cell and no field generates a valid solution
+			return false;
+		}
+
+		private SudokuGame GenerateSolution()
+		{
+			SudokuGame sudokuGame = new SudokuGame();
+
+			// populate the 3x3 sub matrixs on the main diagonal
+			// that can be done without checks
+			sudokuGame.PopulateSubmatrix(0, 2, 0, 2);
+			sudokuGame.PopulateSubmatrix(3, 5, 3, 5);
+			sudokuGame.PopulateSubmatrix(6, 8, 6, 8);
+
+			var notValid = sudokuGame.GetCellList().Where(cell => !cell.IsValid()).ToList();
+			var noPossibleValues = sudokuGame.GetCellList().Where(cell => cell.SudokuCellPossibleValues.Count == 0).ToList();
+
+			// Fill the empty
+			Search(ref sudokuGame);
+
+			return sudokuGame;
+		}
+
+		private void Populate(SudokuGame solution)
+		{
+			List<SudokuCell> sudokuCells = RandomListAccess.GetShuffledList<SudokuCell>(solution.GetCellList()).Take(36).ToList();
+
+			sudokuCells.ForEach(cell => { this.SetValue(cell.Row, cell.Column, cell.SudokuCellValue); } );
+		}
+
+		#endregion
+
 		#region Commands
 		/// <summary>
 		/// Clears the game
@@ -103,10 +192,13 @@ namespace MySudoku.Model
 		public void New()
 		{
 			// Create a blank game
+			Clear();
 
-			// populate the 3x3 sub matrixs on the main diagonal
+			// Generate solution
+			SudokuGame solution = GenerateSolution();
 
-			// Fill the empty
+			// Poupulate
+			Populate(solution);
 		}
 
 		/// <summary>
