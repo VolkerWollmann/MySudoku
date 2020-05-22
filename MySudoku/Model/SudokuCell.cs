@@ -51,7 +51,7 @@ namespace MySudoku.Model
 
 		public void Exclude(int valueToExclude)
 		{
-			if (SudokuCellValue == valueToExclude)
+			if (SudokuCellValue > 0)
 				return;
 
 			SudokuCellPossibleValues.Remove(valueToExclude);

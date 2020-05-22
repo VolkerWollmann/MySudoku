@@ -158,10 +158,10 @@ namespace MySudoku.Model
 		private SudokuGame Search(SudokuGame sudokuGame)
 		{
 			List<SudokuCell> sudokuCells = sudokuGame.GetCellList();
-			//var notValid = sudokuGame.GetCellList().Where(cell => !cell.IsValid()).ToList();
-			var noPossibleValues = sudokuCells.Where(cell => cell.SudokuCellPossibleValues.Count==0).ToList();
+			UpdateCounters();
+
 			// check, if this game might be filled
-			if ( (sudokuCells.Any(cell => cell.SudokuCellPossibleValues.Count == 0)))
+			if ((sudokuCells.Any(cell => !cell.SudokuCellPossibleValues.Any())))
 				return null;
 
 			// Get a shuffled list all fields must be filled
@@ -178,20 +178,13 @@ namespace MySudoku.Model
 				foreach( int possibleValue in cell.SudokuCellPossibleValues )
 				{
 					i++;
-					UpdateCounters();
-
+					
 					//make copy of the game
 					SudokuGame tryGame = sudokuGame.Copy();
 
 					// try the value
 					if (tryGame.SetValue(cell.Row, cell.Column, possibleValue))
 					{
-						//var notValid3 = sudokuGame.GetCellList().Where(cellx => !cellx.IsValid()).ToList();
-						var noPossibleValues3 = sudokuCells.Where(cellx => cellx.SudokuCellPossibleValues.Count == 0).ToList();
-						if (noPossibleValues3.Count != noPossibleValues.Count)
-						{
-							;
-						}
 						// now try one recursion deeper, with one field more set
 						tryGame = Search(tryGame);
 						if (tryGame != null)
