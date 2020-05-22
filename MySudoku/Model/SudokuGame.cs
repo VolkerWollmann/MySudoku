@@ -123,9 +123,37 @@ namespace MySudoku.Model
 			}
 		}
 
-		static ulong maxTries = 0;
+		static DateTime start;
+		static ulong maxTries = 1;
 		static ulong tries = 0;
+		static ulong triesPerSecond;
 		static ulong percent;
+
+		private void InitCounters()
+		{
+			start = DateTime.Now;
+			tries = 0;
+			maxTries = 1;
+			percent = 0;
+			triesPerSecond = 0;
+			this.GetCellList().ForEach(cell => { maxTries = maxTries * (ulong)cell.SudokuCellPossibleValues.Count; });
+		}
+
+		private void UpdateCounters()
+		{
+			tries++;
+			if ((tries % 100) != 0)
+				return;
+
+			percent = tries / maxTries;
+			TimeSpan timeSpan = DateTime.Now.Subtract(start);
+			ulong totalSeconds = (ulong)timeSpan.TotalSeconds;
+			if (totalSeconds == 0)
+				return;
+
+			triesPerSecond = tries / totalSeconds;
+			;
+		}
 
 		private SudokuGame Search(SudokuGame sudokuGame)
 		{
@@ -148,9 +176,8 @@ namespace MySudoku.Model
 			{
 				foreach( int possibleValue in cell.SudokuCellPossibleValues )
 				{
-					tries++;
-					percent = tries / maxTries;
 					i++;
+					UpdateCounters();
 
 					//make copy of the game
 					SudokuGame tryGame = sudokuGame.Copy();
@@ -194,9 +221,7 @@ namespace MySudoku.Model
 			sudokuGame.PopulateSubmatrix(6, 8, 6, 8);
 
 			// Fill the empty
-			maxTries = 1;
-			sudokuGame.GetCellList().ForEach(cell => { maxTries = maxTries * (ulong)cell.SudokuCellPossibleValues.Count; });
-			tries = 0;
+			InitCounters();
 			sudokuGame = Search(sudokuGame);
 
 			return sudokuGame;
