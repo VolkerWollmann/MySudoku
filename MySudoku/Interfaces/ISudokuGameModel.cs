@@ -14,7 +14,7 @@ namespace MySudoku.Interfaces
 
 		List<int> GetSudokuCellPossibleValues(int row, int column);
 
-		void SetValue(int row, int column, int value);
+		bool SetValue(int row, int column, int value);
 
 		void Clear();
 

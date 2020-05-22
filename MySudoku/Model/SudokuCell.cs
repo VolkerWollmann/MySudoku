@@ -31,8 +31,23 @@ namespace MySudoku.Model
 		/// </summary>
 		public bool IsValid()
 		{
-			return (SudokuCellValue > 0) || (SudokuCellPossibleValues.Count() >= 1);
+			return (SudokuCellPossibleValues.Count() >= 1);
  		}
+
+		public bool IsEqual(SudokuCell other)
+		{
+			if ((Row != other.Row) || (Column != other.Column) || (SudokuCellValue != other.SudokuCellValue) ||
+				(SudokuCellPossibleValues.Count != other.SudokuCellPossibleValues.Count))
+				return false;
+
+			foreach( int value in SudokuCellPossibleValues )
+			{
+				if (!other.SudokuCellPossibleValues.Contains(value))
+					return false;
+			}
+
+			return true;
+		}
 
 		public void Exclude(int valueToExclude)
 		{
@@ -42,14 +57,16 @@ namespace MySudoku.Model
 			SudokuCellPossibleValues.Remove(valueToExclude);
 		}
 
-		public void SetValue(int newValue)
+		public bool SetValue(int newValue)
 		{
 			if (!SudokuCellPossibleValues.Contains(newValue))
-				return;
+				return false;
 
 			SudokuCellValue = newValue;
 			SudokuCellPossibleValues = new List<int> { newValue };
 			Parent.Exclude(Row, Column, SudokuCellValue);
+
+			return true;
 		}
 
 		public static List<int> GetInitalPossibleValueList()
@@ -58,7 +75,7 @@ namespace MySudoku.Model
 		}
 		public SudokuCell(SudokuGame parent, int row, int column)
 		{
-			this.Parent = parent;
+			Parent = parent;
 			Row = row;
 			Column = column;
 
@@ -71,7 +88,7 @@ namespace MySudoku.Model
 			Row = original.Row;
 			Column = original.Column;
 			SudokuCellValue = original.SudokuCellValue;
-			SudokuCellPossibleValues = original.SudokuCellPossibleValues;
+			SudokuCellPossibleValues = new List<int>(original.SudokuCellPossibleValues);
 		}
 		public void Clear()
 		{
