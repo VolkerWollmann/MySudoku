@@ -157,14 +157,15 @@ namespace MySudoku.Model
 
 		private SudokuGame Search(SudokuGame sudokuGame)
 		{
+			List<SudokuCell> sudokuCells = sudokuGame.GetCellList();
 			//var notValid = sudokuGame.GetCellList().Where(cell => !cell.IsValid()).ToList();
-			var noPossibleValues = sudokuGame.GetCellList().Where(cell => cell.SudokuCellPossibleValues.Count==0).ToList();
+			var noPossibleValues = sudokuCells.Where(cell => cell.SudokuCellPossibleValues.Count==0).ToList();
 			// check, if this game might be filled
-			if ( (sudokuGame.GetCellList().Any(cell => cell.SudokuCellPossibleValues.Count == 0)))
+			if ( (sudokuCells.Any(cell => cell.SudokuCellPossibleValues.Count == 0)))
 				return null;
 
 			// Get a shuffled list all fields must be filled
-			List<SudokuCell> cellsToFill = sudokuGame.GetCellList().Where(cell => (cell.SudokuCellValue == 0)).ToList();
+			List<SudokuCell> cellsToFill = sudokuCells.Where(cell => (cell.SudokuCellValue == 0)).ToList();
 			cellsToFill = RandomListAccess.GetShuffledList(cellsToFill);
 
 			// nothing left to fill : it is a valid solution
@@ -186,7 +187,7 @@ namespace MySudoku.Model
 					if (tryGame.SetValue(cell.Row, cell.Column, possibleValue))
 					{
 						//var notValid3 = sudokuGame.GetCellList().Where(cellx => !cellx.IsValid()).ToList();
-						var noPossibleValues3 = sudokuGame.GetCellList().Where(cellx => cellx.SudokuCellPossibleValues.Count == 0).ToList();
+						var noPossibleValues3 = sudokuCells.Where(cellx => cellx.SudokuCellPossibleValues.Count == 0).ToList();
 						if (noPossibleValues3.Count != noPossibleValues.Count)
 						{
 							;
