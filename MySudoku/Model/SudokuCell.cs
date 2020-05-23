@@ -31,7 +31,7 @@ namespace MySudoku.Model
 		/// </summary>
 		public bool IsValid()
 		{
-			return (SudokuCellPossibleValues.Count() >= 1);
+			return ((SudokuCellValue > 0 ) || ( SudokuCellPossibleValues.Any()));
  		}
 
 		public bool IsEqual(SudokuCell other)

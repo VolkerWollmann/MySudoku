@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Forms;
 using MySudoku.Interfaces;
 
 namespace MySudoku.Model
@@ -124,61 +125,67 @@ namespace MySudoku.Model
 		}
 
 		static DateTime start;
-		static ulong maxTries = 1;
 		static ulong tries = 0;
 		static ulong triesPerSecond;
-		static ulong percent;
+		static int[,] stack = new int[81, 2];
 
 		private void InitCounters()
 		{
 			start = DateTime.Now;
-			tries = 0;
-			maxTries = 1;
-			percent = 0;
-			triesPerSecond = 0;
-			this.GetCellList().ForEach(cell => { maxTries = maxTries * (ulong)cell.SudokuCellPossibleValues.Count; });
 		}
 
-		private void UpdateCounters()
+		private void UpdateCounters(int level, int maxCell, int currentCell )
 		{
 			tries++;
-			if ((tries % 100) != 0)
-				return;
+			if (tries % 100000 == 0)
+			{
+				TimeSpan timeSpan = DateTime.Now.Subtract(start);
+				ulong dividend = (ulong)Math.Max(1, (int)timeSpan.TotalSeconds);
+				triesPerSecond = tries / dividend;
+			}
 
-			percent = tries / maxTries;
-			TimeSpan timeSpan = DateTime.Now.Subtract(start);
-			ulong totalSeconds = (ulong)timeSpan.TotalSeconds;
-			if (totalSeconds == 0)
-				return;
-
-			triesPerSecond = tries / totalSeconds;
-			;
+			stack[level, 0] = maxCell;
+			stack[level, 1] = currentCell;
+		    stack[level+1, 0] = 0;
+	        stack[level+1, 1] = 0;
 		}
 
-		private SudokuGame Search(SudokuGame sudokuGame)
+		private SudokuGame Search(SudokuGame sudokuGame, int level)
 		{
 			List<SudokuCell> sudokuCells = sudokuGame.GetCellList();
-			UpdateCounters();
 
 			// check, if this game might be filled
-			if ((sudokuCells.Any(cell => !cell.SudokuCellPossibleValues.Any())))
+			if( !sudokuGame.IsValid() )
 				return null;
 
-			// Get a shuffled list all fields must be filled
+			// First evaluate single possible values
+			SudokuCell spvc = sudokuCells.FirstOrDefault(cell => (cell.SudokuCellValue == 0 && cell.SudokuCellPossibleValues.Count == 1));
+			while (spvc != null)
+			{
+				bool canSet = sudokuGame.SetValue(spvc.Row, spvc.Column, spvc.SudokuCellPossibleValues.First());
+				if (!canSet)
+					return null;
+
+				spvc = sudokuCells.FirstOrDefault(cell => (cell.SudokuCellValue == 0 && cell.SudokuCellPossibleValues.Count == 1));
+			}
+
+			if (!sudokuGame.IsValid())
+				return null;
+
+			// Get a shuffled list all fields whith more than one value must be filled
 			List<SudokuCell> cellsToFill = sudokuCells.Where(cell => (cell.SudokuCellValue == 0)).ToList();
 			cellsToFill = RandomListAccess.GetShuffledList(cellsToFill);
 
 			// nothing left to fill : it is a valid solution
 			if (cellsToFill.Count == 0)
 				return sudokuGame;
+		
 			int i = 0;
-
 			foreach ( SudokuCell cell in cellsToFill)
 			{
+				UpdateCounters(level, cellsToFill.Count, i++);
 				foreach( int possibleValue in cell.SudokuCellPossibleValues )
-				{
-					i++;
-					
+				{					
 					//make copy of the game
 					SudokuGame tryGame = sudokuGame.Copy();
 
@@ -186,7 +193,7 @@ namespace MySudoku.Model
 					if (tryGame.SetValue(cell.Row, cell.Column, possibleValue))
 					{
 						// now try one recursion deeper, with one field more set
-						tryGame = Search(tryGame);
+						tryGame = Search(tryGame, level+1);
 						if (tryGame != null)
 						{
 							// the value contributes to a valid solution
@@ -204,6 +211,12 @@ namespace MySudoku.Model
 			return null;
 		}
 
+		private SudokuGame Search(SudokuGame sudokuGame )
+		{
+			InitCounters();
+			return Search(sudokuGame, 1);
+		}
+
 		private SudokuGame GenerateSolution()
 		{
 			SudokuGame sudokuGame = new SudokuGame("L1");
@@ -215,7 +228,6 @@ namespace MySudoku.Model
 			sudokuGame.PopulateSubmatrix(6, 8, 6, 8);
 
 			// Fill the empty
-			InitCounters();
 			sudokuGame = Search(sudokuGame);
 
 			return sudokuGame;
@@ -223,7 +235,7 @@ namespace MySudoku.Model
 
 		private void Populate(SudokuGame solution)
 		{
-			List<SudokuCell> sudokuCells = RandomListAccess.GetShuffledList<SudokuCell>(solution.GetCellList()).Take(36).ToList();
+			List<SudokuCell> sudokuCells = RandomListAccess.GetShuffledList<SudokuCell>(solution.GetCellList()).Take(81).ToList();
 
 			sudokuCells.ForEach(cell => { this.SetValue(cell.Row, cell.Column, cell.SudokuCellValue); } );
 		}
@@ -309,14 +321,7 @@ namespace MySudoku.Model
 		{
 			Name = name;
 			grid = new SudokuCell[9, 9];
-			for (int row = 0; row < 9; row++)
-			{
-				for (int column = 0; column < 9; column++)
-				{
-					grid[row, column] = original[row, column].Copy(this);
-				}
-			}
-
+			original.GetCellList().ForEach(cell => { grid[cell.Row, cell.Column] = cell.Copy(this);  });
 			History = new List<IntegerTriple>(original.History);
 		}
 		#endregion
