@@ -19,11 +19,11 @@ namespace MySudoku.Model
 		public int Row { get; private set; }
 		public int Column { get; private set; }
 
-		public const string SudokuCellValueName = "SudokuCellValue";
-		public const string SudokuCellPossibleValuesName = "SudokuCellPossibleValues";
-		public int SudokuCellValue { private set; get; }
+		public const string SudokuCellValueName = "CellValue";
+		public const string SudokuCellPossibleValuesName = "CellPossibleValues";
+		public int CellValue { private set; get; }
 
-		public List<int> SudokuCellPossibleValues { private set; get; }
+		public List<int> CellPossibleValues { private set; get; }
 
 
 		/// <summary>
@@ -31,18 +31,18 @@ namespace MySudoku.Model
 		/// </summary>
 		public bool IsValid()
 		{
-			return ((SudokuCellValue > 0 ) || ( SudokuCellPossibleValues.Any()));
+			return ((CellValue > 0 ) || ( CellPossibleValues.Any()));
  		}
 
 		public bool IsEqual(SudokuCell other)
 		{
-			if ((Row != other.Row) || (Column != other.Column) || (SudokuCellValue != other.SudokuCellValue) ||
-				(SudokuCellPossibleValues.Count != other.SudokuCellPossibleValues.Count))
+			if ((Row != other.Row) || (Column != other.Column) || (CellValue != other.CellValue) ||
+				(CellPossibleValues.Count != other.CellPossibleValues.Count))
 				return false;
 
-			foreach( int value in SudokuCellPossibleValues )
+			foreach( int value in CellPossibleValues )
 			{
-				if (!other.SudokuCellPossibleValues.Contains(value))
+				if (!other.CellPossibleValues.Contains(value))
 					return false;
 			}
 
@@ -51,20 +51,20 @@ namespace MySudoku.Model
 
 		public void Exclude(int valueToExclude)
 		{
-			if (SudokuCellValue > 0)
+			if (CellValue > 0)
 				return;
 
-			SudokuCellPossibleValues.Remove(valueToExclude);
+			CellPossibleValues.Remove(valueToExclude);
 		}
 
 		public bool SetValue(int newValue)
 		{
-			if (!SudokuCellPossibleValues.Contains(newValue))
+			if (!CellPossibleValues.Contains(newValue))
 				return false;
 
-			SudokuCellValue = newValue;
-			SudokuCellPossibleValues = new List<int> { newValue };
-			Parent.Exclude(Row, Column, SudokuCellValue);
+			CellValue = newValue;
+			CellPossibleValues = new List<int> { newValue };
+			Parent.Exclude(Row, Column, CellValue);
 
 			return true;
 		}
@@ -79,7 +79,7 @@ namespace MySudoku.Model
 			Row = row;
 			Column = column;
 
-			SudokuCellPossibleValues = GetInitalPossibleValueList();
+			CellPossibleValues = GetInitalPossibleValueList();
 		}
 
 		private SudokuCell(SudokuGame parent, SudokuCell original)
@@ -87,13 +87,13 @@ namespace MySudoku.Model
 			Parent = parent;
 			Row = original.Row;
 			Column = original.Column;
-			SudokuCellValue = original.SudokuCellValue;
-			SudokuCellPossibleValues = new List<int>(original.SudokuCellPossibleValues);
+			CellValue = original.CellValue;
+			CellPossibleValues = new List<int>(original.CellPossibleValues);
 		}
 		public void Clear()
 		{
-			SudokuCellValue = 0;
-			SudokuCellPossibleValues = GetInitalPossibleValueList();
+			CellValue = 0;
+			CellPossibleValues = GetInitalPossibleValueList();
 		}
 
 		internal SudokuCell Copy(SudokuGame parent)

@@ -21,7 +21,7 @@ namespace MySudoku.Model
 
 		SudokuCell[,] grid;
 
-		private const int InvalidSudokuDigit = -1;
+		private const int InvalidDigit = -1;
 
 		private List<IntegerTriple> History;
 
@@ -39,18 +39,18 @@ namespace MySudoku.Model
 			return cellList;
 		}
 
-		public int GetInvalidSudokuDigit()
+		public int GetInvalidDigit()
 		{
-			return InvalidSudokuDigit;
+			return InvalidDigit;
 		}
 		public int GetCellValue(int row, int column)
 		{
-			return grid[row, column].SudokuCellValue;
+			return grid[row, column].CellValue;
 		}
 
-		public List<int> GetSudokuCellPossibleValues(int row, int column)
+		public List<int> GetCellPossibleValues(int row, int column)
 		{
-			return grid[row, column].SudokuCellPossibleValues;
+			return grid[row, column].CellPossibleValues;
 		}
 
 		/// <summary>
@@ -139,16 +139,16 @@ namespace MySudoku.Model
 			List<SudokuCell> sudokuCells = sudokuGame.GetCellList();
 
 			// First evaluate single possible values
-			SudokuCell spvc = sudokuCells.FirstOrDefault(cell => (cell.SudokuCellValue == 0 && cell.SudokuCellPossibleValues.Count == 1));
+			SudokuCell spvc = sudokuCells.FirstOrDefault(cell => (cell.CellValue == 0 && cell.CellPossibleValues.Count == 1));
 			if (spvc != null)
 			{
 				while (spvc != null)
 				{
-					bool canSet = sudokuGame.SetValue(spvc.Row, spvc.Column, spvc.SudokuCellPossibleValues.First());
+					bool canSet = sudokuGame.SetValue(spvc.Row, spvc.Column, spvc.CellPossibleValues.First());
 					if (!canSet)
 						return null;
 
-					spvc = sudokuCells.FirstOrDefault(cell => (cell.SudokuCellValue == 0 && cell.SudokuCellPossibleValues.Count == 1));
+					spvc = sudokuCells.FirstOrDefault(cell => (cell.CellValue == 0 && cell.CellPossibleValues.Count == 1));
 				}
 
 				if (!sudokuGame.IsValid())
@@ -156,7 +156,7 @@ namespace MySudoku.Model
 			}
 
 			// Get a shuffled list all fields whith more than one value must be filled
-			List<SudokuCell> cellsToFill = sudokuCells.Where(cell => (cell.SudokuCellValue == 0)).ToList();
+			List<SudokuCell> cellsToFill = sudokuCells.Where(cell => (cell.CellValue == 0)).ToList();
 			cellsToFill = RandomListAccess.GetShuffledList(cellsToFill);
 
 			// nothing left to fill : it is a valid solution
@@ -167,7 +167,7 @@ namespace MySudoku.Model
 			foreach ( SudokuCell cell in cellsToFill)
 			{
 				performanceCounter.Update(cellsToFill.Count, ++i);
-				foreach( int possibleValue in cell.SudokuCellPossibleValues )
+				foreach( int possibleValue in cell.CellPossibleValues )
 				{					
 					//make copy of the game
 					SudokuGame tryGame = sudokuGame.Copy();
@@ -219,7 +219,7 @@ namespace MySudoku.Model
 		public List<IntegerTriple> GetSolution()
 		{
 			List<IntegerTriple> list = new List<IntegerTriple>();
-			sudokuGameGenerator.GetCellList().ForEach(cell => list.Add(new IntegerTriple(cell.Row, cell.Column, cell.SudokuCellValue)));
+			sudokuGameGenerator.GetCellList().ForEach(cell => list.Add(new IntegerTriple(cell.Row, cell.Column, cell.CellValue)));
 			return list;
 		}
 
@@ -244,11 +244,11 @@ namespace MySudoku.Model
 			Clear();
 
 			// Generate solution
-			ISudokuGenerator sudokuBruteForceGenerator = new SudokuBruteForceGenerator();
-			bool result = sudokuBruteForceGenerator.Generate();
+			ISudokuGenerator iSudokuGenerator = new SudokuBruteForceGenerator();
+			bool result = iSudokuGenerator.Generate();
 			if (result)
 			{
-				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(sudokuBruteForceGenerator.GetSolution()).Take(54).ToList();
+				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(iSudokuGenerator.GetSolution()).Take(54).ToList();
 				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
 			}
 			

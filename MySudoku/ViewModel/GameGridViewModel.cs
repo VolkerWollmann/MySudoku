@@ -42,7 +42,7 @@ namespace MySudoku.ViewModel
 				for (int column = 0; column < 9; column++)
 				{
 					sudokuDatas[row, column].SetValue(sudokuGame.GetCellValue(row, column));
-					sudokuDatas[row, column].SetPossibleValues(sudokuGame.GetSudokuCellPossibleValues(row, column));
+					sudokuDatas[row, column].SetPossibleValues(sudokuGame.GetCellPossibleValues(row, column));
 				}
 			}
 		}
@@ -188,14 +188,14 @@ namespace MySudoku.ViewModel
 				return (key - Key.NumPad0);
 			}
 
-			return sudokuGame.GetInvalidSudokuDigit();
+			return sudokuGame.GetInvalidDigit();
 		}
 
 		public void Set(Key key)
 		{
 			// Key to sukdou digit
 			int sudokuDigit = SudokuDigitFromKey(key);
-			if (sudokuDigit != sudokuGame.GetInvalidSudokuDigit())
+			if (sudokuDigit != sudokuGame.GetInvalidDigit())
 			{
 				int row, column;
 				sudokuGridView.GetCurrentCellCoordiantes(out row, out column);

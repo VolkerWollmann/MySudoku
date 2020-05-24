@@ -8,11 +8,11 @@ namespace MySudoku.Interfaces
 {
 	public interface ISudokuGameModel
 	{
-		int GetInvalidSudokuDigit();
+		int GetInvalidDigit();
 
 		int GetCellValue(int row, int column);
 
-		List<int> GetSudokuCellPossibleValues(int row, int column);
+		List<int> GetCellPossibleValues(int row, int column);
 
 		bool SetValue(int row, int column, int value);
 
