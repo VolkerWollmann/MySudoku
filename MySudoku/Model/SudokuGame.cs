@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using MySudoku.Interfaces;
+using MySudoku.Perfomance;
 
 namespace MySudoku.Model
 {
@@ -28,9 +29,14 @@ namespace MySudoku.Model
 
 		private SudokuCell this[int i, int j] => grid[i, j];
 
+
+		private List<SudokuCell> cellList = null;
 		private List<SudokuCell> GetCellList()
 		{
-			return grid.Cast<SudokuCell>().ToList();
+			if (cellList == null)
+				cellList = grid.Cast<SudokuCell>().ToList();
+
+			return cellList;
 		}
 
 		public int GetInvalidSudokuDigit()
@@ -124,53 +130,30 @@ namespace MySudoku.Model
 			}
 		}
 
-		static DateTime start;
-		static ulong tries = 0;
-		static ulong triesPerSecond;
-		static int[,] stack = new int[81, 2];
-
-		private void InitCounters()
-		{
-			start = DateTime.Now;
-		}
-
-		private void UpdateCounters(int level, int maxCell, int currentCell )
-		{
-			tries++;
-			if (tries % 100000 == 0)
-			{
-				TimeSpan timeSpan = DateTime.Now.Subtract(start);
-				ulong dividend = (ulong)Math.Max(1, (int)timeSpan.TotalSeconds);
-				triesPerSecond = tries / dividend;
-			}
-
-			stack[level, 0] = maxCell;
-			stack[level, 1] = currentCell;
-		    stack[level+1, 0] = 0;
-	        stack[level+1, 1] = 0;
-		}
-
 		private SudokuGame Search(SudokuGame sudokuGame, int level)
 		{
-			List<SudokuCell> sudokuCells = sudokuGame.GetCellList();
-
-			// check, if this game might be filled
-			if( !sudokuGame.IsValid() )
+			// check vor valid game
+			if (!sudokuGame.IsValid())
 				return null;
+
+			List<SudokuCell> sudokuCells = sudokuGame.GetCellList();
 
 			// First evaluate single possible values
 			SudokuCell spvc = sudokuCells.FirstOrDefault(cell => (cell.SudokuCellValue == 0 && cell.SudokuCellPossibleValues.Count == 1));
-			while (spvc != null)
+			if (spvc != null)
 			{
-				bool canSet = sudokuGame.SetValue(spvc.Row, spvc.Column, spvc.SudokuCellPossibleValues.First());
-				if (!canSet)
+				while (spvc != null)
+				{
+					bool canSet = sudokuGame.SetValue(spvc.Row, spvc.Column, spvc.SudokuCellPossibleValues.First());
+					if (!canSet)
+						return null;
+
+					spvc = sudokuCells.FirstOrDefault(cell => (cell.SudokuCellValue == 0 && cell.SudokuCellPossibleValues.Count == 1));
+				}
+
+				if (!sudokuGame.IsValid())
 					return null;
-
-				spvc = sudokuCells.FirstOrDefault(cell => (cell.SudokuCellValue == 0 && cell.SudokuCellPossibleValues.Count == 1));
 			}
-
-			if (!sudokuGame.IsValid())
-				return null;
 
 			// Get a shuffled list all fields whith more than one value must be filled
 			List<SudokuCell> cellsToFill = sudokuCells.Where(cell => (cell.SudokuCellValue == 0)).ToList();
@@ -183,7 +166,7 @@ namespace MySudoku.Model
 			int i = 0;
 			foreach ( SudokuCell cell in cellsToFill)
 			{
-				UpdateCounters(level, cellsToFill.Count, i++);
+				performanceCounter.Update(cellsToFill.Count, i++);
 				foreach( int possibleValue in cell.SudokuCellPossibleValues )
 				{					
 					//make copy of the game
@@ -193,16 +176,14 @@ namespace MySudoku.Model
 					if (tryGame.SetValue(cell.Row, cell.Column, possibleValue))
 					{
 						// now try one recursion deeper, with one field more set
+						performanceCounter.Down();
 						tryGame = Search(tryGame, level+1);
+						performanceCounter.Up();
 						if (tryGame != null)
 						{
 							// the value contributes to a valid solution
 							return tryGame;
 						}
-					}
-					else
-					{
-						;
 					}
 				}
 			}
@@ -211,9 +192,10 @@ namespace MySudoku.Model
 			return null;
 		}
 
+		PerformanceCounter performanceCounter;
 		private SudokuGame Search(SudokuGame sudokuGame )
 		{
-			InitCounters();
+			performanceCounter = new PerformanceCounter();
 			return Search(sudokuGame, 1);
 		}
 

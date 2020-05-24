@@ -69,6 +69,7 @@
       <DependentUpon>SudokuGridUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ISudokuGameModel.cs" />
+    <Compile Include="Model\PerformanceCounter.cs" />
     <Compile Include="Model\RandomListAccess.cs" />
     <Compile Include="Model\SudokuCell.cs" />
     <Compile Include="Model\SudokuGame.cs" />
