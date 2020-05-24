@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Forms;
 using MySudoku.Interfaces;
 using MySudoku.Model.BruteForce;
 using MySudoku.Perfomance;

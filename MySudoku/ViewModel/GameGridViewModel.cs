@@ -2,9 +2,7 @@
 using System.Windows.Data;
 using System.Windows.Input;
 using MySudoku.Controls;
-using MySudoku.Model;
 using MySudoku.Interfaces;
-using System.Windows;
 using System;
 
 namespace MySudoku.ViewModel
