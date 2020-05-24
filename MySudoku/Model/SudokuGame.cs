@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 using MySudoku.Interfaces;
+using MySudoku.Model.BruteForce;
 using MySudoku.Perfomance;
 
 namespace MySudoku.Model
 {
-
 	using IntegerTriple = Tuple<int, int, int>;
 
 	/// <summary>
@@ -243,10 +243,14 @@ namespace MySudoku.Model
 			Clear();
 
 			// Generate solution
-			SudokuGame solution = GenerateSolution();
-
-			// Poupulate
-			Populate(solution);
+			SudokuBruteForceGenerator sudokuBruteForceGenerator = new SudokuBruteForceGenerator();
+			bool result = sudokuBruteForceGenerator.Generate();
+			if (result)
+			{
+				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(sudokuBruteForceGenerator.GetSolution());
+				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
+			}
+			
 		}
 
 		/// <summary>
