@@ -61,6 +61,7 @@
       <DependentUpon>SudokuCommandUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ISudokuCommands.cs" />
+    <Compile Include="Interfaces\ISudokuGenerator.cs" />
     <Compile Include="Interfaces\ISudokuGridView.cs" />
     <Compile Include="Controls\SudokuCellUserControl.xaml.cs">
       <DependentUpon>SudokuCellUserControl.xaml</DependentUpon>

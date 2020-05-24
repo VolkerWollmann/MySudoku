@@ -15,7 +15,7 @@ namespace MySudoku.Model
 	/// The cells are empty or hold a digit 1-9
 	/// and a set of possible digits
 	/// </summary>
-	public class SudokuGame : ISudokuGameModel
+	public class SudokuGame : ISudokuGameModel, ISudokuGenerator 
 	{
 		private string Name { get; set; }
 
@@ -199,27 +199,28 @@ namespace MySudoku.Model
 			return Search(sudokuGame, 1);
 		}
 
-		private SudokuGame GenerateSolution()
+		private SudokuGame sudokuGameGenerator;
+		bool Generate()
 		{
-			SudokuGame sudokuGame = new SudokuGame("L1");
+			sudokuGameGenerator = new SudokuGame("L1");
 
 			// populate the 3x3 sub matrixs on the main diagonal
 			// that can be done without checks
-			sudokuGame.PopulateSubmatrix(0, 2, 0, 2);
-			sudokuGame.PopulateSubmatrix(3, 5, 3, 5);
-			sudokuGame.PopulateSubmatrix(6, 8, 6, 8);
+			sudokuGameGenerator.PopulateSubmatrix(0, 2, 0, 2);
+			sudokuGameGenerator.PopulateSubmatrix(3, 5, 3, 5);
+			sudokuGameGenerator.PopulateSubmatrix(6, 8, 6, 8);
 
 			// Fill the empty
-			sudokuGame = Search(sudokuGame);
+			sudokuGameGenerator = Search(sudokuGameGenerator);
 
-			return sudokuGame;
+			return (sudokuGameGenerator != null);
 		}
 
-		private void Populate(SudokuGame solution)
+		List<IntegerTriple> GetSolution()
 		{
-			List<SudokuCell> sudokuCells = RandomListAccess.GetShuffledList<SudokuCell>(solution.GetCellList()).Take(81).ToList();
-
-			sudokuCells.ForEach(cell => { this.SetValue(cell.Row, cell.Column, cell.SudokuCellValue); } );
+			List<IntegerTriple> list = new List<IntegerTriple>();
+			sudokuGameGenerator.GetCellList().ForEach(cell => list.Add(new IntegerTriple(cell.Row, cell.Column, cell.SudokuCellValue)));
+			return list;
 		}
 
 		#endregion
@@ -243,11 +244,11 @@ namespace MySudoku.Model
 			Clear();
 
 			// Generate solution
-			SudokuBruteForceGenerator sudokuBruteForceGenerator = new SudokuBruteForceGenerator();
+			ISudokuGenerator sudokuBruteForceGenerator = new SudokuBruteForceGenerator();
 			bool result = sudokuBruteForceGenerator.Generate();
 			if (result)
 			{
-				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(sudokuBruteForceGenerator.GetSolution());
+				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(sudokuBruteForceGenerator.GetSolution()).Take(54).ToList();
 				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
 			}
 			

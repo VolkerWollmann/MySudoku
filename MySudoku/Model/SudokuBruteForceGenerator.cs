@@ -6,10 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using MySudoku.Interfaces;
 using MySudoku.Model;
 using MySudoku.Perfomance;
 
-namespace MySudoku.Model.BruteForce
+namespace MySudoku.Model.BruteForce 
 {
 	using IntegerTriple = Tuple<int, int, int>;
 
@@ -38,7 +39,7 @@ namespace MySudoku.Model.BruteForce
 		}
 
 	}
-	public class SudokuBruteForceGenerator
+	public class SudokuBruteForceGenerator : ISudokuGenerator 
 	{
 		Field[,] game = null;
 
