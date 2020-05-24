@@ -166,7 +166,7 @@ namespace MySudoku.Model
 			int i = 0;
 			foreach ( SudokuCell cell in cellsToFill)
 			{
-				performanceCounter.Update(cellsToFill.Count, i++);
+				performanceCounter.Update(cellsToFill.Count, ++i);
 				foreach( int possibleValue in cell.SudokuCellPossibleValues )
 				{					
 					//make copy of the game

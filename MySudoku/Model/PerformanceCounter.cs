@@ -84,7 +84,6 @@ namespace MySudoku.Perfomance
 
 		public void Up()
 		{
-			stack[level].Update(stack[level].Max, stack[level].Max);
 			stack[level].CalculateAverage();
 			level = level - 1;
 		}
