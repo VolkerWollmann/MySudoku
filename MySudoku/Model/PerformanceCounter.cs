@@ -41,7 +41,7 @@ namespace MySudoku.Perfomance
 		{
 			if ((Current > 0) && ( Total >= (ulong)Current))
 			{
-				double nas = (AverageSeconds / (Total - (ulong)Current)) + DateTime.Now.Subtract(Start).TotalSeconds / Current;
+				double nas = ((AverageSeconds * (Total - (ulong)Current)) + DateTime.Now.Subtract(Start).TotalSeconds) / Total;
 				AverageSeconds = nas;
 			}
 		}
@@ -84,6 +84,7 @@ namespace MySudoku.Perfomance
 
 		public void Up()
 		{
+			stack[level].Update(stack[level].Max, stack[level].Max);
 			stack[level].CalculateAverage();
 			level = level - 1;
 		}
