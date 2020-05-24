@@ -200,7 +200,7 @@ namespace MySudoku.Model
 		}
 
 		private SudokuGame sudokuGameGenerator;
-		bool Generate()
+		public bool Generate()
 		{
 			sudokuGameGenerator = new SudokuGame("L1");
 
@@ -216,7 +216,7 @@ namespace MySudoku.Model
 			return (sudokuGameGenerator != null);
 		}
 
-		List<IntegerTriple> GetSolution()
+		public List<IntegerTriple> GetSolution()
 		{
 			List<IntegerTriple> list = new List<IntegerTriple>();
 			sudokuGameGenerator.GetCellList().ForEach(cell => list.Add(new IntegerTriple(cell.Row, cell.Column, cell.SudokuCellValue)));
