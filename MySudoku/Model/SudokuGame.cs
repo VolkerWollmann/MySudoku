@@ -154,18 +154,31 @@ namespace MySudoku.Model
 					return null;
 			}
 
-			// Get a shuffled list all fields whith more than one value must be filled
-			List<SudokuCell> cellsToFill = sudokuCells.Where(cell => (cell.CellValue == 0)).ToList();
-			cellsToFill = RandomListAccess.GetShuffledList(cellsToFill);
+			// Get a orderd list all fields whith more than one value must be filled
+			// sort cells to fill by square
+			List <SudokuCell> cellsToFill = new List<SudokuCell>();
+			for(int squareRow = 0; squareRow <= 2; squareRow++ )
+			{
+				for(int squareColumn = 0; squareColumn<=2; squareColumn++ )
+				{
+					if ( squareRow != squareColumn )
+					{
+						cellsToFill = cellsToFill.Concat(sudokuCells.Where(
+							cell => (cell.CellValue == 0 && 
+							         cell.Row    >= squareRow*3    && cell.Row    <= squareRow*3+2 && 
+									 cell.Column >= squareColumn*3 && cell.Column <= squareColumn*3+2)).ToList()).ToList();
+					}
+				}
+			}
 
 			// nothing left to fill : it is a valid solution
 			if (cellsToFill.Count == 0)
 				return sudokuGame;
-		
-			int i = 0;
+
+			int c = 0;
 			foreach ( SudokuCell cell in cellsToFill)
 			{
-				performanceCounter.Update(cellsToFill.Count, ++i);
+				performanceCounter.Update(cellsToFill.Count, ++c);
 				foreach( int possibleValue in cell.CellPossibleValues )
 				{					
 					//make copy of the game
@@ -244,6 +257,7 @@ namespace MySudoku.Model
 
 			// Generate solution
 			ISudokuGenerator iSudokuGenerator = new SudokuBruteForceGenerator();
+			//ISudokuGenerator iSudokuGenerator = this;
 			bool result = iSudokuGenerator.Generate();
 			if (result)
 			{

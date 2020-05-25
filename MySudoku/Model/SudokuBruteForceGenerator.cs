@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using MySudoku.Interfaces;
-using MySudoku.Model;
 using MySudoku.Perfomance;
 
 namespace MySudoku.Model.BruteForce 
@@ -57,24 +56,42 @@ namespace MySudoku.Model.BruteForce
 			return list;
 		}
 
-		private void PopulateSubmatrix(int startRow, int EndRow, int startColumn, int EndColumn)
+		private List<Field> GetSubMartixFieldList(int sqaureRow, int squareColumn)
+		{
+			List<Field> result = new List<Field>();
+
+			for (int row = sqaureRow * 3; row <= sqaureRow * 3 + 2; row++)
+			{
+				for (int column = squareColumn * 3; column <= squareColumn * 3 + 2; column++)
+				{
+					result.Add(game[row, column]);
+				}
+			}
+
+			return result; 
+		}
+
+		private void PopulateSubmatrix(int sqaureRow, int squareColumn )
 		{
 			List<int> shuffledValues = RandomListAccess.GetShuffledList(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
 			int i = 0;
-			for (int row = startRow; row <= EndRow; row++)
+			for (int row = sqaureRow*3; row <= sqaureRow*3+2; row++)
 			{
-				for (int column = startColumn; column <= EndColumn; column++)
+				for (int column = squareColumn*3; column <= squareColumn*3+2; column++)
 				{
 					game[row, column].Value =shuffledValues[i++];
 				}
 			}
 		}
 
-		private Field[] allFields;
+		private Field[] fieldsToFill;
 		private PerformanceCounter performanceCounter;
 		private bool Search(int index)
 		{
-			Field currentField = allFields[index];
+			if (index >= fieldsToFill.Length)
+				return true;
+
+			Field currentField = fieldsToFill[index];
 			for(int i = 1; i<=9; i++)
 			{
 				performanceCounter.Update(9, i);
@@ -82,9 +99,6 @@ namespace MySudoku.Model.BruteForce
 				if (currentField.Check(i))
 				{
 					currentField.Value = i;
-
-					if (index == 53)
-						return true;
 
 					performanceCounter.Down();
 					bool result = Search(index + 1);
@@ -100,11 +114,9 @@ namespace MySudoku.Model.BruteForce
 		}
 		public bool Generate()
 		{
-			PopulateSubmatrix(0, 2, 0, 2);
-			PopulateSubmatrix(3, 5, 3, 5);
-			PopulateSubmatrix(6, 8, 6, 8);
+			for(int i =0; i<=2; i++)
+				PopulateSubmatrix(i, i);
 
-			allFields = RandomListAccess.GetShuffledList(game.Cast<Field>().Where(f => (f.Value == 0)).ToList()).ToArray();
 			performanceCounter = new PerformanceCounter();
 
 			return Search(0);
@@ -145,6 +157,19 @@ namespace MySudoku.Model.BruteForce
 					}
 				}
 			}
+
+			// allFields = RandomListAccess.GetShuffledList(game.Cast<Field>().Where(f => (f.Value == 0)).ToList()).ToArray();
+			List<Field> sortedList = new List<Field>();
+			for (int i = 0; i <= 2; i++)
+			{
+				for (int j = 0; j <= 2; j++)
+				{
+					if (i != j)
+						sortedList = sortedList.Concat(GetSubMartixFieldList(i, j)).ToList();
+				}
+			}
+
+			fieldsToFill = sortedList.ToArray();
 		}
 	}
 }
