@@ -84,25 +84,20 @@ namespace MySudoku.Model.BruteForce
 			}
 		}
 
-		private Field[] fieldsToFill;
-		private PerformanceCounter performanceCounter;
-		private bool Search(int index)
+		private bool Search(List<Field> fieldsToFill)
 		{
-			if (index >= fieldsToFill.Length)
+			if (!fieldsToFill.Any())
 				return true;
 
-			Field currentField = fieldsToFill[index];
+			Field currentField = fieldsToFill.First();
+
 			for(int i = 1; i<=9; i++)
 			{
-				performanceCounter.Update(9, i);
-
 				if (currentField.Check(i))
 				{
 					currentField.Value = i;
 
-					performanceCounter.Down();
-					bool result = Search(index + 1);
-					performanceCounter.Up();
+					bool result = Search((new List<Field>(fieldsToFill).GetRange(1, fieldsToFill.Count - 1)));
 			        if (result)
 						return true;
 
@@ -117,9 +112,17 @@ namespace MySudoku.Model.BruteForce
 			for(int i =0; i<=2; i++)
 				PopulateSubmatrix(i, i);
 
-			performanceCounter = new PerformanceCounter();
+			List<Field> sortedList = new List<Field>();
+			for (int i = 0; i <= 2; i++)
+			{
+				for (int j = 0; j <= 2; j++)
+				{
+					if (i != j)
+						sortedList = sortedList.Concat(GetSubMartixFieldList(i, j)).ToList();
+				}
+			}
 
-			return Search(0);
+			return Search(sortedList);
 		}
 		public SudokuBruteForceGenerator()
 		{
@@ -157,19 +160,6 @@ namespace MySudoku.Model.BruteForce
 					}
 				}
 			}
-
-			// allFields = RandomListAccess.GetShuffledList(game.Cast<Field>().Where(f => (f.Value == 0)).ToList()).ToArray();
-			List<Field> sortedList = new List<Field>();
-			for (int i = 0; i <= 2; i++)
-			{
-				for (int j = 0; j <= 2; j++)
-				{
-					if (i != j)
-						sortedList = sortedList.Concat(GetSubMartixFieldList(i, j)).ToList();
-				}
-			}
-
-			fieldsToFill = sortedList.ToArray();
 		}
 	}
 }
