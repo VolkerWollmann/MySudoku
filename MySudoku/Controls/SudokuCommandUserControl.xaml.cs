@@ -35,6 +35,8 @@ namespace MySudoku.Controls
 			return this as UIElement;
 		}
 
+		// Lock
+
 		public void SetClearCommandEventHandler(EventHandler eventHandler)
 		{
 			ClearCommandEventHandler += eventHandler;
