@@ -7,16 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
     <StackPanel Name="SudokuCommandUserControlPanel" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  >
-        
-        <Button Name="ButtonCommandClear" Height="50"  Click="ButtonCommandClear_Click"
+
+        <Button Name="ButtonCommandClear" Height="50"  Click="ButtonCommandClear_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
             Clear
         </Button>
-        <Button Name="ButtonCommandNew"  Height="50"  Click="ButtonCommandNew_Click"
+        <Button Name="ButtonCommandNew"  Height="50"  Click="ButtonCommandNew_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
             New
         </Button>
-        <Button Name="ButtonCommandBack"  Height="50"  Click="ButtonCommandBack_Click"
+        <Button Name="ButtonCommandBack"  Height="50"  Click="ButtonCommandBack_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
             Back
         </Button>
