@@ -16,5 +16,7 @@ namespace MySudoku.Interfaces
 		void SetNewCommandEventHandler(EventHandler eventHandler);
 
 		void SetBackCommandEventHandler(EventHandler eventHandler);
+
+		bool SetButtonsEnabled(bool buttonsEnabled);
 	}
 }

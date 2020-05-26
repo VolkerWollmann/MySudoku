@@ -1,6 +1,7 @@
 ﻿using MySudoku.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace MySudoku.Controls
 	/// <summary>
 	/// Interaction logic for SudokuCommandUserControl.xaml
 	/// </summary>
-	public partial class SudokuCommandUserControl : UserControl, ISudokuCommands
+	public partial class SudokuCommandUserControl : UserControl, ISudokuCommands, INotifyPropertyChanged
 	{
 		private EventHandler ClearCommandEventHandler;
 		private EventHandler BackCommandEventHandler;
@@ -28,11 +29,42 @@ namespace MySudoku.Controls
 		public SudokuCommandUserControl()
 		{
 			InitializeComponent();
+			this.DataContext = this;
 		}
 
 		public UIElement GetUIElement()
 		{
 			return this as UIElement;
+		}
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void NotifyPropertyChanged(String info)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(info));
+			}
+		}
+
+		bool _buttonsEnabled = true;
+		public bool ButtonsEnabled
+		{
+			get
+			{
+				return _buttonsEnabled;
+			}
+
+			private set
+			{
+				_buttonsEnabled = value;
+				NotifyPropertyChanged("ButtonsEnabled");
+			}
+		}
+		public bool SetButtonsEnabled(bool buttonsEnabled)
+		{
+			ButtonsEnabled  = buttonsEnabled;
+			return ButtonsEnabled;
 		}
 
 		public void SetClearCommandEventHandler(EventHandler eventHandler)

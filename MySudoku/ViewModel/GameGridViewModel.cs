@@ -4,6 +4,7 @@ using System.Windows.Input;
 using MySudoku.Controls;
 using MySudoku.Interfaces;
 using System;
+using System.Threading;
 
 namespace MySudoku.ViewModel
 {
@@ -226,10 +227,22 @@ namespace MySudoku.ViewModel
 			UpdateValues();
 		}
 
+
+		private static void BackGroundNew(object data)
+		{
+			GameGridViewModel gameGridViewModel = (GameGridViewModel)data;
+			gameGridViewModel.sudokuGame.New();
+			gameGridViewModel.UpdateValues();
+			gameGridViewModel.sudokuCommand.SetButtonsEnabled(true) ;
+		}
+
 		private void NewCommand(object sender, EventArgs e)
 		{
-			sudokuGame.New();
-			UpdateValues();
+			sudokuCommand.SetButtonsEnabled(false);
+
+			ParameterizedThreadStart ps = new ParameterizedThreadStart(BackGroundNew);
+			Thread thread = new Thread(ps);
+			thread.Start(this);
 		}
 
 		private void BackCommand(object sender, EventArgs e)
