@@ -41,7 +41,10 @@ namespace MySudoku.ViewModel
 				for (int column = 0; column < 9; column++)
 				{
 					sudokuDatas[row, column].SetValue(sudokuGame.GetCellValue(row, column));
-					sudokuDatas[row, column].SetPossibleValues(sudokuGame.GetCellPossibleValues(row, column));
+					sudokuDatas[row, column].SetPossibleValueSet(sudokuGame.GetCellPossibleValues(row, column));
+
+					sudokuGridView.SetValue(row, column, sudokuDatas[row, column].Value);
+					sudokuGridView.SetPossibleValueSet(row, column, sudokuDatas[row, column].PossibleValueSet);
 				}
 			}
 		}
@@ -68,14 +71,6 @@ namespace MySudoku.ViewModel
 				for (int column = 0; column < 9; column++)
 				{
 					sudokuDatas[row, column] = new ViewModelCellData();
-
-					Binding valueBinding = new Binding("Value");
-					valueBinding.Source = sudokuDatas[row, column];
-					sudokuGridView.BindValue(row, column, valueBinding);
-
-					Binding possibleValuesBinding = new Binding("PossibleValues");
-					possibleValuesBinding.Source = sudokuDatas[row, column];
-					sudokuGridView.BindPossibleValues(row, column, possibleValuesBinding);
 				}
 			}
 

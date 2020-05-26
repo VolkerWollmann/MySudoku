@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace MySudoku.ViewModel
 {
-	public class ViewModelCellData : INotifyPropertyChanged 
+	public class ViewModelCellData
 	{
 		private const string NotSet = "-";
 		public string Value { private set; get; }
-		public string PossibleValues { private set; get; }
+		public string PossibleValueSet { private set; get; }
 
 		public void SetValue(int value)
 		{
@@ -17,13 +17,13 @@ namespace MySudoku.ViewModel
 			else
 				Value = value.ToString();
 
-			OnPropertyChanged("Value");
 		}
 
-		public void SetPossibleValues(List<int> possibleValues)
+		public void SetPossibleValueSet(List<int> possibleValues)
 		{
-			if ((possibleValues.Count() == 1) && (Value!= NotSet))
-				PossibleValues = "";
+
+			if ((possibleValues.Count() == 1))
+				PossibleValueSet = "";
 			else
 			{
 				string result = "{";
@@ -38,26 +38,16 @@ namespace MySudoku.ViewModel
 
 				result = result + "}";
 
-				PossibleValues = result;
+				PossibleValueSet = result;
 			}
-			OnPropertyChanged("PossibleValues");
 		}
 
-		public ViewModelCellData()
-		{
-			Value = "";
-			PossibleValues = "";
-		}
 
-		public event PropertyChangedEventHandler PropertyChanged;
 
-		private void OnPropertyChanged(string info)
+			public ViewModelCellData()
 		{
-			PropertyChangedEventHandler handler = PropertyChanged;
-			if (handler != null)
-			{
-				handler(this, new PropertyChangedEventArgs(info));
-			}
+			Value = NotSet;
+			PossibleValueSet = "---";
 		}
 	}
 }

@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
@@ -9,35 +10,49 @@ namespace MySudoku.Controls
 	/// <summary>
 	/// Interaction logic for SudokuCellUserControl.xaml
 	/// </summary>
-	public partial class SudokuCellUserControl : UserControl
+	public partial class SudokuCellUserControl : UserControl, INotifyPropertyChanged
 	{
 		private SudokuGridUserControl sudokuGridUserControl;
-		
+
+		public event PropertyChangedEventHandler PropertyChanged;
+
+		private void NotifyPropertyChanged(string info)
+		{
+			if (PropertyChanged != null)
+			{
+				PropertyChanged(this, new PropertyChangedEventArgs(info));
+			}
+		}
+
 		public int Row { get; private set; }
 		public int Column { get; private set; }
 
+		string _value;
 		public string Value {
 			set
 			{
-				TextBlockValue.Text = value;
+				_value = value;
+				NotifyPropertyChanged("Value");
 			}
 
 			get
 			{
-				return TextBlockValue.Text;
+				return _value;
 			}
 		}
 
+		string _possibleValueSet;
 		public string PossibleValueSet
 		{
 			set
 			{
-				TextBlockPossibleValueSet.Text = value;
+				_possibleValueSet = value;
+				NotifyPropertyChanged("PossibleValueSet");
 			}
 
 			get
 			{
-				return TextBlockPossibleValueSet.Text;
+				return _possibleValueSet;
 			}
 		}
 
@@ -59,23 +74,14 @@ namespace MySudoku.Controls
 			SudokuCellControlBorder.BorderBrush = new SolidColorBrush(Colors.Black);
 		}
 
-	
-		public void BindValue(Binding binding)
-		{
-			TextBlockValue.SetBinding(TextBlock.TextProperty, binding);
-		}
-
-		public void BindPossibleValues(Binding binding)
-		{
-			TextBlockPossibleValueSet.SetBinding(TextBlock.TextProperty, binding);
-		}
-
-
 		public SudokuCellUserControl()
 		{
 			InitializeComponent();
-			Value = "0";
-			PossibleValueSet = "{-}";
+			this.DataContext = this;
+
+			Value = "Hase";
+			PossibleValueSet = "Hund";
+			TextBlockPossibleValueSet.Text = "Hund";
 
 			SudokuCellControlPanel.MouseLeftButtonDown += SudokuCellControlPanel_MouseLeftButtonDown;
 

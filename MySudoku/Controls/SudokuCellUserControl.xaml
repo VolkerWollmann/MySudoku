@@ -9,7 +9,8 @@
     <Border Name="SudokuCellControlBorder" >
         <StackPanel Name="SudokuCellControlPanel" Orientation="Vertical" Background="White" >
 
-            <TextBlock Name="TextBlockValue" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" >
+            <TextBlock Name="TextBlockValue" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White"
+                       Text="{Binding Path=Value}">
                 -
             </TextBlock>
             <TextBlock Name="TextBlockPossibleValueSet" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" 
