@@ -79,9 +79,8 @@ namespace MySudoku.Controls
 			InitializeComponent();
 			this.DataContext = this;
 
-			Value = "Hase";
-			PossibleValueSet = "Hund";
-			TextBlockPossibleValueSet.Text = "Hund";
+			Value = "-";
+			PossibleValueSet = "---";
 
 			SudokuCellControlPanel.MouseLeftButtonDown += SudokuCellControlPanel_MouseLeftButtonDown;
 
