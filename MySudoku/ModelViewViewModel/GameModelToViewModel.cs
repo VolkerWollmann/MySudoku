@@ -23,19 +23,19 @@ namespace MySudoku.ViewModel
 		};
 
 		// Grid from program
-		private Grid sudokuGrid;
+		private Grid SudokuGrid;
 
 		// The game model
-		private ISudokuGameModel sudokuGame;
+		private ISudokuGameModel SudokuGame;
 
 		// The view model
-		ISudokuViewModel sudokuGridView;
+		private ISudokuViewModel SudokuGridView;
 
 		// Formatting of the game data for single cells of the view model
-		GameCellToViewCell[,] sudokuDatas = new GameCellToViewCell[9, 9];
+		private GameCellToViewCell[,] GameCellToViewCell = new GameCellToViewCell[9, 9];
 
 		// Command Control
-		ISudokuCommands sudokuCommand;
+		private ISudokuCommands SudokuCommands;
 
 		private void UpdateValues()
 		{
@@ -43,55 +43,55 @@ namespace MySudoku.ViewModel
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					sudokuDatas[row, column].SetValue(sudokuGame.GetCellValue(row, column));
-					sudokuDatas[row, column].SetPossibleValueSet(sudokuGame.GetCellPossibleValues(row, column));
+					GameCellToViewCell[row, column].SetValue(SudokuGame.GetCellValue(row, column));
+					GameCellToViewCell[row, column].SetPossibleValueSet(SudokuGame.GetCellPossibleValues(row, column));
 
-					sudokuGridView.SetValue(row, column, sudokuDatas[row, column].Value);
-					sudokuGridView.SetPossibleValueSet(row, column, sudokuDatas[row, column].PossibleValueSet);
+					SudokuGridView.SetValue(row, column, GameCellToViewCell[row, column].Value);
+					SudokuGridView.SetPossibleValueSet(row, column, GameCellToViewCell[row, column].PossibleValueSet);
 				}
 			}
 		}
 
-		public GameModelToViewModel(Grid _sudokuGrid, ISudokuGameModel _sudokuGame)
+		public GameModelToViewModel(Grid sudokuGrid, ISudokuGameModel sudokuGame)
 		{
 			// grid form the program
-			sudokuGrid = _sudokuGrid;
+			SudokuGrid = sudokuGrid;
 
 			// prepare model
-			sudokuGame = _sudokuGame;
+			SudokuGame = sudokuGame;
 
 			// prepare game grid (view)
-			sudokuGridView = (ISudokuViewModel)new SudokuGridUserControl();
+			SudokuGridView = (ISudokuViewModel)new SudokuGridUserControl();
 
 			// add game grid to progam
-			sudokuGrid.Children.Add(sudokuGridView.GetUIElement());
-			Grid.SetRow(sudokuGridView.GetUIElement(), 0);
-			Grid.SetColumn(sudokuGridView.GetUIElement(), 0);
+			sudokuGrid.Children.Add(SudokuGridView.GetUIElement());
+			Grid.SetRow(SudokuGridView.GetUIElement(), 0);
+			Grid.SetColumn(SudokuGridView.GetUIElement(), 0);
 
 			// prepare the binding
 			for (int row = 0; row < 9; row++)
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					sudokuDatas[row, column] = new GameCellToViewCell();
+					GameCellToViewCell[row, column] = new GameCellToViewCell();
 				}
 			}
 
 			// prepare Key operation
-			sudokuGridView.SetKeyEventHandler(KeyUp);
+			SudokuGridView.SetKeyEventHandler(KeyUp);
 
 			// create the game button user control (view)
-			sudokuCommand = new SudokuCommandUserControl();
+			SudokuCommands = new SudokuCommandUserControl();
 
 			// add command panel to program
-			sudokuGrid.Children.Add(sudokuCommand.GetUIElement());
-			Grid.SetRow(sudokuCommand.GetUIElement(), 0);
-			Grid.SetColumn(sudokuCommand.GetUIElement(), 1);
+			sudokuGrid.Children.Add(SudokuCommands.GetUIElement());
+			Grid.SetRow(SudokuCommands.GetUIElement(), 0);
+			Grid.SetColumn(SudokuCommands.GetUIElement(), 1);
 
 			// bind command to buttons
-			sudokuCommand.SetClearCommandEventHandler(ClearCommand);
-			sudokuCommand.SetBackCommandEventHandler(BackCommand);
-			sudokuCommand.SetNewCommandEventHandler(NewCommand);
+			SudokuCommands.SetClearCommandEventHandler(ClearCommand);
+			SudokuCommands.SetBackCommandEventHandler(BackCommand);
+			SudokuCommands.SetNewCommandEventHandler(NewCommand);
 
 			UpdateValues();
 
@@ -102,7 +102,7 @@ namespace MySudoku.ViewModel
 		private void Move(MoveDirection moveDirection)
 		{
 			int row, column;
-			sudokuGridView.GetCurrentCellCoordiantes(out row, out column);
+			SudokuGridView.GetCurrentCellCoordiantes(out row, out column);
 
 			bool moved = false;
 			if ((row >= 0) && (column >= 0))
@@ -142,7 +142,7 @@ namespace MySudoku.ViewModel
 
 				if (moved)
 				{
-					sudokuGridView.MarkCell(row, column);
+					SudokuGridView.MarkCell(row, column);
 				}
 			}
 		}
@@ -185,21 +185,21 @@ namespace MySudoku.ViewModel
 				return (key - Key.NumPad0);
 			}
 
-			return sudokuGame.GetInvalidDigit();
+			return SudokuGame.GetInvalidDigit();
 		}
 
 		public void Set(Key key)
 		{
 			// Key to sukdou digit
 			int sudokuDigit = SudokuDigitFromKey(key);
-			if (sudokuDigit != sudokuGame.GetInvalidDigit())
+			if (sudokuDigit != SudokuGame.GetInvalidDigit())
 			{
 				int row, column;
-				sudokuGridView.GetCurrentCellCoordiantes(out row, out column);
+				SudokuGridView.GetCurrentCellCoordiantes(out row, out column);
 
 				if ((row >= 0) && (column >= 0))
 				{
-					sudokuGame.SetValue(row, column, sudokuDigit);
+					SudokuGame.SetValue(row, column, sudokuDigit);
 					UpdateValues();
 				}
 
@@ -221,7 +221,7 @@ namespace MySudoku.ViewModel
 		#region commands
 		private void ClearCommand(object sender, EventArgs e)
 		{
-			sudokuGame.Clear();
+			SudokuGame.Clear();
 			UpdateValues();
 		}
 
@@ -229,14 +229,14 @@ namespace MySudoku.ViewModel
 		private static void BackGroundNew(object data)
 		{
 			GameModelToViewModel gameGridViewModel = (GameModelToViewModel)data;
-			gameGridViewModel.sudokuGame.New();
+			gameGridViewModel.SudokuGame.New();
 			gameGridViewModel.UpdateValues();
-			gameGridViewModel.sudokuCommand.SetButtonsEnabled(true) ;
+			gameGridViewModel.SudokuCommands.SetButtonsEnabled(true) ;
 		}
 
 		private void NewCommand(object sender, EventArgs e)
 		{
-			sudokuCommand.SetButtonsEnabled(false);
+			SudokuCommands.SetButtonsEnabled(false);
 
 			ParameterizedThreadStart ps = new ParameterizedThreadStart(BackGroundNew);
 			Thread thread = new Thread(ps);
@@ -245,7 +245,7 @@ namespace MySudoku.ViewModel
 
 		private void BackCommand(object sender, EventArgs e)
 		{
-			sudokuGame.Back();
+			SudokuGame.Back();
 			UpdateValues();
 		}
 
