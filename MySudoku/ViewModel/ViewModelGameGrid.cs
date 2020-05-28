@@ -8,7 +8,7 @@ using System.Threading;
 
 namespace MySudoku.ViewModel
 {
-	public class GameGridViewModel
+	public class ViewModelGameGrid
 	{
 		public enum MoveDirection
 		{
@@ -49,7 +49,7 @@ namespace MySudoku.ViewModel
 			}
 		}
 
-		public GameGridViewModel(Grid _sudokuGrid, ISudokuGameModel _sudokuGame)
+		public ViewModelGameGrid(Grid _sudokuGrid, ISudokuGameModel _sudokuGame)
 		{
 			// grid form the program
 			sudokuGrid = _sudokuGrid;
@@ -225,7 +225,7 @@ namespace MySudoku.ViewModel
 
 		private static void BackGroundNew(object data)
 		{
-			GameGridViewModel gameGridViewModel = (GameGridViewModel)data;
+			ViewModelGameGrid gameGridViewModel = (ViewModelGameGrid)data;
 			gameGridViewModel.sudokuGame.New();
 			gameGridViewModel.UpdateValues();
 			gameGridViewModel.sudokuCommand.SetButtonsEnabled(true) ;

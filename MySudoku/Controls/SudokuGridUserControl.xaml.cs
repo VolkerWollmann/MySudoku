@@ -10,7 +10,7 @@ namespace MySudoku.Controls
 	/// <summary>
 	/// Interaction logic for SudokuGridUserControl.xaml
 	/// </summary>
-	public partial class SudokuGridUserControl : UserControl, ISudokuGridView, INotifyPropertyChanged
+	public partial class SudokuGridUserControl : UserControl, ISudokuGridView
 	{
 		SudokuCellUserControl[,] SudokuCellUserControlGrid;
 		public SudokuCellUserControl CurrentSudokuCellUserControl { get; private set; } = null;
@@ -18,9 +18,6 @@ namespace MySudoku.Controls
 		private int[,] iValues= new int[9,9];
 
 		public EventHandler<Key> EventHandlerKey;
-
-		public event PropertyChangedEventHandler PropertyChanged;
-
 
 		public SudokuGridUserControl()
 		{

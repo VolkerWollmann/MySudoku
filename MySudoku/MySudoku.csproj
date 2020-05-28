@@ -75,7 +75,7 @@
     <Compile Include="Model\SudokuBruteForceGenerator.cs" />
     <Compile Include="Model\SudokuCell.cs" />
     <Compile Include="Model\SudokuGame.cs" />
-    <Compile Include="ViewModel\GameGridViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelGameGrid.cs" />
     <Compile Include="ViewModel\ViewModelCellData.cs" />
     <Compile Include="ViewModel\ViewModelInitialize.cs" />
     <Page Include="Controls\SudokuCellUserControl.xaml">
