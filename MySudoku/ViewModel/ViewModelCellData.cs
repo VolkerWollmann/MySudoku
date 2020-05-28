@@ -10,8 +10,10 @@ namespace MySudoku.ViewModel
 		public string Value { private set; get; }
 		public string PossibleValueSet { private set; get; }
 
+		public int _value;
 		public void SetValue(int value)
 		{
+			_value = value;
 			if (value == 0)
 				Value = NotSet;
 			else
@@ -22,7 +24,7 @@ namespace MySudoku.ViewModel
 		public void SetPossibleValueSet(List<int> possibleValues)
 		{
 
-			if ((possibleValues.Count() == 1))
+			if (_value != 0)
 				PossibleValueSet = "";
 			else
 			{
@@ -44,9 +46,10 @@ namespace MySudoku.ViewModel
 
 
 
-			public ViewModelCellData()
+		public ViewModelCellData()
 		{
 			Value = NotSet;
+			_value = 0;
 			PossibleValueSet = "---";
 		}
 	}
