@@ -8,7 +8,10 @@ using System.Threading;
 
 namespace MySudoku.ViewModel
 {
-	public class ViewModelGameGrid
+	/// <summary>
+	/// Maps the game model to the view model
+	/// </summary>
+	public class GameModelToViewModel
 	{
 		public enum MoveDirection
 		{
@@ -22,14 +25,14 @@ namespace MySudoku.ViewModel
 		// Grid from program
 		private Grid sudokuGrid;
 
-		// The game grid from the model
+		// The game model
 		private ISudokuGameModel sudokuGame;
 
-		// The view control
-		ISudokuGridView sudokuGridView;
+		// The view model
+		ISudokuViewModel sudokuGridView;
 
-		// The binding information
-		ViewModelCellData[,] sudokuDatas = new ViewModelCellData[9, 9];
+		// Formatting of the game data for single cells of the view model
+		GameCellToViewCell[,] sudokuDatas = new GameCellToViewCell[9, 9];
 
 		// Command Control
 		ISudokuCommands sudokuCommand;
@@ -49,7 +52,7 @@ namespace MySudoku.ViewModel
 			}
 		}
 
-		public ViewModelGameGrid(Grid _sudokuGrid, ISudokuGameModel _sudokuGame)
+		public GameModelToViewModel(Grid _sudokuGrid, ISudokuGameModel _sudokuGame)
 		{
 			// grid form the program
 			sudokuGrid = _sudokuGrid;
@@ -58,7 +61,7 @@ namespace MySudoku.ViewModel
 			sudokuGame = _sudokuGame;
 
 			// prepare game grid (view)
-			sudokuGridView = (ISudokuGridView)new SudokuGridUserControl();
+			sudokuGridView = (ISudokuViewModel)new SudokuGridUserControl();
 
 			// add game grid to progam
 			sudokuGrid.Children.Add(sudokuGridView.GetUIElement());
@@ -70,7 +73,7 @@ namespace MySudoku.ViewModel
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					sudokuDatas[row, column] = new ViewModelCellData();
+					sudokuDatas[row, column] = new GameCellToViewCell();
 				}
 			}
 
@@ -225,7 +228,7 @@ namespace MySudoku.ViewModel
 
 		private static void BackGroundNew(object data)
 		{
-			ViewModelGameGrid gameGridViewModel = (ViewModelGameGrid)data;
+			GameModelToViewModel gameGridViewModel = (GameModelToViewModel)data;
 			gameGridViewModel.sudokuGame.New();
 			gameGridViewModel.UpdateValues();
 			gameGridViewModel.sudokuCommand.SetButtonsEnabled(true) ;

@@ -5,7 +5,7 @@ using System.Windows.Input;
 
 namespace MySudoku.Interfaces
 {
-	public interface ISudokuGridView
+	public interface ISudokuViewModel
 	{
 		UIElement GetUIElement();
 
