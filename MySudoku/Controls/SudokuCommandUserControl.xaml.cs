@@ -67,6 +67,22 @@ namespace MySudoku.Controls
 			return ButtonsEnabled;
 		}
 
+		public int GetNumberOfCellsToFill()
+		{
+			int numberOfCellsToFill;
+			if (!int.TryParse(Numbers.Text, out numberOfCellsToFill))
+			{
+				numberOfCellsToFill = 54;
+				Numbers.Text = "54";
+			}
+			else if ((numberOfCellsToFill <0) || (numberOfCellsToFill>81))
+			{
+				numberOfCellsToFill = 54;
+				Numbers.Text = "54";
+			}
+			return numberOfCellsToFill;
+		}
+
 		public void SetClearCommandEventHandler(EventHandler eventHandler)
 		{
 			ClearCommandEventHandler += eventHandler;

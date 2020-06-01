@@ -27,6 +27,7 @@ namespace MySudoku.ViewModel
 
 		// The game model
 		private ISudokuGameModel SudokuGame;
+		private int NumberOfCellsToFill;
 
 		// The view model
 		private ISudokuViewModel SudokuGridView;
@@ -229,7 +230,7 @@ namespace MySudoku.ViewModel
 		private static void BackGroundNew(object data)
 		{
 			GameModelToViewModel gameGridViewModel = (GameModelToViewModel)data;
-			gameGridViewModel.SudokuGame.New();
+			gameGridViewModel.SudokuGame.New(gameGridViewModel.NumberOfCellsToFill);
 			gameGridViewModel.UpdateValues();
 			gameGridViewModel.SudokuCommands.SetButtonsEnabled(true) ;
 		}
@@ -237,7 +238,7 @@ namespace MySudoku.ViewModel
 		private void NewCommand(object sender, EventArgs e)
 		{
 			SudokuCommands.SetButtonsEnabled(false);
-
+			NumberOfCellsToFill = SudokuCommands.GetNumberOfCellsToFill();
 			ParameterizedThreadStart ps = new ParameterizedThreadStart(BackGroundNew);
 			Thread thread = new Thread(ps);
 			thread.Start(this);

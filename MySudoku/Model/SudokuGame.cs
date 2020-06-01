@@ -250,7 +250,7 @@ namespace MySudoku.Model
 		/// <summary>
 		/// Populates the game with a new start situation
 		/// </summary>
-		public void New()
+		public void New( int numberOfCellsToFill)
 		{
 			// Create a blank game
 			Clear();
@@ -261,8 +261,14 @@ namespace MySudoku.Model
 			bool result = iSudokuGenerator.Generate();
 			if (result)
 			{
-				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(iSudokuGenerator.GetSolution()).Take(54).ToList();
+				var x = iSudokuGenerator.GetSolution();
+				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(iSudokuGenerator.GetSolution()).Take(numberOfCellsToFill).ToList();
+				list.Sort();
 				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
+			}
+			else
+			{
+				;
 			}
 			
 		}

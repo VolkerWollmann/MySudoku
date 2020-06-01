@@ -9,7 +9,7 @@
     <Grid x:Name="MySudokuGrid" MinWidth="550" MinHeight="450">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="9*" MinWidth="50"  />
-            <ColumnDefinition Width="100" MinWidth="100" MaxWidth="100" />
+            <ColumnDefinition Width="120" MinWidth="150" MaxWidth="150" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*" MinHeight="50" />

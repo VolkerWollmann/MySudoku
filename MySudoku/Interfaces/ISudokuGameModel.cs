@@ -18,7 +18,7 @@ namespace MySudoku.Interfaces
 
 		void Clear();
 
-		void New();
+		void New(int numberOfCellsToFill);
 
 		void Back();
 	}

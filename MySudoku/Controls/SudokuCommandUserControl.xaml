@@ -16,6 +16,11 @@
                 Margin="10,10,10,10">
             New
         </Button>
+
+        <DockPanel LastChildFill="True">
+            <Label Margin="10,10,10,10" VerticalContentAlignment="Center" >Numbers:</Label>
+            <TextBox Name="Numbers" Width="Auto" Margin="10,10,10,10" VerticalContentAlignment="Center">54</TextBox>
+        </DockPanel>
         <Button Name="ButtonCommandBack"  Height="50"  Click="ButtonCommandBack_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
             Back

@@ -6,6 +6,11 @@ namespace MySudoku.Model
 	internal class RandomListAccess
 	{
 		private static Random random = new Random();
+
+		public static void SetSeed(int i)
+		{
+			random = new Random(i);
+		}
 		internal static T GetRandomElement<T>(List<T> list)
 		{
 			int index = random.Next(0, list.Count);

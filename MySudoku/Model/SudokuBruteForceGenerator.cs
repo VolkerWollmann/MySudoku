@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Controls;
 using MySudoku.Interfaces;
 using MySudoku.Perfomance;
 
@@ -140,22 +141,31 @@ namespace MySudoku.Model.BruteForce
 				for (int column = 0; column < 9; column++)
 				{
 					for(int i = 0; i<9; i++)
-					{   
-						if( i != row)
+					{
+						if (i != row)
+						{
 							game[row, column].Neighbors.Add(game[i, column]);
+						}
 						if (i != column)
+						{
 							game[row, column].Neighbors.Add(game[row, i]);
+						}
 					}
 
 					int rowBase = (row / 3) * 3;
 					int columnBase = (column / 3) * 3;
 
-					for (int i= rowBase; i<rowBase+2; i++ )
+					for (int i= rowBase; i<=rowBase+2; i++ )
 					{
-						for(int j= columnBase; j<columnBase+2; j++)
+						for(int j= columnBase; j<=columnBase+2; j++)
 						{
-							if ((i != row) && (j != column))
-								game[row, column].Neighbors.Add(game[i, j]);
+							if ((i != row) || (j != column))
+							{
+								if (!game[row, column].Neighbors.Where(field => (field.Row == i && field.Column == j)).Any())
+								{
+									game[row, column].Neighbors.Add(game[i, j]);
+								}
+							}
 						}
 					}
 				}
