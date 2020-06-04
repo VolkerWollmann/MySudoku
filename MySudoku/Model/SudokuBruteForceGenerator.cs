@@ -125,28 +125,26 @@ namespace MySudoku.Model.BruteForce
 				}
 			}
 
-			for (int row = 0; row < 9; row++)
+			game.Cast<Field>().ToList().ForEach( f =>
 			{
-				for (int column = 0; column < 9; column++)
-				{
-					// Row neighbours
-					IEnumerable<Field> rowNeighbours = game.Cast<Field>().Where(field => (field.Row == row && field.Column != column));
-					game[row, column].Neighbours.AddRange(rowNeighbours.ToList());
+				// Row neighbours
+				IEnumerable<Field> rowNeighbours = game.Cast<Field>().Where(field => (field.Row == f.Row && field.Column != f.Column));
+				f.Neighbours.AddRange(rowNeighbours.ToList());
 
-					// Column neighbours
-					IEnumerable<Field> columnNeighbours = game.Cast<Field>().Where(field => (field.Row != row && field.Column == column));
-					game[row, column].Neighbours.AddRange(columnNeighbours.ToList());
+				// Column neighbours
+				IEnumerable<Field> columnNeighbours = game.Cast<Field>().Where(field => (field.Row != f.Row && field.Column == f.Column));
+				f.Neighbours.AddRange(columnNeighbours.ToList());
 
-					// Square neighbours
-					int rowBase = (row / 3) * 3;
-					int columnBase = (column / 3) * 3;
+				// Square neighbours
+				int rowBase = (f.Row / 3) * 3;
+				int columnBase = (f.Column / 3) * 3;
 
-					IEnumerable<Field> l = game.Cast<Field>().Where(field => (field.Row >= rowBase) && (field.Row <= rowBase + 2) && (field.Column >= columnBase) && (field.Column <= columnBase + 2));
-					l = l.Where(field => (field.Row != row && field.Column != column));
-					l = l.Where(field => (!game[row, column].Neighbours.Contains(field)));
-					game[row, column].Neighbours.AddRange(l);
-				}
-			}
+				IEnumerable<Field> l = game.Cast<Field>().Where(field => (field.Row >= rowBase) && (field.Row <= rowBase + 2) && (field.Column >= columnBase) && (field.Column <= columnBase + 2));
+				l = l.Where(field => (field.Row != f.Row && field.Column != f.Column));
+				l = l.Where(field => (!f.Neighbours.Contains(field)));
+				f.Neighbours.AddRange(l);
+			});
+			
 		}
 	}
 }
