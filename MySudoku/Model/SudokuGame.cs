@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Navigation;
 using MySudoku.Interfaces;
 using MySudoku.Model.BruteForce;
 using MySudoku.Perfomance;
@@ -14,7 +15,7 @@ namespace MySudoku.Model
 	/// The cells are empty or hold a digit 1-9
 	/// and a set of possible digits
 	/// </summary>
-	public class SudokuGame : ISudokuGameModel, ISudokuGenerator 
+	public class SudokuGame : ISudokuGameModel, ISudokuGenerator
 	{
 		private string Name { get; set; }
 
@@ -58,9 +59,60 @@ namespace MySudoku.Model
 		/// <returns></returns>
 		public bool IsValid()
 		{
-			return grid.Cast<SudokuCell>().All(c => c.IsValid());
+			return GetCellList().All(c => c.IsValid());
 		}
 
+		public void GetFirstInvalid()
+		{
+			var x = GetCellList().First(c => !c.IsValid());
+		}
+
+		public bool IsValid2()
+		{
+			for (int i =0; i<9; i++)
+			{
+				int[] counter;
+				counter = new int[10];
+				GetCellList().Where(c => (c.Column == i)).ToList().ForEach(c => { counter[c.CellValue]++; });
+				for (int j = 1; j <= 9; j++)
+				{
+					if (counter[j] >= 2)
+						return false;
+				}
+				counter = new int[10];
+				GetCellList().Where( c => (c.Row == i)).ToList().ForEach(c => { counter[c.CellValue]++; });
+				for (int j = 1; j <= 9; j++)
+				{
+					if (counter[j] >= 2)
+						return false;
+				}
+
+			}
+
+			for( int i=0; i<=2; i++)
+			{
+				for(int j=0; j<=2; j++)
+				{
+					int[] counter = new int[10];
+					int rowbase = 3 * i;
+					int columnbase = 3 * j;
+					for( int k= rowbase; k<= rowbase +2; k++)
+					{
+						for( int l= columnbase; l<=columnbase +2; l++)
+						{
+							counter[GetCellValue(k, l)]++;
+						}
+					}
+					for (int m = 1; m <= 9; m++)
+					{
+						if (counter[m] >= 2)
+							return false;
+					}
+				}
+			}
+
+			return true;
+		}
 		public bool IsEqual(SudokuGame other)
 		{
 			for (int row = 0; row < 9; row++)
@@ -131,71 +183,48 @@ namespace MySudoku.Model
 
 		private SudokuGame Search(SudokuGame sudokuGame, int level)
 		{
+			var c1 = sudokuGame.GetCellList().Where(ce => (ce.CellValue > 0)).Count();
+
 			// check vor valid game
 			if (!sudokuGame.IsValid())
+			{
+				sudokuGame.GetFirstInvalid();
 				return null;
-
-			List<SudokuCell> sudokuCells = sudokuGame.GetCellList();
-
-			// First evaluate single possible values
-			SudokuCell spvc = sudokuCells.FirstOrDefault(cell => (cell.CellValue == 0 && cell.CellPossibleValues.Count == 1));
-			if (spvc != null)
-			{
-				while (spvc != null)
-				{
-					bool canSet = sudokuGame.SetValue(spvc.Row, spvc.Column, spvc.CellPossibleValues.First());
-					if (!canSet)
-						return null;
-
-					spvc = sudokuCells.FirstOrDefault(cell => (cell.CellValue == 0 && cell.CellPossibleValues.Count == 1));
-				}
-
-				if (!sudokuGame.IsValid())
-					return null;
 			}
 
-			// Get a orderd list all fields whith more than one value must be filled
-			// sort cells to fill by square
-			List <SudokuCell> cellsToFill = new List<SudokuCell>();
-			for(int squareRow = 0; squareRow <= 2; squareRow++ )
+			bool b = sudokuGame.IsValid2();
+			if (!b)
 			{
-				for(int squareColumn = 0; squareColumn<=2; squareColumn++ )
-				{
-					if ( squareRow != squareColumn )
-					{
-						cellsToFill = cellsToFill.Concat(sudokuCells.Where(
-							cell => (cell.CellValue == 0 && 
-							         cell.Row    >= squareRow*3    && cell.Row    <= squareRow*3+2 && 
-									 cell.Column >= squareColumn*3 && cell.Column <= squareColumn*3+2)).ToList()).ToList();
-					}
-				}
+				;
 			}
+
+			List<SudokuCell> cellsToFill = sudokuGame.GetCellList().Where(ce => (ce.CellValue == 0)).ToList();
 
 			// nothing left to fill : it is a valid solution
 			if (cellsToFill.Count == 0)
 				return sudokuGame;
 
 			int c = 0;
-			foreach ( SudokuCell cell in cellsToFill)
-			{
-				performanceCounter.Update(cellsToFill.Count, ++c);
-				foreach( int possibleValue in cell.CellPossibleValues )
-				{					
-					//make copy of the game
-					SudokuGame tryGame = sudokuGame.Copy();
+			SudokuCell cell = cellsToFill.First();
 
-					// try the value
-					if (tryGame.SetValue(cell.Row, cell.Column, possibleValue))
+			foreach (int possibleValue in cell.CellPossibleValues)
+			{
+				performanceCounter.Update(cell.CellPossibleValues.Count, ++c);
+				//make copy of the game
+				SudokuGame tryGame = sudokuGame.Copy();
+
+				// try the value
+				if (tryGame.SetValue(cell.Row, cell.Column, possibleValue))
+				{
+					var c2 = tryGame.GetCellList().Where(ce => (ce.CellValue > 0)).Count();
+					// now try one recursion deeper, with one field more set
+					performanceCounter.Down();
+					tryGame = Search(tryGame, level + 1);
+					performanceCounter.Up();
+					if (tryGame != null)
 					{
-						// now try one recursion deeper, with one field more set
-						performanceCounter.Down();
-						tryGame = Search(tryGame, level+1);
-						performanceCounter.Up();
-						if (tryGame != null)
-						{
-							// the value contributes to a valid solution
-							return tryGame;
-						}
+						// the value contributes to a valid solution
+						return tryGame;
 					}
 				}
 			}
@@ -256,8 +285,8 @@ namespace MySudoku.Model
 			Clear();
 
 			// Generate solution
-			ISudokuGenerator iSudokuGenerator = new SudokuBruteForceGenerator();
-			//ISudokuGenerator iSudokuGenerator = this;
+			//ISudokuGenerator iSudokuGenerator = new SudokuBruteForceGenerator();
+			ISudokuGenerator iSudokuGenerator = this;
 			bool result = iSudokuGenerator.Generate();
 			if (result)
 			{
@@ -265,6 +294,11 @@ namespace MySudoku.Model
 				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(iSudokuGenerator.GetSolution()).Take(numberOfCellsToFill).ToList();
 				list.Sort();
 				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
+
+				if (!this.IsValid2())
+				{
+					;
+				}
 			}
 			else
 			{
