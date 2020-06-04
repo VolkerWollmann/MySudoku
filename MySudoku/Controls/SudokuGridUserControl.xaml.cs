@@ -1,8 +1,6 @@
 ﻿using System;
-using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using MySudoku.Interfaces;
 namespace MySudoku.Controls
@@ -69,7 +67,11 @@ namespace MySudoku.Controls
 
 		public void SetPossibleValueSet(int row, int column, string possibleValueSet)
 		{
-			SudokuCellUserControlGrid[row, column].PossibleValueSet = possibleValueSet;
+			// decouple threads
+			this.Dispatcher.Invoke(() =>
+			{
+				SudokuCellUserControlGrid[row, column].PossibleValueSet = possibleValueSet;
+			});
 		}
 
 		public void SetCell(int row, int column)

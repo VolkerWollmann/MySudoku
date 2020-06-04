@@ -5,17 +5,19 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:MySudoku.Controls"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="100">
+             d:DesignHeight="100" d:DesignWidth="100"
+             >
     <Border Name="SudokuCellControlBorder" >
-        <StackPanel Name="SudokuCellControlPanel" Orientation="Vertical" Background="White" >
+        <StackPanel Name="SudokuCellControlPanel" Orientation="Vertical" 
+                    Background="{Binding Path=BackGroundColor}" >
 
-            <TextBlock Name="TextBlockValue" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
+            <TextBlock Name="TextBlockValue" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding Path=BackGroundColor}">
                 <TextBlock.Text>
                     <Binding Path="Value" />
                 </TextBlock.Text>
             </TextBlock>
             <TextBlock Name="TextBlockPossibleValueSet" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                       TextWrapping="Wrap" Background="White" >
+                       TextWrapping="Wrap" Background="{Binding Path=BackGroundColor}" >
                 <TextBlock.Text>
                     <Binding Path="PossibleValueSet" />
                 </TextBlock.Text>

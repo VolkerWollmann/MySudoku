@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,7 +13,13 @@ namespace MySudoku.Controls
 	/// </summary>
 	public partial class SudokuCellUserControl : UserControl, INotifyPropertyChanged
 	{
-		private SudokuGridUserControl sudokuGridUserControl;
+		#region Constants
+		private static SolidColorBrush SCBAntiAntiqueWhite = new SolidColorBrush(Colors.AntiqueWhite);
+		private static SolidColorBrush SCBWhite = new SolidColorBrush(Colors.White);
+		private static SolidColorBrush SCBLightGreen = new SolidColorBrush(Colors.LightGreen);
+		#endregion
+
+		private SudokuGridUserControl SudokuGridUserControl;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -48,6 +55,7 @@ namespace MySudoku.Controls
 			{
 				_possibleValueSet = value;
 				NotifyPropertyChanged("PossibleValueSet");
+				AdjustBackGroundColor();
 			}
 
 			get
@@ -56,11 +64,31 @@ namespace MySudoku.Controls
 			}
 		}
 
-		public SudokuCellUserControl(SudokuGridUserControl _sudokuGridUserControl, int _row, int _column) : this()
+		SolidColorBrush _backGroundColor;
+		public SolidColorBrush BackGroundColor
 		{
-			sudokuGridUserControl = _sudokuGridUserControl;
-			Row = _row;
-			Column = _column;
+			set
+			{
+				_backGroundColor = value;
+				NotifyPropertyChanged("BackGroundColor");
+			}
+
+			get
+			{
+				return _backGroundColor;
+			}
+		}
+
+		private void AdjustBackGroundColor()
+		{
+			BackGroundColor = _possibleValueSet != "" ? SCBAntiAntiqueWhite : SCBWhite ;
+		}
+
+		public SudokuCellUserControl(SudokuGridUserControl _sudokuGridUserControl, int row, int column) : this()
+		{
+			SudokuGridUserControl = _sudokuGridUserControl;
+			Row = row;
+			Column = column;
 
 			// Set border
 			SudokuCellControlBorder.BorderThickness = new Thickness
@@ -72,6 +100,7 @@ namespace MySudoku.Controls
 			};
 
 			SudokuCellControlBorder.BorderBrush = new SolidColorBrush(Colors.Black);
+			BackGroundColor = SCBAntiAntiqueWhite;
 		}
 
 		public SudokuCellUserControl()
@@ -89,26 +118,22 @@ namespace MySudoku.Controls
 
 		private void SudokuCellUserControl_KeyUp(object sender, KeyEventArgs e)
 		{
-			sudokuGridUserControl.EventHandlerKey(sender, e.Key);
+			SudokuGridUserControl.EventHandlerKey(sender, e.Key);
 		}
 
 		public void Mark()
 		{
-			SudokuCellControlPanel.Background = new SolidColorBrush(Colors.LightGreen);
-			TextBlockValue.Background = new SolidColorBrush(Colors.LightGreen);
-			TextBlockPossibleValueSet.Background = new SolidColorBrush(Colors.LightGreen);
+			BackGroundColor = new SolidColorBrush(Colors.LightGreen);
 		}
 
 		public void UnMark()
 		{
-			SudokuCellControlPanel.Background = new SolidColorBrush(Colors.White);
-			TextBlockValue.Background = new SolidColorBrush(Colors.White);
-			TextBlockPossibleValueSet.Background = new SolidColorBrush(Colors.White);
+			AdjustBackGroundColor();
 		}
 
 		private void SudokuCellControlPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			sudokuGridUserControl.MarkCell(Row, Column);
+			SudokuGridUserControl.MarkCell(Row, Column);
 			TextBoxFocus.Focus();
 		}
 	}
