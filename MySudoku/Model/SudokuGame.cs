@@ -67,52 +67,6 @@ namespace MySudoku.Model
 			var x = GetCellList().First(c => !c.IsValid());
 		}
 
-		public bool IsValid2()
-		{
-			for (int i =0; i<9; i++)
-			{
-				int[] counter;
-				counter = new int[10];
-				GetCellList().Where(c => (c.Column == i)).ToList().ForEach(c => { counter[c.CellValue]++; });
-				for (int j = 1; j <= 9; j++)
-				{
-					if (counter[j] >= 2)
-						return false;
-				}
-				counter = new int[10];
-				GetCellList().Where( c => (c.Row == i)).ToList().ForEach(c => { counter[c.CellValue]++; });
-				for (int j = 1; j <= 9; j++)
-				{
-					if (counter[j] >= 2)
-						return false;
-				}
-
-			}
-
-			for( int i=0; i<=2; i++)
-			{
-				for(int j=0; j<=2; j++)
-				{
-					int[] counter = new int[10];
-					int rowbase = 3 * i;
-					int columnbase = 3 * j;
-					for( int k= rowbase; k<= rowbase +2; k++)
-					{
-						for( int l= columnbase; l<=columnbase +2; l++)
-						{
-							counter[GetCellValue(k, l)]++;
-						}
-					}
-					for (int m = 1; m <= 9; m++)
-					{
-						if (counter[m] >= 2)
-							return false;
-					}
-				}
-			}
-
-			return true;
-		}
 		public bool IsEqual(SudokuGame other)
 		{
 			for (int row = 0; row < 9; row++)
@@ -190,12 +144,6 @@ namespace MySudoku.Model
 			{
 				sudokuGame.GetFirstInvalid();
 				return null;
-			}
-
-			bool b = sudokuGame.IsValid2();
-			if (!b)
-			{
-				;
 			}
 
 			List<SudokuCell> cellsToFill = sudokuGame.GetCellList().Where(ce => (ce.CellValue == 0)).ToList();
@@ -294,17 +242,7 @@ namespace MySudoku.Model
 				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(iSudokuGenerator.GetSolution()).Take(numberOfCellsToFill).ToList();
 				list.Sort();
 				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
-
-				if (!this.IsValid2())
-				{
-					;
-				}
-			}
-			else
-			{
-				;
-			}
-			
+			}			
 		}
 
 		/// <summary>
