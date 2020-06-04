@@ -108,11 +108,11 @@ namespace MySudoku.Model.BruteForce
 			for(int i =0; i<=2; i++)
 				PopulateSubmatrix(i, i);
 
-			List<Field> unpolutatedFields = new List<Field>();
+			List<Field> fieldsToFill = new List<Field>();
 
-			game.Cast<Field>().Where(field => (field.Value == 0)).ToList().ForEach(field => { unpolutatedFields.Add(field); });
+			game.Cast<Field>().Where(field => (field.Value == 0)).ToList().ForEach(field => { fieldsToFill.Add(field); });
 
-			return Search(unpolutatedFields);
+			return Search(fieldsToFill);
 		}
 		public SudokuBruteForceGenerator()
 		{
