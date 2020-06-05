@@ -23,7 +23,7 @@ namespace MySudoku.Model
 
 		private const int InvalidDigit = -1;
 
-		private List<IntegerTriple> History;
+		internal List<IntegerTriple> History;
 
 		#region Methods
 
@@ -275,9 +275,8 @@ namespace MySudoku.Model
 
 			if (solver != null)
 			{
-				List<IntegerTriple> list = new List<IntegerTriple>();
-				solver.GetCellList().ForEach(cell => list.Add(new IntegerTriple(cell.Row, cell.Column, cell.CellValue)));
-				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
+				var sublist = solver.History.GetRange(this.History.Count, (solver.History.Count - this.History.Count));
+				sublist.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
 			}
 		}
 
