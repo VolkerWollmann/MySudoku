@@ -215,6 +215,21 @@ namespace MySudoku.Model
 		#endregion
 
 		#region Commands
+
+		/// <summary>
+		/// Set the value in the field with the given row and column
+		/// </summary>
+		public bool SetValue(int row, int column, int value)
+		{
+			if (grid[row, column].SetValue(value))
+			{
+				History.Add(new IntegerTriple(row, column, value));
+				return true;
+			}
+
+			return false;
+		}
+
 		/// <summary>
 		/// Clears the game
 		/// </summary>
@@ -238,25 +253,10 @@ namespace MySudoku.Model
 			bool result = iSudokuGenerator.Generate();
 			if (result)
 			{
-				var x = iSudokuGenerator.GetSolution();
 				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(iSudokuGenerator.GetSolution()).Take(numberOfCellsToFill).ToList();
 				list.Sort();
 				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
 			}			
-		}
-
-		/// <summary>
-		/// Set the value in the field with the given row and column
-		/// </summary>
-		public bool SetValue(int row, int column, int value)
-		{
-			if (grid[row, column].SetValue(value))
-			{
-				History.Add(new IntegerTriple(row, column, value));
-				return true;
-			}
-
-			return false;
 		}
 
 		/// <summary>
@@ -272,6 +272,21 @@ namespace MySudoku.Model
 			Clear();
 			Replay.ForEach(elem => { SetValue(elem.Item1, elem.Item2, elem.Item3); });
 		}
+
+		public void Solve()
+		{
+
+			SudokuGame solver = this.Copy();
+			solver = Search(solver);
+
+			if (solver != null)
+			{
+				List<IntegerTriple> list = new List<IntegerTriple>();
+				solver.GetCellList().ForEach(cell => list.Add(new IntegerTriple(cell.Row, cell.Column, cell.CellValue)));
+				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
+			}
+		}
+
 
 		#endregion
 

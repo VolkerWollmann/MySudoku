@@ -25,6 +25,7 @@ namespace MySudoku.Controls
 		private EventHandler ClearCommandEventHandler;
 		private EventHandler BackCommandEventHandler;
 		private EventHandler NewCommandEventHandler;
+		private EventHandler SolveCommandEventHandler;
 
 		public SudokuCommandUserControl()
 		{
@@ -114,6 +115,17 @@ namespace MySudoku.Controls
 		public void SetNewCommandEventHandler(EventHandler eventHandler)
 		{
 			NewCommandEventHandler += eventHandler;
+		}
+
+		private void ButtonCommandSolve_Click(object sender, RoutedEventArgs e)
+		{
+			if (SolveCommandEventHandler != null)
+				SolveCommandEventHandler(sender, e);
+		}
+
+		public void SetSolveCommandEventHandler(EventHandler eventHandler)
+		{
+			SolveCommandEventHandler += eventHandler;
 		}
 	}
 }

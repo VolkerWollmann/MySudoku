@@ -17,6 +17,8 @@ namespace MySudoku.Interfaces
 
 		void SetBackCommandEventHandler(EventHandler eventHandler);
 
+		void SetSolveCommandEventHandler(EventHandler eventHandler);
+
 		bool SetButtonsEnabled(bool buttonsEnabled);
 
 		int GetNumberOfCellsToFill();

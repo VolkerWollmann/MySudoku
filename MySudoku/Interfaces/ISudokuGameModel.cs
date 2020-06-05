@@ -20,6 +20,8 @@ namespace MySudoku.Interfaces
 
 		void New(int numberOfCellsToFill);
 
+		void Solve();
+
 		void Back();
 	}
 }

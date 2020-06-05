@@ -25,5 +25,9 @@
                 Margin="10,10,10,10">
             Back
         </Button>
+        <Button Name="ButtonCommandSolve"  Height="50"  Click="ButtonCommandSolve_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
+                Margin="10,10,10,10">
+            Solve
+        </Button>
     </StackPanel>
 </UserControl>

@@ -53,6 +53,7 @@ namespace MySudoku.ViewModel
 			}
 		}
 
+		#region Constructor
 		public GameModelToViewModel(Grid sudokuGrid, ISudokuGameModel sudokuGame)
 		{
 			// grid form the program
@@ -93,10 +94,13 @@ namespace MySudoku.ViewModel
 			SudokuCommands.SetClearCommandEventHandler(ClearCommand);
 			SudokuCommands.SetBackCommandEventHandler(BackCommand);
 			SudokuCommands.SetNewCommandEventHandler(NewCommand);
+			SudokuCommands.SetSolveCommandEventHandler(SolveCommand);
 
 			UpdateValues();
 
 		}
+
+		#endregion
 
 		#region Input
 
@@ -212,12 +216,13 @@ namespace MySudoku.ViewModel
 				Move(moveDirection);
 			}
 		}
-		#endregion
 
 		private void KeyUp(object sender, Key key)
 		{
 			Set(key);
 		}
+
+		#endregion
 
 		#region commands
 		private void ClearCommand(object sender, EventArgs e)
@@ -248,6 +253,22 @@ namespace MySudoku.ViewModel
 		{
 			SudokuGame.Back();
 			UpdateValues();
+		}
+
+
+		private static void BackGroundSolve(object data)
+		{
+			GameModelToViewModel gameGridViewModel = (GameModelToViewModel)data;
+			gameGridViewModel.SudokuGame.Solve();
+			gameGridViewModel.UpdateValues();
+			gameGridViewModel.SudokuCommands.SetButtonsEnabled(true);
+		}
+		private void SolveCommand(object sender, EventArgs e)
+		{
+			SudokuCommands.SetButtonsEnabled(false);
+			ParameterizedThreadStart ps = new ParameterizedThreadStart(BackGroundSolve);
+			Thread thread = new Thread(ps);
+			thread.Start(this);
 		}
 
 		#endregion
