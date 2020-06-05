@@ -9,8 +9,6 @@ namespace MySudoku.Interfaces
 	using IntegerTriple = Tuple<int, int, int>;
 	public interface ISudokuGenerator
 	{
-		bool Generate();
-
-		List<IntegerTriple> GetSolution();
+		List<IntegerTriple> Generate();
 	}
 }

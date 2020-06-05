@@ -188,10 +188,9 @@ namespace MySudoku.Model
 			return Search(sudokuGame, 1);
 		}
 
-		private SudokuGame sudokuGameGenerator;
-		public bool Generate()
+		public List<IntegerTriple> Generate()
 		{
-			sudokuGameGenerator = new SudokuGame("L1");
+			SudokuGame sudokuGameGenerator = new SudokuGame("L1");
 
 			// populate the 3x3 sub matrixs on the main diagonal
 			// that can be done without checks
@@ -202,11 +201,9 @@ namespace MySudoku.Model
 			// Fill the empty
 			sudokuGameGenerator = Search(sudokuGameGenerator);
 
-			return (sudokuGameGenerator != null);
-		}
+			if (sudokuGameGenerator == null)
+				return null;
 
-		public List<IntegerTriple> GetSolution()
-		{
 			List<IntegerTriple> list = new List<IntegerTriple>();
 			sudokuGameGenerator.GetCellList().ForEach(cell => list.Add(new IntegerTriple(cell.Row, cell.Column, cell.CellValue)));
 			return list;
@@ -250,15 +247,12 @@ namespace MySudoku.Model
 			// Generate solution
 			//ISudokuGenerator iSudokuGenerator = new SudokuBruteForceGenerator();
 			ISudokuGenerator iSudokuGenerator = this;
-			bool result = iSudokuGenerator.Generate();
-			if (result)
+			List<IntegerTriple> result = iSudokuGenerator.Generate();
+			if (result != null)
 			{
-				List<IntegerTriple> list = RandomListAccess.GetShuffledList<IntegerTriple>(iSudokuGenerator.GetSolution()).Take(numberOfCellsToFill).ToList();
-				list.Sort();
-				list.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
+				RandomListAccess.GetShuffledList(result).Take(numberOfCellsToFill).ToList().ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
 			}			
 		}
-
 		/// <summary>
 		/// Goes one move back
 		/// </summary>

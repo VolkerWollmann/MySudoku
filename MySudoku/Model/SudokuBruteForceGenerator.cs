@@ -43,15 +43,6 @@ namespace MySudoku.Model.BruteForce
 			return game[row, column].Value;
 		}
 
-		public List<IntegerTriple> GetSolution()
-		{
-			List<IntegerTriple> list = new List<IntegerTriple>();
-			
-			game.Cast<Field>().ToList().ForEach(field => { list.Add(new IntegerTriple(field.Row, field.Column, field.Value));  });
-
-			return list;
-		}
-
 		private List<Field> GetSubMartixFieldList(int sqaureRow, int squareColumn)
 		{
 			List<Field> result = new List<Field>();
@@ -103,7 +94,7 @@ namespace MySudoku.Model.BruteForce
 
 			return false;
 		}
-		public bool Generate()
+		public List<IntegerTriple> Generate()
 		{
 			for(int i =0; i<=2; i++)
 				PopulateSubmatrix(i, i);
@@ -112,7 +103,13 @@ namespace MySudoku.Model.BruteForce
 
 			game.Cast<Field>().Where(field => (field.Value == 0)).ToList().ForEach(field => { fieldsToFill.Add(field); });
 
-			return Search(fieldsToFill);
+			bool result = Search(fieldsToFill);
+			if (!result)
+				return null;
+		
+			List<IntegerTriple> list = new List<IntegerTriple>();
+			game.Cast<Field>().ToList().ForEach(field => { list.Add(new IntegerTriple(field.Row, field.Column, field.Value)); });
+			return list;
 		}
 		public SudokuBruteForceGenerator()
 		{
