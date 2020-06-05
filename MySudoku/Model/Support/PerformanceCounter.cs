@@ -54,6 +54,8 @@ namespace MySudoku.Perfomance
 
 	public class PerformanceCounter
 	{
+		private const int StackSize = 82;
+
 		private int level = 0;
 		private ulong total = 0;
 		private ulong opsPersecond;
@@ -65,8 +67,8 @@ namespace MySudoku.Perfomance
 		{
 			level = 0;
 			start = DateTime.Now;
-			stack = new PerformanceCounterElement[81];
-			for(int i = 0; i<81; i++)
+			stack = new PerformanceCounterElement[StackSize];
+			for(int i = 0; i< StackSize; i++)
 			{
 				stack[i] = new PerformanceCounterElement();
 			}
