@@ -29,3 +29,6 @@
 /MySudoku/obj/Debug/Controls/SudokuGridUserControl.g.i.cs
 /MySudoku/obj/Debug
 /MySudoku/obj/Release
+/MySudoku/bin/Release/MySudoku.exe
+/MySudoku/bin/Release/MySudoku.exe.config
+/MySudoku/bin/Release/MySudoku.pdb

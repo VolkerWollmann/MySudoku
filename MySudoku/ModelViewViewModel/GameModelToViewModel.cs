@@ -5,6 +5,7 @@ using MySudoku.Controls;
 using MySudoku.Interfaces;
 using System;
 using System.Threading;
+using System.ComponentModel;
 
 namespace MySudoku.ViewModel
 {
@@ -40,9 +41,10 @@ namespace MySudoku.ViewModel
 
 		private void UpdateValues()
 		{
-			for (int row = 0; row < 9; row++)
+			int row, column;
+			for (row = 0; row < 9; row++)
 			{
-				for (int column = 0; column < 9; column++)
+				for (column = 0; column < 9; column++)
 				{
 					GameCellToViewCell[row, column].SetValue(SudokuGame.GetCellValue(row, column));
 					GameCellToViewCell[row, column].SetPossibleValueSet(SudokuGame.GetCellPossibleValues(row, column));
@@ -51,6 +53,9 @@ namespace MySudoku.ViewModel
 					SudokuGridView.SetPossibleValueSet(row, column, GameCellToViewCell[row, column].PossibleValueSet);
 				}
 			}
+
+			SudokuGridView.GetCurrentCellCoordiantes(out row, out column);
+			SudokuGridView.MarkCell(row, column);
 		}
 
 		#region Constructor
@@ -96,7 +101,9 @@ namespace MySudoku.ViewModel
 			SudokuCommands.SetNewCommandEventHandler(NewCommand);
 			SudokuCommands.SetSolveCommandEventHandler(SolveCommand);
 
+			SudokuGridView.MarkCell(0, 0);
 			UpdateValues();
+
 
 		}
 
@@ -231,23 +238,29 @@ namespace MySudoku.ViewModel
 			UpdateValues();
 		}
 
-
-		private static void BackGroundNew(object data)
+		#region new
+		void BackGroundNewDoWork(object sender, DoWorkEventArgs e)
 		{
-			GameModelToViewModel gameGridViewModel = (GameModelToViewModel)data;
-			gameGridViewModel.SudokuGame.New(gameGridViewModel.NumberOfCellsToFill);
-			gameGridViewModel.UpdateValues();
-			gameGridViewModel.SudokuCommands.SetButtonsEnabled(true) ;
+			SudokuGame.New(NumberOfCellsToFill);
+		}
+		void BackGroundNewCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			UpdateValues();
+			SudokuCommands.SetButtonsEnabled(true);
 		}
 
 		private void NewCommand(object sender, EventArgs e)
 		{
 			SudokuCommands.SetButtonsEnabled(false);
 			NumberOfCellsToFill = SudokuCommands.GetNumberOfCellsToFill();
-			ParameterizedThreadStart ps = new ParameterizedThreadStart(BackGroundNew);
-			Thread thread = new Thread(ps);
-			thread.Start(this);
+
+			BackgroundWorker backgroundWorker = new BackgroundWorker();
+			backgroundWorker.WorkerReportsProgress = false;
+			backgroundWorker.DoWork += BackGroundNewDoWork;	
+			backgroundWorker.RunWorkerCompleted += BackGroundNewCompleted;
+			backgroundWorker.RunWorkerAsync(this);
 		}
+		#endregion
 
 		private void BackCommand(object sender, EventArgs e)
 		{
@@ -255,21 +268,30 @@ namespace MySudoku.ViewModel
 			UpdateValues();
 		}
 
-
-		private static void BackGroundSolve(object data)
+		#region Solve
+		private void BackGroundSolveWork(object sender, DoWorkEventArgs e)
 		{
-			GameModelToViewModel gameGridViewModel = (GameModelToViewModel)data;
-			gameGridViewModel.SudokuGame.Solve();
-			gameGridViewModel.UpdateValues();
-			gameGridViewModel.SudokuCommands.SetButtonsEnabled(true);
+			SudokuGame.Solve();
 		}
+
+		void BackGroundSolveCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			UpdateValues();
+			SudokuCommands.SetButtonsEnabled(true);
+		}
+
+
 		private void SolveCommand(object sender, EventArgs e)
 		{
 			SudokuCommands.SetButtonsEnabled(false);
-			ParameterizedThreadStart ps = new ParameterizedThreadStart(BackGroundSolve);
-			Thread thread = new Thread(ps);
-			thread.Start(this);
+
+			BackgroundWorker backgroundWorker = new BackgroundWorker();
+			backgroundWorker.WorkerReportsProgress = false;
+			backgroundWorker.DoWork += BackGroundSolveWork;
+			backgroundWorker.RunWorkerCompleted += BackGroundSolveCompleted;
+			backgroundWorker.RunWorkerAsync(this);
 		}
+		#endregion
 
 		#endregion
 	}

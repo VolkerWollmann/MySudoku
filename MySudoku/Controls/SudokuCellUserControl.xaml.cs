@@ -124,6 +124,7 @@ namespace MySudoku.Controls
 		public void Mark()
 		{
 			BackGroundColor = new SolidColorBrush(Colors.LightGreen);
+			TextBoxFocus.Focus();
 		}
 
 		public void UnMark()
