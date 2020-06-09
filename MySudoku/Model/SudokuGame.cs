@@ -267,6 +267,25 @@ namespace MySudoku.Model
 			Replay.ForEach(elem => { SetValue(elem.Item1, elem.Item2, elem.Item3); });
 		}
 
+		public bool GetLastOperation(out int x, out int y, out int value)
+		{
+			if (History.Count == 0)
+			{
+				x = 0;
+				y = 0;
+				value = 0;
+				return false;
+			}	
+
+			var e = History.Last();
+
+			x = e.Item1;
+			y = e.Item2;
+			value = e.Item3;
+			return true;
+		}
+
+
 		public void Solve()
 		{
 
@@ -279,7 +298,6 @@ namespace MySudoku.Model
 				sublist.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
 			}
 		}
-
 
 		#endregion
 

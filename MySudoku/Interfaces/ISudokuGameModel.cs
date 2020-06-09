@@ -23,5 +23,7 @@ namespace MySudoku.Interfaces
 		void Solve();
 
 		void Back();
+
+		bool GetLastOperation(out int x, out int y, out int value);
 	}
 }

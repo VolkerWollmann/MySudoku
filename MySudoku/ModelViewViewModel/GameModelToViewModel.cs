@@ -264,6 +264,13 @@ namespace MySudoku.ViewModel
 
 		private void BackCommand(object sender, EventArgs e)
 		{
+			int x, y, value;
+
+			if (SudokuGame.GetLastOperation(out x, out y, out value))
+			{
+				SudokuGridView.MarkCell(x, y);
+			}
+
 			SudokuGame.Back();
 			UpdateValues();
 		}
