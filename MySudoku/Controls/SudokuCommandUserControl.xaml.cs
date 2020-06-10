@@ -20,7 +20,7 @@ namespace MySudoku.Controls
 	/// <summary>
 	/// Interaction logic for SudokuCommandUserControl.xaml
 	/// </summary>
-	public partial class SudokuCommandUserControl : UserControl, ISudokuCommands, INotifyPropertyChanged
+	public partial class SudokuCommandUserControl : UserControl, ISudokuCommandsViewModel, INotifyPropertyChanged
 	{
 		private EventHandler ClearCommandEventHandler;
 		private EventHandler BackCommandEventHandler;
