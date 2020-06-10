@@ -6,6 +6,7 @@ using MySudoku.Interfaces;
 using System;
 using System.Threading;
 using System.ComponentModel;
+using System.Windows;
 
 namespace MySudoku.ViewModel
 {
@@ -309,15 +310,20 @@ namespace MySudoku.ViewModel
 		#endregion
 
 		#region Solve
+		bool solved;
 		private void BackGroundSolveWork(object sender, DoWorkEventArgs e)
 		{
-			SudokuGame.Solve();
+			solved = SudokuGame.Solve();
 		}
 
 		void BackGroundSolveCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			UpdateValues();
 			SudokuCommands.SetButtonsEnabled(true);
+			if (!solved)
+			{
+				MessageBox.Show("Cannot solve.");
+			}
 		}
 
 

@@ -286,17 +286,19 @@ namespace MySudoku.Model
 		}
 
 
-		public void Solve()
+		public bool Solve()
 		{
 
 			SudokuGame solver = this.Copy();
 			solver = Search(solver);
 
-			if (solver != null)
-			{
-				var sublist = solver.History.GetRange(this.History.Count, (solver.History.Count - this.History.Count));
-				sublist.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
-			}
+			if (solver == null)
+				return false;
+
+			var sublist = solver.History.GetRange(this.History.Count, (solver.History.Count - this.History.Count));
+			sublist.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
+
+			return true;			
 		}
 
 		#endregion
