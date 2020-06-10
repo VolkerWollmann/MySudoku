@@ -39,6 +39,7 @@ namespace MySudoku.ViewModel
 		//Formatting of single cells from the model ot the view model
 		private GameCellToViewCell[,] GameCellToViewCell = new GameCellToViewCell[9, 9];
 
+		// MVVM data:
 		// number of cells to fill
 		private int NumberOfCellsToFill;
 
