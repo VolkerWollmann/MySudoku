@@ -7,7 +7,7 @@ using System.Windows;
 
 namespace MySudoku.Interfaces
 {
-	interface ISudokuCommands
+	interface ISudokuCommandsViewModel
 	{
 		UIElement GetUIElement();
 

@@ -26,18 +26,21 @@ namespace MySudoku.ViewModel
 		// Grid from program
 		private Grid SudokuGrid;
 
-		// The game model
+		// Model : game
 		private ISudokuGameModel SudokuGame;
-		private int NumberOfCellsToFill;
 
-		// The view model
+		// View model : grid to display game
 		private ISudokuViewModel SudokuGridView;
 
-		// Formatting of the game data for single cells of the view model
+		// View model : Command buttons 
+		private ISudokuCommandsViewModel SudokuCommands;
+
+		// MVVM data:
+		//Formatting of single cells from the model ot the view model
 		private GameCellToViewCell[,] GameCellToViewCell = new GameCellToViewCell[9, 9];
 
-		// Command Control
-		private ISudokuCommands SudokuCommands;
+		// number of cells to fill
+		private int NumberOfCellsToFill;
 
 		private void UpdateValues()
 		{
