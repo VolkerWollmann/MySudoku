@@ -232,13 +232,37 @@ namespace MySudoku.ViewModel
 		#endregion
 
 		#region commands
-		private void ClearCommand(object sender, EventArgs e)
+
+		private void ProcessBackGroundCommand(DoWorkEventHandler doWorkEventHandler, RunWorkerCompletedEventHandler workerCompletedEventHandler)
 		{
-			SudokuGame.Clear();
-			UpdateValues();
+			SudokuCommands.SetButtonsEnabled(false);
+			NumberOfCellsToFill = SudokuCommands.GetNumberOfCellsToFill();
+
+			BackgroundWorker backgroundWorker = new BackgroundWorker();
+			backgroundWorker.WorkerReportsProgress = false;
+			backgroundWorker.DoWork += doWorkEventHandler;
+			backgroundWorker.RunWorkerCompleted += workerCompletedEventHandler;
+			backgroundWorker.RunWorkerAsync(this);
 		}
 
-		#region new
+		#region Clear
+		void BackGroundClearDoWork(object sender, DoWorkEventArgs e)
+		{
+			SudokuGame.Clear();
+		}
+		void BackGroundClearCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			UpdateValues();
+			SudokuCommands.SetButtonsEnabled(true);
+		}
+
+		private void ClearCommand(object sender, EventArgs e)
+		{
+			ProcessBackGroundCommand(BackGroundClearDoWork, BackGroundClearCompleted);
+		}
+		#endregion
+
+		#region New
 		void BackGroundNewDoWork(object sender, DoWorkEventArgs e)
 		{
 			SudokuGame.New(NumberOfCellsToFill);
@@ -251,29 +275,34 @@ namespace MySudoku.ViewModel
 
 		private void NewCommand(object sender, EventArgs e)
 		{
-			SudokuCommands.SetButtonsEnabled(false);
-			NumberOfCellsToFill = SudokuCommands.GetNumberOfCellsToFill();
-
-			BackgroundWorker backgroundWorker = new BackgroundWorker();
-			backgroundWorker.WorkerReportsProgress = false;
-			backgroundWorker.DoWork += BackGroundNewDoWork;	
-			backgroundWorker.RunWorkerCompleted += BackGroundNewCompleted;
-			backgroundWorker.RunWorkerAsync(this);
+			ProcessBackGroundCommand(BackGroundNewDoWork, BackGroundNewCompleted);
 		}
 		#endregion
 
+		#region Back
+
+		int backRow, backColumn, backValue;
+		bool backMarkCell;
+		void BackGroundBackDoWork(object sender, DoWorkEventArgs e)
+		{
+			backMarkCell = SudokuGame.GetLastOperation(out backRow, out backColumn, out backValue);
+			SudokuGame.Back();
+		}
+		void BackGroundBackCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			if (backMarkCell)
+				SudokuGridView.MarkCell(backRow, backColumn);
+
+			UpdateValues();
+			SudokuCommands.SetButtonsEnabled(true);
+		}
+
 		private void BackCommand(object sender, EventArgs e)
 		{
-			int x, y, value;
-
-			if (SudokuGame.GetLastOperation(out x, out y, out value))
-			{
-				SudokuGridView.MarkCell(x, y);
-			}
-
-			SudokuGame.Back();
-			UpdateValues();
+			ProcessBackGroundCommand(BackGroundBackDoWork, BackGroundBackCompleted);
 		}
+
+		#endregion
 
 		#region Solve
 		private void BackGroundSolveWork(object sender, DoWorkEventArgs e)
@@ -290,13 +319,7 @@ namespace MySudoku.ViewModel
 
 		private void SolveCommand(object sender, EventArgs e)
 		{
-			SudokuCommands.SetButtonsEnabled(false);
-
-			BackgroundWorker backgroundWorker = new BackgroundWorker();
-			backgroundWorker.WorkerReportsProgress = false;
-			backgroundWorker.DoWork += BackGroundSolveWork;
-			backgroundWorker.RunWorkerCompleted += BackGroundSolveCompleted;
-			backgroundWorker.RunWorkerAsync(this);
+			ProcessBackGroundCommand(BackGroundSolveWork, BackGroundSolveCompleted);
 		}
 		#endregion
 
