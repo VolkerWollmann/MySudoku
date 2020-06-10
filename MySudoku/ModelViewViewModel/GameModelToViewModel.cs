@@ -10,6 +10,7 @@ using System.Windows;
 
 namespace MySudoku.ViewModel
 {
+	using DataTriple = Tuple<int, int, bool>;
 	/// <summary>
 	/// Maps the game model to the view model
 	/// </summary>
@@ -286,17 +287,21 @@ namespace MySudoku.ViewModel
 
 		#region Back
 
-		int backRow, backColumn, backValue;
-		bool backMarkCell;
 		void BackGroundBackDoWork(object sender, DoWorkEventArgs e)
 		{
-			backMarkCell = SudokuGame.GetLastOperation(out backRow, out backColumn, out backValue);
+			int row=0, column=0, value=0;
+			bool valid=false;
+
+			valid = SudokuGame.GetLastOperation(out row, out column, out value);
 			SudokuGame.Back();
+			e.Result = new DataTriple(row, column, valid) ;
 		}
 		void BackGroundBackCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
-			if (backMarkCell)
-				SudokuGridView.MarkCell(backRow, backColumn);
+			DataTriple data = (DataTriple)e.Result;
+
+			if (data.Item3)
+				SudokuGridView.MarkCell(data.Item1, data.Item2);
 
 			UpdateValues();
 			SudokuCommands.SetButtonsEnabled(true);
@@ -310,17 +315,16 @@ namespace MySudoku.ViewModel
 		#endregion
 
 		#region Solve
-		bool solved;
 		private void BackGroundSolveWork(object sender, DoWorkEventArgs e)
 		{
-			solved = SudokuGame.Solve();
+			e.Result = SudokuGame.Solve();
 		}
 
 		void BackGroundSolveCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
 			UpdateValues();
 			SudokuCommands.SetButtonsEnabled(true);
-			if (!solved)
+			if (!(bool)e.Result)
 			{
 				MessageBox.Show("Cannot solve.");
 			}
