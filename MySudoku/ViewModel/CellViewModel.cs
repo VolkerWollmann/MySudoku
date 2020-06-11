@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace MySudoku.ViewModel
 {
-	public class GameCellToViewCell
+	public class CellViewModel
 	{
 		private const string NotSet = "-";
 		public string Value { private set; get; }
@@ -44,7 +44,7 @@ namespace MySudoku.ViewModel
 			}
 		}
 
-		public GameCellToViewCell()
+		public CellViewModel()
 		{
 			Value = NotSet;
 			_value = 0;

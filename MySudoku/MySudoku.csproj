@@ -60,9 +60,9 @@
     <Compile Include="Controls\SudokuCommandUserControl.xaml.cs">
       <DependentUpon>SudokuCommandUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Interfaces\ISudokuCommands.cs" />
+    <Compile Include="Interfaces\ISudokuCommandView.cs" />
     <Compile Include="Model\Interfaces\ISudokuGenerator.cs" />
-    <Compile Include="Interfaces\ISudokuViewModel.cs" />
+    <Compile Include="Interfaces\ISudokuBoardView.cs" />
     <Compile Include="Controls\SudokuCellUserControl.xaml.cs">
       <DependentUpon>SudokuCellUserControl.xaml</DependentUpon>
     </Compile>
@@ -75,9 +75,9 @@
     <Compile Include="Model\SudokuBruteForceGenerator.cs" />
     <Compile Include="Model\SudokuCell.cs" />
     <Compile Include="Model\SudokuGame.cs" />
-    <Compile Include="ModelViewViewModel\GameModelToViewModel.cs" />
-    <Compile Include="ModelViewViewModel\GameCellToViewCell.cs" />
-    <Compile Include="ModelViewViewModel\ViewModelInitialize.cs" />
+    <Compile Include="ViewModel\SudokuViewModel.cs" />
+    <Compile Include="ViewModel\CellViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelInitialize.cs" />
     <Page Include="Controls\SudokuCellUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

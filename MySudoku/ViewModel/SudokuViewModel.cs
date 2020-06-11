@@ -14,7 +14,7 @@ namespace MySudoku.ViewModel
 	/// <summary>
 	/// Maps the game model to the view model
 	/// </summary>
-	public class GameModelToViewModel
+	public class SudokuViewModel
 	{
 		public enum MoveDirection
 		{
@@ -32,14 +32,14 @@ namespace MySudoku.ViewModel
 		private ISudokuGameModel SudokuGame;
 
 		// View model : grid to display game
-		private ISudokuViewModel SudokuGridView;
+		private ISudokuBoardView SudokuGridView;
 
 		// View model : Command buttons 
 		private ISudokuCommandsViewModel SudokuCommands;
 
 		// MVVM data:
 		//Formatting of single cells from the model ot the view model
-		private GameCellToViewCell[,] GameCellToViewCell = new GameCellToViewCell[9, 9];
+		private CellViewModel[,] GameCellToViewCell = new CellViewModel[9, 9];
 
 		// MVVM data:
 		// number of cells to fill
@@ -65,7 +65,7 @@ namespace MySudoku.ViewModel
 		}
 
 		#region Constructor
-		public GameModelToViewModel(Grid sudokuGrid, ISudokuGameModel sudokuGame)
+		public SudokuViewModel(Grid sudokuGrid, ISudokuGameModel sudokuGame)
 		{
 			// grid form the program
 			SudokuGrid = sudokuGrid;
@@ -74,7 +74,7 @@ namespace MySudoku.ViewModel
 			SudokuGame = sudokuGame;
 
 			// prepare game grid (view)
-			SudokuGridView = (ISudokuViewModel)new SudokuGridUserControl();
+			SudokuGridView = (ISudokuBoardView)new SudokuGridUserControl();
 
 			// add game grid to progam
 			sudokuGrid.Children.Add(SudokuGridView.GetUIElement());
@@ -86,7 +86,7 @@ namespace MySudoku.ViewModel
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					GameCellToViewCell[row, column] = new GameCellToViewCell();
+					GameCellToViewCell[row, column] = new CellViewModel();
 				}
 			}
 
