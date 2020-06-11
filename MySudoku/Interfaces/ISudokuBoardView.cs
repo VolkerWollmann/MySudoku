@@ -9,6 +9,7 @@ namespace MySudoku.Interfaces
 	{
 		UIElement GetUIElement();
 
+		// Eventhandler for responding on arrow and number keys pressed on the board
 		void SetKeyEventHandler(EventHandler<Key> eventHandlerKey);
 
 		void MarkCell(int row, int column);

@@ -12,7 +12,7 @@ namespace MySudoku.ViewModel
 {
 	using DataTriple = Tuple<int, int, bool>;
 	/// <summary>
-	/// Maps the game model to the view model
+	/// Maps the game model to the view
 	/// </summary>
 	public class SudokuViewModel
 	{
@@ -31,18 +31,16 @@ namespace MySudoku.ViewModel
 		// Model : game
 		private ISudokuGameModel SudokuGame;
 
-		// View model : grid to display game
+		// View : board to display game
 		private ISudokuBoardView SudokuGridView;
 
-		// View model : Command buttons 
-		private ISudokuCommandsViewModel SudokuCommands;
+		// View : Command buttons 
+		private ISudokuCommandView SudokuCommands;
 
-		// MVVM data:
-		//Formatting of single cells from the model ot the view model
+		// View model data: Formatting of single cells from the model ot the view model
 		private CellViewModel[,] GameCellToViewCell = new CellViewModel[9, 9];
 
-		// MVVM data:
-		// number of cells to fill
+		// View model data: Number of cells to fill
 		private int NumberOfCellsToFill;
 
 		private void UpdateValues()
