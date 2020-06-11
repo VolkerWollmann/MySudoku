@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:MySudoku.Controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Name="SudokuGrid" MinWidth="450" MinHeight="450"
+    <Grid Name="SudokuBoard" MinWidth="450" MinHeight="450"
               >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"></ColumnDefinition>

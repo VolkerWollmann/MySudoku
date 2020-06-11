@@ -30,7 +30,7 @@ namespace MySudoku.Controls
 					SudokuCellUserControl sudokuCellUserControl = new SudokuCellUserControl(this, row, column);
 					SudokuCellUserControlGrid[row, column] = sudokuCellUserControl;
 
-					SudokuGrid.Children.Add(sudokuCellUserControl);
+					SudokuBoard.Children.Add(sudokuCellUserControl);
 					Grid.SetRow(sudokuCellUserControl, row);
 					Grid.SetColumn(sudokuCellUserControl, column);
 

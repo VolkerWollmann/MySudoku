@@ -66,8 +66,8 @@
     <Compile Include="Controls\SudokuCellUserControl.xaml.cs">
       <DependentUpon>SudokuCellUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\SudokuGridUserControl.xaml.cs">
-      <DependentUpon>SudokuGridUserControl.xaml</DependentUpon>
+    <Compile Include="Controls\SudokuBoardUserControl.xaml.cs">
+      <DependentUpon>SudokuBoardUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Interfaces\ISudokuGameModel.cs" />
     <Compile Include="Model\Support\PerformanceCounter.cs" />
@@ -86,7 +86,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\SudokuGridUserControl.xaml">
+    <Page Include="Controls\SudokuBoardUserControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
