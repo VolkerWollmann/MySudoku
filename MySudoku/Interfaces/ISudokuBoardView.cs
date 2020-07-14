@@ -14,8 +14,6 @@ namespace MySudoku.Interfaces
 
 		void MarkCell(int row, int column);
 
-		void SetCell(int row, int column);
-
 		void SetValue(int row, int coulumn,string value);
 
 		void SetPossibleValueSet(int row, int column, string possibleValuesSet); 

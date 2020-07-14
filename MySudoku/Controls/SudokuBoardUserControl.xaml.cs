@@ -74,10 +74,6 @@ namespace MySudoku.Controls
 			});
 		}
 
-		public void SetCell(int row, int column)
-		{
-			CurrentSudokuCellUserControl = SudokuCellUserControlGrid[row, column];
-		}
 		public void MarkCell(int row, int column)
 		{
 			if (CurrentSudokuCellUserControl != null)
