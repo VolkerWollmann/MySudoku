@@ -157,6 +157,7 @@ namespace MySudoku.Controls
 			PossibleValueSet = "---";
 
 			SudokuCellControlPanel.MouseLeftButtonDown += SudokuCellControlPanel_MouseLeftButtonDown;
+			SudokuCellControlPanel.MouseRightButtonDown += SudokuCellControlPanel_MouseLeftButtonDown;
 
 			this.KeyUp += SudokuCellUserControl_KeyUp;
 		}
