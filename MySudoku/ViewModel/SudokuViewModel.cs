@@ -51,10 +51,11 @@ namespace MySudoku.ViewModel
 				for (column = 0; column < 9; column++)
 				{
 					GameCellToViewCell[row, column].SetValue(SudokuGame.GetCellValue(row, column));
-					GameCellToViewCell[row, column].SetPossibleValueSet(SudokuGame.GetCellPossibleValues(row, column));
+					GameCellToViewCell[row, column].SetPossibleValuesSet(SudokuGame.GetCellPossibleValues(row, column));
 
 					SudokuGridView.SetValue(row, column, GameCellToViewCell[row, column].Value);
-					SudokuGridView.SetPossibleValueSet(row, column, GameCellToViewCell[row, column].PossibleValueSet);
+					SudokuGridView.SetPossibleValueSetString(row, column, GameCellToViewCell[row, column].PossibleValuesSetString);
+					SudokuGridView.SetPossibleValueContextMenu(row, column, GameCellToViewCell[row, column].PossibleValuesSet);
 				}
 			}
 

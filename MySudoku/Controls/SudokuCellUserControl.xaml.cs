@@ -136,6 +136,19 @@ namespace MySudoku.Controls
 			BackGroundColor = _possibleValueSet != "" ? SCBAntiAntiqueWhite : SCBWhite ;
 		}
 
+		public void SetContextMenu(List<int> possibleValueSet)
+		{
+			ContextMenu contextMenu = new ContextMenu();
+			possibleValueSet.ForEach(i =>
+		   {
+			   MenuItem menuItem = new MenuItem();
+			   menuItem.Header = i.ToString();
+			   menuItem.Command = NumberCommand;
+			   menuItem.CommandParameter = i.ToString();
+			   contextMenu.Items.Add(menuItem);
+		   });
+			SudokuCellControlPanel.ContextMenu = contextMenu;
+		}
 		public SudokuCellUserControl(SudokuGridUserControl _sudokuGridUserControl, int row, int column) : this()
 		{
 			SudokuGridUserControl = _sudokuGridUserControl;
@@ -193,6 +206,20 @@ namespace MySudoku.Controls
 		{
 			SudokuGridUserControl.MarkCell(Row, Column);
 			TextBoxFocus.Focus();
+		}
+
+		private void CreateMenu()
+		{
+			ContextMenu contextMenu = new ContextMenu();
+			for (int i = 1; i <= 9; i++)
+			{
+				MenuItem menuItem = new MenuItem();
+				menuItem.Header = i.ToString();
+				menuItem.Command = NumberCommand;
+				menuItem.CommandParameter = i.ToString();
+				contextMenu.Items.Add(menuItem);
+			}
+			SudokuCellControlPanel.ContextMenu = contextMenu;
 		}
 	}
 }
