@@ -168,15 +168,19 @@ namespace MySudoku.ViewModel
 			switch (key)
 			{
 				case Key.Up:
+				case Key.W:
 					return MoveDirection.Up;
 
 				case Key.Down:
+				case Key.S:
 					return MoveDirection.Down;
 
 				case Key.Left:
+				case Key.A:
 					return MoveDirection.Left;
 
 				case Key.Right:
+				case Key.D:
 					return MoveDirection.Right;
 
 				default:
