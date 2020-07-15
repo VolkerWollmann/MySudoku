@@ -1,16 +1,53 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 
 namespace MySudoku.Controls
 {
-	/// <summary>
-	/// Interaction logic for SudokuCellUserControl.xaml
-	/// </summary>
+	class TestCommand : ICommand
+	{
+		SudokuCellUserControl SudokuCellUserControl;
+		public event EventHandler CanExecuteChanged;
+
+		public bool CanExecute(object parameter)
+		{
+			return true;
+		}
+
+		public void Execute(object parameter)
+		{
+			List<Tuple<string, Key>> mapping = new List<Tuple<string, Key>>()
+			{ 
+				new Tuple<string, Key>( "1", Key.D1 ),
+				new Tuple<string, Key>( "2", Key.D2 ),
+				new Tuple<string, Key>( "3", Key.D3 ),
+				new Tuple<string, Key>( "4", Key.D4 ),
+				new Tuple<string, Key>( "5", Key.D5 ),
+				new Tuple<string, Key>( "6", Key.D6 ),
+				new Tuple<string, Key>( "7", Key.D7 ),
+				new Tuple<string, Key>( "8", Key.D8 ),
+				new Tuple<string, Key>( "9", Key.D9 ),
+			};
+			var key = mapping.Where(e => (e.Item1 == (string)parameter)).First().Item2;
+			SudokuCellUserControl.RaiseEventHandlerKey(this, key);
+		}
+
+		public TestCommand(SudokuCellUserControl sudokuCellUserControl)
+		{
+			SudokuCellUserControl = sudokuCellUserControl;
+		}
+	}
+		/// <summary>
+		/// Interaction logic for SudokuCellUserControl.xaml
+		/// </summary>
 	public partial class SudokuCellUserControl : UserControl, INotifyPropertyChanged
 	{
 		#region Constants
@@ -28,6 +65,14 @@ namespace MySudoku.Controls
 			if (PropertyChanged != null)
 			{
 				PropertyChanged(this, new PropertyChangedEventArgs(info));
+			}
+		}
+
+		public ICommand NumberOneCommand
+		{
+			get
+			{
+				return new TestCommand(this);
 			}
 		}
 
@@ -116,9 +161,13 @@ namespace MySudoku.Controls
 			this.KeyUp += SudokuCellUserControl_KeyUp;
 		}
 
+		internal void RaiseEventHandlerKey(object sender, Key key)
+		{
+			SudokuGridUserControl.EventHandlerKey(sender, key);
+		}
 		private void SudokuCellUserControl_KeyUp(object sender, KeyEventArgs e)
 		{
-			SudokuGridUserControl.EventHandlerKey(sender, e.Key);
+			RaiseEventHandlerKey(sender, e.Key);
 		}
 
 		public void Mark()
