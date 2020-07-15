@@ -12,15 +12,15 @@
                     Background="{Binding Path=BackGroundColor}" >
             <StackPanel.ContextMenu>
                 <ContextMenu Name="cm" >
-                    <MenuItem Header="1" Command="{Binding NumberOneCommand, Mode=OneWay}" CommandParameter="1"/>
-                    <MenuItem Header="2" Command="{Binding NumberOneCommand, Mode=OneWay}" CommandParameter="2"/>
-                    <MenuItem Header="3" Command="{Binding NumberOneCommand, Mode=OneWay}" CommandParameter="3"/>
-                    <MenuItem Header="4" Command="{Binding NumberOneCommand, Mode=OneWay}" CommandParameter="4"/>
-                    <MenuItem Header="5" Command="{Binding NumberOneCommand, Mode=OneWay}" CommandParameter="5"/>
-                    <MenuItem Header="6" Command="{Binding NumberOneCommand, Mode=OneWay}" CommandParameter="6"/>
-                    <MenuItem Header="7" Command="{Binding NumberOneCommand, Mode=OneWay}" CommandParameter="7"/>
-                    <MenuItem Header="8" Command="{Binding NumberOneCommand, Mode=OneWay}" CommandParameter="8"/>
-                    <MenuItem Header="9" Command="{Binding NumberOneCommand, Mode=OneWay}" CommandParameter="9"/>
+                    <MenuItem Header="1" Command="{Binding NumberCommand, Mode=OneWay}" CommandParameter="1"/>
+                    <MenuItem Header="2" Command="{Binding NumberCommand, Mode=OneWay}" CommandParameter="2"/>
+                    <MenuItem Header="3" Command="{Binding NumberCommand, Mode=OneWay}" CommandParameter="3"/>
+                    <MenuItem Header="4" Command="{Binding NumberCommand, Mode=OneWay}" CommandParameter="4"/>
+                    <MenuItem Header="5" Command="{Binding NumberCommand, Mode=OneWay}" CommandParameter="5"/>
+                    <MenuItem Header="6" Command="{Binding NumberCommand, Mode=OneWay}" CommandParameter="6"/>
+                    <MenuItem Header="7" Command="{Binding NumberCommand, Mode=OneWay}" CommandParameter="7"/>
+                    <MenuItem Header="8" Command="{Binding NumberCommand, Mode=OneWay}" CommandParameter="8"/>
+                    <MenuItem Header="9" Command="{Binding NumberCommand, Mode=OneWay}" CommandParameter="9"/>
                 </ContextMenu>
             </StackPanel.ContextMenu>
             <TextBlock Name="TextBlockValue" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" Background="{Binding Path=BackGroundColor}">

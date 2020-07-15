@@ -12,7 +12,7 @@ using System.Windows.Media;
 
 namespace MySudoku.Controls
 {
-	class TestCommand : ICommand
+	class NumberCommand : ICommand
 	{
 		SudokuCellUserControl SudokuCellUserControl;
 		public event EventHandler CanExecuteChanged;
@@ -24,23 +24,30 @@ namespace MySudoku.Controls
 
 		public void Execute(object parameter)
 		{
-			List<Tuple<string, Key>> mapping = new List<Tuple<string, Key>>()
-			{ 
-				new Tuple<string, Key>( "1", Key.D1 ),
-				new Tuple<string, Key>( "2", Key.D2 ),
-				new Tuple<string, Key>( "3", Key.D3 ),
-				new Tuple<string, Key>( "4", Key.D4 ),
-				new Tuple<string, Key>( "5", Key.D5 ),
-				new Tuple<string, Key>( "6", Key.D6 ),
-				new Tuple<string, Key>( "7", Key.D7 ),
-				new Tuple<string, Key>( "8", Key.D8 ),
-				new Tuple<string, Key>( "9", Key.D9 ),
-			};
-			var key = mapping.Where(e => (e.Item1 == (string)parameter)).First().Item2;
+			Key key = Key.D0;
+			if (parameter is string)
+			{
+				List<Tuple<string, Key>> mapping = new List<Tuple<string, Key>>()
+				{
+					new Tuple<string, Key>( "1", Key.D1 ),
+					new Tuple<string, Key>( "2", Key.D2 ),
+					new Tuple<string, Key>( "3", Key.D3 ),
+					new Tuple<string, Key>( "4", Key.D4 ),
+					new Tuple<string, Key>( "5", Key.D5 ),
+					new Tuple<string, Key>( "6", Key.D6 ),
+					new Tuple<string, Key>( "7", Key.D7 ),
+					new Tuple<string, Key>( "8", Key.D8 ),
+					new Tuple<string, Key>( "9", Key.D9 ),
+				};
+				key = mapping.Where(e => (e.Item1 == (string)parameter)).First().Item2;
+			}
+			else if (parameter is Key)
+				key = (Key)parameter;
+
 			SudokuCellUserControl.RaiseEventHandlerKey(this, key);
 		}
 
-		public TestCommand(SudokuCellUserControl sudokuCellUserControl)
+		public NumberCommand(SudokuCellUserControl sudokuCellUserControl)
 		{
 			SudokuCellUserControl = sudokuCellUserControl;
 		}
@@ -68,11 +75,11 @@ namespace MySudoku.Controls
 			}
 		}
 
-		public ICommand NumberOneCommand
+		public ICommand NumberCommand
 		{
 			get
 			{
-				return new TestCommand(this);
+				return new NumberCommand(this);
 			}
 		}
 
@@ -168,7 +175,7 @@ namespace MySudoku.Controls
 		}
 		private void SudokuCellUserControl_KeyUp(object sender, KeyEventArgs e)
 		{
-			RaiseEventHandlerKey(sender, e.Key);
+			NumberCommand.Execute(e.Key);
 		}
 
 		public void Mark()
