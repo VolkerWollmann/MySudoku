@@ -77,6 +77,7 @@ namespace MySudoku.Controls
 
 		public void SetPossibleValueContextMenu(int row, int column, List<int> possibleValueSet)
 		{
+			// decouple threads
 			this.Dispatcher.Invoke(() =>
 			{
 				SudokuCellUserControlGrid[row, column].SetContextMenu(possibleValueSet);

@@ -188,6 +188,7 @@ namespace MySudoku.Controls
 		}
 		private void SudokuCellUserControl_KeyUp(object sender, KeyEventArgs e)
 		{
+			// Binding to number key does not work
 			NumberCommand.Execute(e.Key);
 		}
 
