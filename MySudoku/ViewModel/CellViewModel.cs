@@ -8,7 +8,20 @@ namespace MySudoku.ViewModel
 	{
 		private const string NotSet = "-";
 		public string Value { private set; get; }
-		public string PossibleValueSet { private set; get; }
+		public string PossibleValuesSetString { private set; get; }
+
+		private List<int> possibbleValuesSet;
+		public List<int> PossibleValuesSet
+		{
+			private set { possibbleValuesSet = value; }
+			get
+			{
+				if (Value == NotSet)
+					return possibbleValuesSet;
+				else
+					return new List<int>() { };
+			}
+		}
 
 		public int _value;
 		public void SetValue(int value)
@@ -18,14 +31,14 @@ namespace MySudoku.ViewModel
 				Value = NotSet;
 			else
 				Value = value.ToString();
-
 		}
 
-		public void SetPossibleValueSet(List<int> possibleValues)
+		public void SetPossibleValuesSet(List<int> possibleValues)
 		{
+			PossibleValuesSet = possibleValues;
 
 			if (_value != 0)
-				PossibleValueSet = "";
+				PossibleValuesSetString = "";
 			else
 			{
 				string result = "{";
@@ -40,7 +53,7 @@ namespace MySudoku.ViewModel
 
 				result = result + "}";
 
-				PossibleValueSet = result;
+				PossibleValuesSetString = result;
 			}
 		}
 
@@ -48,7 +61,8 @@ namespace MySudoku.ViewModel
 		{
 			Value = NotSet;
 			_value = 0;
-			PossibleValueSet = "---";
+			PossibleValuesSetString = "---";
+			PossibleValuesSet = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 		}
 	}
 }

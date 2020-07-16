@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 
 namespace MySudoku.Interfaces
@@ -16,7 +18,9 @@ namespace MySudoku.Interfaces
 
 		void SetValue(int row, int coulumn,string value);
 
-		void SetPossibleValueSet(int row, int column, string possibleValuesSet); 
+		void SetPossibleValueSetString(int row, int column, string possibleValuesSet);
+
+		void SetPossibleValueContextMenu(int row, int column, List<int> possibleValueSet);
 
 		void GetCurrentCellCoordiantes(out int row, out int column);
 	}

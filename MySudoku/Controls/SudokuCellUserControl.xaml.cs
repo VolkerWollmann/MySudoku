@@ -1,10 +1,15 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using MySudoku.Commands;
 
 namespace MySudoku.Controls
 {
@@ -28,6 +33,14 @@ namespace MySudoku.Controls
 			if (PropertyChanged != null)
 			{
 				PropertyChanged(this, new PropertyChangedEventArgs(info));
+			}
+		}
+
+		public ICommand NumberCommand
+		{
+			get
+			{
+				return new NumberCommand(this);
 			}
 		}
 
@@ -84,6 +97,19 @@ namespace MySudoku.Controls
 			BackGroundColor = _possibleValueSet != "" ? SCBAntiAntiqueWhite : SCBWhite ;
 		}
 
+		public void SetContextMenu(List<int> possibleValueSet)
+		{
+			ContextMenu contextMenu = new ContextMenu();
+			possibleValueSet.ForEach(i =>
+		   {
+			   MenuItem menuItem = new MenuItem();
+			   menuItem.Header = i.ToString();
+			   menuItem.Command = NumberCommand;
+			   menuItem.CommandParameter = i.ToString();
+			   contextMenu.Items.Add(menuItem);
+		   });
+			SudokuCellControlPanel.ContextMenu = contextMenu;
+		}
 		public SudokuCellUserControl(SudokuGridUserControl _sudokuGridUserControl, int row, int column) : this()
 		{
 			SudokuGridUserControl = _sudokuGridUserControl;
@@ -112,13 +138,19 @@ namespace MySudoku.Controls
 			PossibleValueSet = "---";
 
 			SudokuCellControlPanel.MouseLeftButtonDown += SudokuCellControlPanel_MouseLeftButtonDown;
+			SudokuCellControlPanel.MouseRightButtonDown += SudokuCellControlPanel_MouseLeftButtonDown;
 
 			this.KeyUp += SudokuCellUserControl_KeyUp;
 		}
 
+		internal void RaiseEventHandlerKey(object sender, Key key)
+		{
+			SudokuGridUserControl.EventHandlerKey(sender, key);
+		}
 		private void SudokuCellUserControl_KeyUp(object sender, KeyEventArgs e)
 		{
-			SudokuGridUserControl.EventHandlerKey(sender, e.Key);
+			// Binding to number key does not work
+			NumberCommand.Execute(e.Key);
 		}
 
 		public void Mark()
@@ -136,6 +168,20 @@ namespace MySudoku.Controls
 		{
 			SudokuGridUserControl.MarkCell(Row, Column);
 			TextBoxFocus.Focus();
+		}
+
+		private void CreateMenu()
+		{
+			ContextMenu contextMenu = new ContextMenu();
+			for (int i = 1; i <= 9; i++)
+			{
+				MenuItem menuItem = new MenuItem();
+				menuItem.Header = i.ToString();
+				menuItem.Command = NumberCommand;
+				menuItem.CommandParameter = i.ToString();
+				contextMenu.Items.Add(menuItem);
+			}
+			SudokuCellControlPanel.ContextMenu = contextMenu;
 		}
 	}
 }

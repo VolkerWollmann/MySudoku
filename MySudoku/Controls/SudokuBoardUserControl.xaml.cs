@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -65,12 +66,21 @@ namespace MySudoku.Controls
 			SudokuCellUserControlGrid[row, column].Value = value;
 		}
 
-		public void SetPossibleValueSet(int row, int column, string possibleValueSet)
+		public void SetPossibleValueSetString(int row, int column, string possibleValueSet)
 		{
 			// decouple threads
 			this.Dispatcher.Invoke(() =>
 			{
 				SudokuCellUserControlGrid[row, column].PossibleValueSet = possibleValueSet;
+			});
+		}
+
+		public void SetPossibleValueContextMenu(int row, int column, List<int> possibleValueSet)
+		{
+			// decouple threads
+			this.Dispatcher.Invoke(() =>
+			{
+				SudokuCellUserControlGrid[row, column].SetContextMenu(possibleValueSet);
 			});
 		}
 
