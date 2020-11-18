@@ -212,6 +212,13 @@ namespace MySudoku.ViewModel
 
 		public void Set(Key key)
 		{
+			// Key space : Toggle PossibleValuesSetVisibility
+			if ( key == Key.Space)
+            {
+				BackGroundTogglePossibleValuesVisibilityDoWork(null, null);
+				return;
+            }
+
 			// Key to sukdou digit
 			int sudokuDigit = SudokuDigitFromKey(key);
 			if (sudokuDigit != SudokuGame.GetInvalidDigit())

@@ -58,6 +58,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Commands\NumberCommand.cs" />
+    <Compile Include="Commands\TogglePossibleValueSetVisibilityCommand.cs" />
     <Compile Include="Controls\SudokuCommandUserControl.xaml.cs">
       <DependentUpon>SudokuCommandUserControl.xaml</DependentUpon>
     </Compile>

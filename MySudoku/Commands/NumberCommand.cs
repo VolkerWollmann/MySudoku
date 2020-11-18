@@ -13,12 +13,6 @@ namespace MySudoku.Commands
 		SudokuCellUserControl SudokuCellUserControl;
 		public event EventHandler CanExecuteChanged;
 
-		public void RaiseCanExecuteChanged()
-		{
-			if (CanExecuteChanged != null)
-				CanExecuteChanged(this, new EventArgs());
-		}
-
 		public bool CanExecute(object parameter)
 		{
 			return true;

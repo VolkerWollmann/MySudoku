@@ -44,6 +44,14 @@ namespace MySudoku.Controls
 			}
 		}
 
+		public ICommand TogglePossibleValueSetVisibiltyCommand
+        {
+			get
+            {
+				return new TogglePossibleValueSetVisibilityCommand(this);
+			}
+        }
+
 		public int Row { get; private set; }
 		public int Column { get; private set; }
 
@@ -100,6 +108,12 @@ namespace MySudoku.Controls
 		public void SetContextMenu(List<int> possibleValueSet)
 		{
 			ContextMenu contextMenu = new ContextMenu();
+
+			MenuItem menuItemToggelPossibleValueSetVisibilty = new MenuItem();
+			menuItemToggelPossibleValueSetVisibilty.Header = "Toggle possible values";
+			menuItemToggelPossibleValueSetVisibilty.Command = TogglePossibleValueSetVisibiltyCommand;
+			contextMenu.Items.Add(menuItemToggelPossibleValueSetVisibilty);
+
 			possibleValueSet.ForEach(i =>
 		   {
 			   MenuItem menuItem = new MenuItem();
@@ -108,6 +122,7 @@ namespace MySudoku.Controls
 			   menuItem.CommandParameter = i.ToString();
 			   contextMenu.Items.Add(menuItem);
 		   });
+
 			SudokuCellControlPanel.ContextMenu = contextMenu;
 		}
 		public SudokuCellUserControl(SudokuBoardUserControl _sudokuGridUserControl, int row, int column) : this()
@@ -186,20 +201,6 @@ namespace MySudoku.Controls
 		{
 			SudokuGridUserControl.MarkCell(Row, Column);
 			TextBoxFocus.Focus();
-		}
-
-		private void CreateMenu()
-		{
-			ContextMenu contextMenu = new ContextMenu();
-			for (int i = 1; i <= 9; i++)
-			{
-				MenuItem menuItem = new MenuItem();
-				menuItem.Header = i.ToString();
-				menuItem.Command = NumberCommand;
-				menuItem.CommandParameter = i.ToString();
-				contextMenu.Items.Add(menuItem);
-			}
-			SudokuCellControlPanel.ContextMenu = contextMenu;
 		}
 	}
 }
