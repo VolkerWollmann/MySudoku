@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -9,7 +10,7 @@ namespace MySudoku.Controls
 	/// <summary>
 	/// Interaction logic for SudokuGridUserControl.xaml
 	/// </summary>
-	public partial class SudokuGridUserControl : UserControl, ISudokuBoardView
+	public partial class SudokuBoardUserControl : UserControl, ISudokuBoardView
 	{
 		SudokuCellUserControl[,] SudokuCellUserControlGrid;
 		public SudokuCellUserControl CurrentSudokuCellUserControl { get; private set; } = null;
@@ -18,7 +19,7 @@ namespace MySudoku.Controls
 
 		public EventHandler<Key> EventHandlerKey;
 
-		public SudokuGridUserControl()
+		public SudokuBoardUserControl()
 		{
 			InitializeComponent();
 
@@ -94,5 +95,22 @@ namespace MySudoku.Controls
 			CurrentSudokuCellUserControl.Mark();
 
 		}
-	}
+
+		private bool _possibleValueSetVisibilty = true;
+
+		public bool PossibleValueSetVisibilty
+        {
+			set
+            {
+				_possibleValueSetVisibilty = value;
+				SudokuCellUserControlGrid.Cast<SudokuCellUserControl>().ToList().ForEach( cell => { cell.PossibleValuesVisibilty = value ? Visibility.Visible : Visibility.Hidden; });
+			}
+
+			get
+            {
+				return _possibleValueSetVisibilty;
+
+			}
+        }
+    }
 }

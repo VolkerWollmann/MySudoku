@@ -29,5 +29,9 @@
                 Margin="10,10,10,10">
             Solve
         </Button>
+        <Button Name="ButtonCommandTogglePossibleValues"  Height="50"  Click="ButtonCommandTogglePossibleValues_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
+                Margin="10,10,10,10">
+            Togggle possible values
+        </Button>
     </StackPanel>
 </UserControl>

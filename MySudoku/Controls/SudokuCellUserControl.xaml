@@ -16,7 +16,7 @@
                 </TextBlock.Text>
             </TextBlock>
             <TextBlock Name="TextBlockPossibleValueSet" FontSize="10" HorizontalAlignment="Center" VerticalAlignment="Center" 
-                       TextWrapping="Wrap" Background="{Binding Path=BackGroundColor}" >
+                       TextWrapping="Wrap" Background="{Binding Path=BackGroundColor}" Visibility="{Binding Path=PossibleValuesVisibilty}" >
                 <TextBlock.Text>
                     <Binding Path="PossibleValueSet" />
                 </TextBlock.Text>

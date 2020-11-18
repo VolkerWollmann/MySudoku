@@ -32,7 +32,7 @@ namespace MySudoku.ViewModel
 		private ISudokuGameModel SudokuGame;
 
 		// View : board to display game
-		private ISudokuBoardView SudokuGridView;
+		private ISudokuBoardView SudokuBoardView;
 
 		// View : Command buttons 
 		private ISudokuCommandView SudokuCommands;
@@ -53,14 +53,14 @@ namespace MySudoku.ViewModel
 					GameCellToViewCell[row, column].SetValue(SudokuGame.GetCellValue(row, column));
 					GameCellToViewCell[row, column].SetPossibleValuesSet(SudokuGame.GetCellPossibleValues(row, column));
 
-					SudokuGridView.SetValue(row, column, GameCellToViewCell[row, column].Value);
-					SudokuGridView.SetPossibleValueSetString(row, column, GameCellToViewCell[row, column].PossibleValuesSetString);
-					SudokuGridView.SetPossibleValueContextMenu(row, column, GameCellToViewCell[row, column].PossibleValuesSet);
+					SudokuBoardView.SetValue(row, column, GameCellToViewCell[row, column].Value);
+					SudokuBoardView.SetPossibleValueSetString(row, column, GameCellToViewCell[row, column].PossibleValuesSetString);
+					SudokuBoardView.SetPossibleValueContextMenu(row, column, GameCellToViewCell[row, column].PossibleValuesSet);
 				}
 			}
 
-			SudokuGridView.GetCurrentCellCoordiantes(out row, out column);
-			SudokuGridView.MarkCell(row, column);
+			SudokuBoardView.GetCurrentCellCoordiantes(out row, out column);
+			SudokuBoardView.MarkCell(row, column);
 		}
 
 		#region Constructor
@@ -73,12 +73,12 @@ namespace MySudoku.ViewModel
 			SudokuGame = sudokuGame;
 
 			// prepare game grid (view)
-			SudokuGridView = (ISudokuBoardView)new SudokuGridUserControl();
+			SudokuBoardView = (ISudokuBoardView)new SudokuBoardUserControl();
 
 			// add game grid to progam
-			sudokuGrid.Children.Add(SudokuGridView.GetUIElement());
-			Grid.SetRow(SudokuGridView.GetUIElement(), 0);
-			Grid.SetColumn(SudokuGridView.GetUIElement(), 0);
+			sudokuGrid.Children.Add(SudokuBoardView.GetUIElement());
+			Grid.SetRow(SudokuBoardView.GetUIElement(), 0);
+			Grid.SetColumn(SudokuBoardView.GetUIElement(), 0);
 
 			// prepare the binding
 			for (int row = 0; row < 9; row++)
@@ -90,7 +90,7 @@ namespace MySudoku.ViewModel
 			}
 
 			// prepare Key operation
-			SudokuGridView.SetKeyEventHandler(KeyUp);
+			SudokuBoardView.SetKeyEventHandler(KeyUp);
 
 			// create the game button user control (view)
 			SudokuCommands = new SudokuCommandUserControl();
@@ -105,8 +105,9 @@ namespace MySudoku.ViewModel
 			SudokuCommands.SetBackCommandEventHandler(BackCommand);
 			SudokuCommands.SetNewCommandEventHandler(NewCommand);
 			SudokuCommands.SetSolveCommandEventHandler(SolveCommand);
+			SudokuCommands.SetTogglePossibleValuesCommandEventHandler(TogglePossibleValuesVisibilityCommand);
 
-			SudokuGridView.MarkCell(0, 0);
+			SudokuBoardView.MarkCell(0, 0);
 			UpdateValues();
 
 
@@ -119,7 +120,7 @@ namespace MySudoku.ViewModel
 		private void Move(MoveDirection moveDirection)
 		{
 			int row, column;
-			SudokuGridView.GetCurrentCellCoordiantes(out row, out column);
+			SudokuBoardView.GetCurrentCellCoordiantes(out row, out column);
 
 			bool moved = false;
 			if ((row >= 0) && (column >= 0))
@@ -159,7 +160,7 @@ namespace MySudoku.ViewModel
 
 				if (moved)
 				{
-					SudokuGridView.MarkCell(row, column);
+					SudokuBoardView.MarkCell(row, column);
 				}
 			}
 		}
@@ -216,7 +217,7 @@ namespace MySudoku.ViewModel
 			if (sudokuDigit != SudokuGame.GetInvalidDigit())
 			{
 				int row, column;
-				SudokuGridView.GetCurrentCellCoordiantes(out row, out column);
+				SudokuBoardView.GetCurrentCellCoordiantes(out row, out column);
 
 				if ((row >= 0) && (column >= 0))
 				{
@@ -304,7 +305,7 @@ namespace MySudoku.ViewModel
 			DataTriple data = (DataTriple)e.Result;
 
 			if (data.Item3)
-				SudokuGridView.MarkCell(data.Item1, data.Item2);
+				SudokuBoardView.MarkCell(data.Item1, data.Item2);
 
 			UpdateValues();
 			SudokuCommands.SetButtonsEnabled(true);
@@ -337,6 +338,23 @@ namespace MySudoku.ViewModel
 		private void SolveCommand(object sender, EventArgs e)
 		{
 			ProcessBackGroundCommand(BackGroundSolveWork, BackGroundSolveCompleted);
+		}
+		#endregion
+
+		#region TogglePossibleValues
+		void BackGroundTogglePossibleValuesVisibilityDoWork(object sender, DoWorkEventArgs e)
+		{
+			SudokuBoardView.PossibleValueSetVisibilty = !SudokuBoardView.PossibleValueSetVisibilty;
+		}
+
+		void BackGroundTogglePossibleValuesVisibilityCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+			SudokuCommands.SetButtonsEnabled(true);
+		}
+
+		private void TogglePossibleValuesVisibilityCommand(object sender, EventArgs e)
+		{
+			ProcessBackGroundCommand(BackGroundTogglePossibleValuesVisibilityDoWork, BackGroundTogglePossibleValuesVisibilityCompleted);
 		}
 		#endregion
 

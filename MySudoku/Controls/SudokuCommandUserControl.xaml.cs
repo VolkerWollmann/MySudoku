@@ -26,6 +26,7 @@ namespace MySudoku.Controls
 		private EventHandler BackCommandEventHandler;
 		private EventHandler NewCommandEventHandler;
 		private EventHandler SolveCommandEventHandler;
+		private EventHandler TogglePossibleValuesCommandEventHandler;
 
 		public SudokuCommandUserControl()
 		{
@@ -126,6 +127,17 @@ namespace MySudoku.Controls
 		public void SetSolveCommandEventHandler(EventHandler eventHandler)
 		{
 			SolveCommandEventHandler += eventHandler;
+		}
+
+		private void ButtonCommandTogglePossibleValues_Click(object sender, RoutedEventArgs e)
+		{
+			if (TogglePossibleValuesCommandEventHandler != null)
+				TogglePossibleValuesCommandEventHandler(sender, e);
+		}
+
+		public void SetTogglePossibleValuesCommandEventHandler(EventHandler eventHandler)
+		{
+			TogglePossibleValuesCommandEventHandler += eventHandler;
 		}
 	}
 }

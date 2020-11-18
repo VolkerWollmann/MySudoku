@@ -20,6 +20,8 @@ namespace MySudoku.Interfaces
 
 		void SetPossibleValueSetString(int row, int column, string possibleValuesSet);
 
+		bool PossibleValueSetVisibilty { get; set; }
+
 		void SetPossibleValueContextMenu(int row, int column, List<int> possibleValueSet);
 
 		void GetCurrentCellCoordiantes(out int row, out int column);

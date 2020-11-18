@@ -24,7 +24,7 @@ namespace MySudoku.Controls
 		private static SolidColorBrush SCBLightGreen = new SolidColorBrush(Colors.LightGreen);
 		#endregion
 
-		private SudokuGridUserControl SudokuGridUserControl;
+		private SudokuBoardUserControl SudokuGridUserControl;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -110,7 +110,7 @@ namespace MySudoku.Controls
 		   });
 			SudokuCellControlPanel.ContextMenu = contextMenu;
 		}
-		public SudokuCellUserControl(SudokuGridUserControl _sudokuGridUserControl, int row, int column) : this()
+		public SudokuCellUserControl(SudokuBoardUserControl _sudokuGridUserControl, int row, int column) : this()
 		{
 			SudokuGridUserControl = _sudokuGridUserControl;
 			Row = row;
@@ -164,6 +164,24 @@ namespace MySudoku.Controls
 			AdjustBackGroundColor();
 		}
 
+
+		private Visibility _possibleValuesVisibilty = Visibility.Visible;
+		public Visibility PossibleValuesVisibilty
+		{
+			set
+			{
+				_possibleValuesVisibilty = value;
+				
+
+				NotifyPropertyChanged("PossibleValuesVisibilty");
+			}
+
+			get
+			{
+				return _possibleValuesVisibilty;
+			}
+		}
+      
 		private void SudokuCellControlPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
 			SudokuGridUserControl.MarkCell(Row, Column);
