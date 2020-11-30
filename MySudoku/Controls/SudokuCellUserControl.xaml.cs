@@ -22,6 +22,8 @@ namespace MySudoku.Controls
 		private static SolidColorBrush SCBAntiAntiqueWhite = new SolidColorBrush(Colors.AntiqueWhite);
 		private static SolidColorBrush SCBWhite = new SolidColorBrush(Colors.White);
 		private static SolidColorBrush SCBLightGreen = new SolidColorBrush(Colors.LightGreen);
+
+		private const string EMPTY_SET = "{}";
 		#endregion
 
 		private SudokuBoardUserControl SudokuGridUserControl;
@@ -102,7 +104,26 @@ namespace MySudoku.Controls
 
 		private void AdjustBackGroundColor()
 		{
-			BackGroundColor = _possibleValueSet != "" ? SCBAntiAntiqueWhite : SCBWhite ;
+			switch(_possibleValueSet)
+            {
+				case EMPTY_SET:
+					Color red = new Color();
+					red.A = 255;
+					red.B = 150;
+					red.R = 255;
+					red.G = 150;
+					BackGroundColor = new SolidColorBrush(red);
+					break;
+
+				case "":
+					BackGroundColor = SCBAntiAntiqueWhite;
+					break;
+
+				default:
+					BackGroundColor = SCBWhite;
+					break;
+			}
+
 		}
 
 		public void SetContextMenu(List<int> possibleValueSet)

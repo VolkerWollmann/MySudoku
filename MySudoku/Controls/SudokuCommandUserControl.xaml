@@ -19,7 +19,11 @@
 
         <DockPanel LastChildFill="True">
             <Label Margin="10,10,10,10" VerticalContentAlignment="Center" >Numbers:</Label>
-            <TextBox Name="Numbers" Width="Auto" Margin="10,10,10,10" VerticalContentAlignment="Center">54</TextBox>
+            <ComboBox Name="Numbers" Width="Auto" Margin="10,10,10,10" VerticalContentAlignment="Center" Text="54" IsEditable="True">
+                <ComboBoxItem>54</ComboBoxItem>
+                <ComboBoxItem>44</ComboBoxItem>
+                <ComboBoxItem>39</ComboBoxItem>
+            </ComboBox>
         </DockPanel>
         <Button Name="ButtonCommandBack"  Height="50"  Click="ButtonCommandBack_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
