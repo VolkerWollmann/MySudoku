@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using MySudoku.Constants;
 using MySudoku.Commands;
 
 namespace MySudoku.Controls
@@ -23,7 +19,6 @@ namespace MySudoku.Controls
 		private static SolidColorBrush SCBWhite = new SolidColorBrush(Colors.White);
 		private static SolidColorBrush SCBLightGreen = new SolidColorBrush(Colors.LightGreen);
 
-		private const string EMPTY_SET = "{}";
 		#endregion
 
 		private SudokuBoardUserControl SudokuGridUserControl;
@@ -106,7 +101,7 @@ namespace MySudoku.Controls
 		{
 			switch(_possibleValueSet)
             {
-				case EMPTY_SET:
+				case SudokuConstants.EMPTY_SET:
 					Color red = new Color();
 					red.A = 255;
 					red.B = 150;
@@ -115,7 +110,7 @@ namespace MySudoku.Controls
 					BackGroundColor = new SolidColorBrush(red);
 					break;
 
-				case "":
+				case SudokuConstants.ONE_NUMBER_SET:
 					BackGroundColor = SCBAntiAntiqueWhite;
 					break;
 

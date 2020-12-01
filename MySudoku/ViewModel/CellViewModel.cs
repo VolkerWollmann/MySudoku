@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
+using MySudoku.Constants;
 
 namespace MySudoku.ViewModel
 {
@@ -38,7 +38,7 @@ namespace MySudoku.ViewModel
 			PossibleValuesSet = possibleValues;
 
 			if (_value != 0)
-				PossibleValuesSetString = "";
+				PossibleValuesSetString = SudokuConstants.ONE_NUMBER_SET;
 			else
 			{
 				string result = "{";
