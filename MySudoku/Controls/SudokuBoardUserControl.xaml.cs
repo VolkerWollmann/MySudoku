@@ -69,7 +69,7 @@ namespace MySudoku.Controls
 
 		public void SetPossibleValueSetString(int row, int column, string possibleValueSet)
 		{
-			// decouple threads
+			// #decouple threads : changing the user interface must be done by the GUI-Thread 
 			this.Dispatcher.Invoke(() =>
 			{
 				SudokuCellUserControlGrid[row, column].PossibleValueSet = possibleValueSet;
@@ -78,7 +78,7 @@ namespace MySudoku.Controls
 
 		public void SetPossibleValueContextMenu(int row, int column, List<int> possibleValueSet)
 		{
-			// decouple threads
+			// #decouple threads : changing the user interface must be done by the GUI-Thread 
 			this.Dispatcher.Invoke(() =>
 			{
 				SudokuCellUserControlGrid[row, column].SetContextMenu(possibleValueSet);
