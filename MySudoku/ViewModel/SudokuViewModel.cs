@@ -293,6 +293,7 @@ namespace MySudoku.ViewModel
 		private void NewCommand(object sender, EventArgs e)
 		{
 			ProcessBackGroundCommand(BackGroundNewDoWork, BackGroundNewCompleted);
+			SudokuBoardView.MarkCell(4, 4);
 		}
 		#endregion
 
