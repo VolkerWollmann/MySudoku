@@ -196,7 +196,7 @@ namespace MySudoku.Controls
 		}
 
 
-		private Visibility _possibleValuesVisibilty = Visibility.Visible;
+		private Visibility _possibleValuesVisibilty = Visibility.Hidden;
 		public Visibility PossibleValuesVisibilty
 		{
 			set

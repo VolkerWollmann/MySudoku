@@ -96,7 +96,7 @@ namespace MySudoku.Controls
 
 		}
 
-		private bool _possibleValueSetVisibilty = true;
+		private bool _possibleValueSetVisibilty = false; //start invisible
 
 		public bool PossibleValueSetVisibilty
         {
