@@ -21,7 +21,7 @@ namespace MySudoku.Controls
 
 		#endregion
 
-		private SudokuBoardUserControl SudokuGridUserControl;
+		private SudokuBoardUserControl SudokuBoardUserControl;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
@@ -141,9 +141,9 @@ namespace MySudoku.Controls
 
 			SudokuCellControlPanel.ContextMenu = contextMenu;
 		}
-		public SudokuCellUserControl(SudokuBoardUserControl _sudokuGridUserControl, int row, int column) : this()
+		public SudokuCellUserControl(SudokuBoardUserControl _sudokuBoardUserControl, int row, int column) : this()
 		{
-			SudokuGridUserControl = _sudokuGridUserControl;
+			SudokuBoardUserControl = _sudokuBoardUserControl;
 			Row = row;
 			Column = column;
 
@@ -176,7 +176,7 @@ namespace MySudoku.Controls
 
 		internal void RaiseEventHandlerKey(object sender, Key key)
 		{
-			SudokuGridUserControl.EventHandlerKey(sender, key);
+			SudokuBoardUserControl.EventHandlerKey(sender, key);
 		}
 		private void SudokuCellUserControl_KeyUp(object sender, KeyEventArgs e)
 		{
@@ -215,7 +215,7 @@ namespace MySudoku.Controls
       
 		private void SudokuCellControlPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
-			SudokuGridUserControl.MarkCell(Row, Column);
+			SudokuBoardUserControl.MarkCell(Row, Column);
 			TextBoxFocus.Focus();
 		}
 	}

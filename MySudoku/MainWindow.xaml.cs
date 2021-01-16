@@ -25,7 +25,7 @@ namespace MySudoku
 		public MainWindow()
 		{
 			InitializeComponent();
-			ViewModelInitialize.InitializeViewModels(MySudokuGrid);
+			ViewModelInitialize.InitializeViewModels(MySudokuGame);
 		}
 	}
 }

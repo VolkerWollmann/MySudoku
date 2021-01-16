@@ -8,7 +8,7 @@ using MySudoku.Interfaces;
 namespace MySudoku.Controls
 {
 	/// <summary>
-	/// Interaction logic for SudokuGridUserControl.xaml
+	/// Interaction logic for SudokuBoardUserControl.xaml
 	/// </summary>
 	public partial class SudokuBoardUserControl : UserControl, ISudokuBoardView
 	{

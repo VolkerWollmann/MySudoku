@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MySudoku"
         mc:Ignorable="d"
         Title="WO Sudoku" Height="800" Width="850" MinHeight="500" MinWidth="550" >
-    <Grid x:Name="MySudokuGrid" MinWidth="550" MinHeight="450">
+    <Grid x:Name="MySudokuGame" MinWidth="550" MinHeight="450">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="9*" MinWidth="50"  />
             <ColumnDefinition Width="120" MinWidth="150" MaxWidth="150" />
