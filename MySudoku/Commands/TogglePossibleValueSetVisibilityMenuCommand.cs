@@ -8,7 +8,7 @@ using MySudoku.Controls;
 
 namespace MySudoku.Commands
 {
-    public class TogglePossibleValueSetVisibilityCommand : ICommand
+    public class TogglePossibleValueSetVisibilityMenuCommand : ICommand
     {
         SudokuCellUserControl SudokuCellUserControl;
         public event EventHandler CanExecuteChanged;
@@ -23,7 +23,7 @@ namespace MySudoku.Commands
             SudokuCellUserControl.RaiseEventHandlerKey(this, Key.Space);
         }
 
-        public TogglePossibleValueSetVisibilityCommand(SudokuCellUserControl sudokuCellUserControl)
+        public TogglePossibleValueSetVisibilityMenuCommand(SudokuCellUserControl sudokuCellUserControl)
         {
             SudokuCellUserControl = sudokuCellUserControl;
         }

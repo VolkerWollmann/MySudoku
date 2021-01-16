@@ -45,7 +45,7 @@ namespace MySudoku.Controls
         {
 			get
             {
-				return new TogglePossibleValueSetVisibilityCommand(this);
+				return new TogglePossibleValueSetVisibilityMenuCommand(this);
 			}
         }
 
