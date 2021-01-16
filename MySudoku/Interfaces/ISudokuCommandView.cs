@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MySudoku.Constants;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,15 +12,7 @@ namespace MySudoku.Interfaces
 	{
 		UIElement GetUIElement();
 
-		void SetClearCommandEventHandler(EventHandler eventHandler);
-
-		void SetNewCommandEventHandler(EventHandler eventHandler);
-
-		void SetBackCommandEventHandler(EventHandler eventHandler);
-
-		void SetSolveCommandEventHandler(EventHandler eventHandler);
-
-		void SetTogglePossibleValuesCommandEventHandler(EventHandler eventHandler);
+		void SetCommandEventHandler(SudokuCommand sudokuCommand, EventHandler eventHandler);
 
 		bool SetButtonsEnabled(bool buttonsEnabled);
 

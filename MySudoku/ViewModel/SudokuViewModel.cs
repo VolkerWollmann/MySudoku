@@ -7,6 +7,7 @@ using System;
 using System.Threading;
 using System.ComponentModel;
 using System.Windows;
+using MySudoku.Constants;
 
 namespace MySudoku.ViewModel
 {
@@ -101,11 +102,11 @@ namespace MySudoku.ViewModel
 			Grid.SetColumn(SudokuCommands.GetUIElement(), 1);
 
 			// bind command to buttons
-			SudokuCommands.SetClearCommandEventHandler(ClearCommand);
-			SudokuCommands.SetBackCommandEventHandler(BackCommand);
-			SudokuCommands.SetNewCommandEventHandler(NewCommand);
-			SudokuCommands.SetSolveCommandEventHandler(SolveCommand);
-			SudokuCommands.SetTogglePossibleValuesCommandEventHandler(TogglePossibleValuesVisibilityCommand);
+			SudokuCommands.SetCommandEventHandler(SudokuCommand.Clear, ClearCommand);
+			SudokuCommands.SetCommandEventHandler(SudokuCommand.Back ,BackCommand);
+			SudokuCommands.SetCommandEventHandler(SudokuCommand.New, NewCommand);
+			SudokuCommands.SetCommandEventHandler(SudokuCommand.Solve, SolveCommand);
+			SudokuCommands.SetCommandEventHandler(SudokuCommand.TogglePossibleValues, TogglePossibleValuesVisibilityCommand);
 
 			SudokuBoardView.MarkCell(0, 0);
 			UpdateValues();

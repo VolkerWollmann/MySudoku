@@ -8,11 +8,11 @@
              d:DesignHeight="450" d:DesignWidth="800" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" >
     <StackPanel Name="SudokuCommandUserControlPanel" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch"  >
 
-        <Button Name="ButtonCommandClear" Height="50"  Click="ButtonCommandClear_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
+        <Button Name="ButtonCommandClear" Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
             Clear
         </Button>
-        <Button Name="ButtonCommandNew"  Height="50"  Click="ButtonCommandNew_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
+        <Button Name="ButtonCommandNew"  Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
             New
         </Button>
@@ -25,15 +25,15 @@
                 <ComboBoxItem>39</ComboBoxItem>
             </ComboBox>
         </DockPanel>
-        <Button Name="ButtonCommandBack"  Height="50"  Click="ButtonCommandBack_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
+        <Button Name="ButtonCommandBack"  Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
             Back
         </Button>
-        <Button Name="ButtonCommandSolve"  Height="50"  Click="ButtonCommandSolve_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
+        <Button Name="ButtonCommandSolve"  Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
             Solve
         </Button>
-        <Button Name="ButtonCommandTogglePossibleValues"  Height="50"  Click="ButtonCommandTogglePossibleValues_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
+        <Button Name="ButtonCommandTogglePossibleValues" Tag="5" Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
             Togggle possible values
         </Button>

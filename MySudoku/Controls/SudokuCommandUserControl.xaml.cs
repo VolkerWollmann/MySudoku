@@ -1,4 +1,5 @@
-﻿using MySudoku.Interfaces;
+﻿using MySudoku.Constants;
+using MySudoku.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,16 +23,18 @@ namespace MySudoku.Controls
 	/// </summary>
 	public partial class SudokuCommandUserControl : UserControl, ISudokuCommandView, INotifyPropertyChanged
 	{
-		private EventHandler ClearCommandEventHandler;
-		private EventHandler BackCommandEventHandler;
-		private EventHandler NewCommandEventHandler;
-		private EventHandler SolveCommandEventHandler;
-		private EventHandler TogglePossibleValuesCommandEventHandler;
+		private EventHandler[] EventHandler = new EventHandler[6];
 
 		public SudokuCommandUserControl()
 		{
 			InitializeComponent();
 			this.DataContext = this;
+
+			this.ButtonCommandBack.Tag = SudokuCommand.Back;
+			this.ButtonCommandClear.Tag = SudokuCommand.Clear;
+			this.ButtonCommandNew.Tag = SudokuCommand.New;
+			this.ButtonCommandSolve.Tag = SudokuCommand.Solve;
+			this.ButtonCommandTogglePossibleValues.Tag = SudokuCommand.TogglePossibleValues;
 		}
 
 		public UIElement GetUIElement()
@@ -85,59 +88,17 @@ namespace MySudoku.Controls
 			return numberOfCellsToFill;
 		}
 
-		public void SetClearCommandEventHandler(EventHandler eventHandler)
+		public void SetCommandEventHandler(SudokuCommand sudokuCommand, EventHandler eventHandler)
 		{
-			ClearCommandEventHandler += eventHandler;
+			EventHandler[(int)sudokuCommand] += eventHandler;
 		}
 
-		private void ButtonCommandClear_Click(object sender, RoutedEventArgs e)
+		private void ButtonCommand_Click(object sender, RoutedEventArgs e)
 		{
-			if(ClearCommandEventHandler!=null)
-				ClearCommandEventHandler(sender, e);
-		}
-
-		private void ButtonCommandBack_Click(object sender, RoutedEventArgs e)
-		{
-			if (BackCommandEventHandler != null)
-				BackCommandEventHandler(sender, e);
-		}
-
-		public void SetBackCommandEventHandler(EventHandler eventHandler)
-		{
-			BackCommandEventHandler += eventHandler;
-		}
-
-		private void ButtonCommandNew_Click(object sender, RoutedEventArgs e)
-		{
-			if (NewCommandEventHandler != null)
-				NewCommandEventHandler(sender, e);
-		}
-
-		public void SetNewCommandEventHandler(EventHandler eventHandler)
-		{
-			NewCommandEventHandler += eventHandler;
-		}
-
-		private void ButtonCommandSolve_Click(object sender, RoutedEventArgs e)
-		{
-			if (SolveCommandEventHandler != null)
-				SolveCommandEventHandler(sender, e);
-		}
-
-		public void SetSolveCommandEventHandler(EventHandler eventHandler)
-		{
-			SolveCommandEventHandler += eventHandler;
-		}
-
-		private void ButtonCommandTogglePossibleValues_Click(object sender, RoutedEventArgs e)
-		{
-			if (TogglePossibleValuesCommandEventHandler != null)
-				TogglePossibleValuesCommandEventHandler(sender, e);
-		}
-
-		public void SetTogglePossibleValuesCommandEventHandler(EventHandler eventHandler)
-		{
-			TogglePossibleValuesCommandEventHandler += eventHandler;
+			if (sender is Button b)
+            {
+				EventHandler[(int)b.Tag](sender,e);
+            }
 		}
 	}
 }
