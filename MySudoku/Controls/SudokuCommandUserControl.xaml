@@ -10,11 +10,11 @@
 
         <Button Name="ButtonCommandClear" Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
-            Clear
+            <TextBlock><Bold>Clear</Bold></TextBlock>
         </Button>
         <Button Name="ButtonCommandNew"  Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
-            New
+            <TextBlock><Bold>New</Bold></TextBlock>
         </Button>
 
         <DockPanel LastChildFill="True">
@@ -27,15 +27,15 @@
         </DockPanel>
         <Button Name="ButtonCommandBack"  Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
-            Back
+            <TextBlock><Bold>Back</Bold></TextBlock>
         </Button>
         <Button Name="ButtonCommandSolve"  Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
-            Solve
+            <TextBlock><Bold>Solve</Bold></TextBlock>
         </Button>
         <Button Name="ButtonCommandTogglePossibleValues" Tag="5" Height="50"  Click="ButtonCommand_Click" IsEnabled="{Binding Path=ButtonsEnabled}"
                 Margin="10,10,10,10">
-            Togggle possible values
+            <TextBlock><Bold>Togggle possible values</Bold></TextBlock>
         </Button>
     </StackPanel>
 </UserControl>
