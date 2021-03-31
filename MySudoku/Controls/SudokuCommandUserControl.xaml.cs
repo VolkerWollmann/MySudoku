@@ -1,20 +1,9 @@
 ﻿using MySudoku.Constants;
 using MySudoku.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MySudoku.Controls
 {
@@ -23,7 +12,7 @@ namespace MySudoku.Controls
 	/// </summary>
 	public partial class SudokuCommandUserControl : UserControl, ISudokuCommandView, INotifyPropertyChanged
 	{
-		private EventHandler[] EventHandler = new EventHandler[6];
+		private readonly EventHandler[] EventHandler = new EventHandler[6];
 
 		public SudokuCommandUserControl()
 		{
@@ -45,22 +34,16 @@ namespace MySudoku.Controls
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private void NotifyPropertyChanged(String info)
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged(this, new PropertyChangedEventArgs(info));
-			}
-		}
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
+        }
 
 		bool _buttonsEnabled = true;
 		public bool ButtonsEnabled
 		{
-			get
-			{
-				return _buttonsEnabled;
-			}
+			get => _buttonsEnabled;
 
-			private set
+            private set
 			{
 				_buttonsEnabled = value;
 				NotifyPropertyChanged("ButtonsEnabled");
@@ -74,8 +57,7 @@ namespace MySudoku.Controls
 
 		public int GetNumberOfCellsToFill()
 		{
-			int numberOfCellsToFill;
-			if (!int.TryParse(Numbers.Text, out numberOfCellsToFill))
+            if (!int.TryParse(Numbers.Text, out var numberOfCellsToFill))
 			{
 				numberOfCellsToFill = 54;
 				Numbers.Text = "54";

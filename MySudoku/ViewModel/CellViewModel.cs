@@ -10,16 +10,16 @@ namespace MySudoku.ViewModel
 		public string Value { private set; get; }
 		public string PossibleValuesSetString { private set; get; }
 
-		private List<int> possibbleValuesSet;
+		private List<int> possibleValuesSet;
 		public List<int> PossibleValuesSet
 		{
-			private set { possibbleValuesSet = value; }
-			get
+			private set => possibleValuesSet = value;
+            get
 			{
 				if (Value == NotSet)
-					return possibbleValuesSet;
+					return possibleValuesSet;
 				else
-					return new List<int>() { };
+					return new List<int>();
 			}
 		}
 
@@ -38,7 +38,7 @@ namespace MySudoku.ViewModel
 			PossibleValuesSet = possibleValues;
 
 			if (_value != 0)
-				PossibleValuesSetString = SudokuConstants.ONE_NUMBER_SET;
+				PossibleValuesSetString = SudokuConstants.OneNumberSet;
 			else
 			{
 				string result = "{";

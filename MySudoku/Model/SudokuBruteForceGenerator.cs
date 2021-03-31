@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Controls;
-using MySudoku.Interfaces;
-using MySudoku.Perfomance;
+using MySudoku.Model.Interfaces;
+using MySudoku.Model.Support;
 
 namespace MySudoku.Model.BruteForce 
 {
@@ -12,10 +11,10 @@ namespace MySudoku.Model.BruteForce
 	internal class Field
 	{ 
 		internal int Value { get; set; }
-        internal int Row { get; private set; }
-		public int Column { get; private set; }
+        internal int Row { get; }
+		public int Column { get; }
 
-		internal List<Field> Neighbours { get; private set; }
+		internal List<Field> Neighbours { get; }
 
 		internal bool Check( int value)
 		{
@@ -36,18 +35,18 @@ namespace MySudoku.Model.BruteForce
 	}
 	public class SudokuBruteForceGenerator : ISudokuGenerator 
 	{
-		Field[,] game = null;
+        readonly Field[,] game;
 
 		public int GetValue(int row, int column)
 		{
 			return game[row, column].Value;
 		}
 
-		private List<Field> GetSubMartixFieldList(int sqaureRow, int squareColumn)
+		private List<Field> GetSubMartixFieldList(int squareRow, int squareColumn)
 		{
 			List<Field> result = new List<Field>();
 
-			for (int row = sqaureRow * 3; row <= sqaureRow * 3 + 2; row++)
+			for (int row = squareRow * 3; row <= squareRow * 3 + 2; row++)
 			{
 				for (int column = squareColumn * 3; column <= squareColumn * 3 + 2; column++)
 				{
@@ -58,11 +57,11 @@ namespace MySudoku.Model.BruteForce
 			return result; 
 		}
 
-		private void PopulateSubmatrix(int sqaureRow, int squareColumn )
+		private void PopulateSubmatrix(int squareRow, int squareColumn )
 		{
 			List<int> shuffledValues = RandomListAccess.GetShuffledList(new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 });
 			int i = 0;
-			for (int row = sqaureRow*3; row <= sqaureRow*3+2; row++)
+			for (int row = squareRow*3; row <= squareRow*3+2; row++)
 			{
 				for (int column = squareColumn*3; column <= squareColumn*3+2; column++)
 				{

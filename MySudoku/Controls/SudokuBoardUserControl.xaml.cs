@@ -12,12 +12,10 @@ namespace MySudoku.Controls
 	/// </summary>
 	public partial class SudokuBoardUserControl : UserControl, ISudokuBoardView
 	{
-		SudokuCellUserControl[,] SudokuCellUserControlGrid;
-		public SudokuCellUserControl CurrentSudokuCellUserControl { get; private set; } = null;
+        readonly SudokuCellUserControl[,] SudokuCellUserControlGrid;
+		public SudokuCellUserControl CurrentSudokuCellUserControl { get; private set; }
 
-		private int[,] iValues= new int[9,9];
-
-		public EventHandler<Key> EventHandlerKey;
+        public EventHandler<Key> EventHandlerKey;
 
 		public SudokuBoardUserControl()
 		{
@@ -45,7 +43,7 @@ namespace MySudoku.Controls
 			return this as UIElement;
 		}
 
-		public void GetCurrentCellCoordiantes(out int row, out int column)
+		public void GetCurrentCellCoordinates(out int row, out int column)
 		{
 			row = -1;
 			column = -1;
@@ -87,30 +85,25 @@ namespace MySudoku.Controls
 
 		public void MarkCell(int row, int column)
 		{
-			if (CurrentSudokuCellUserControl != null)
-				CurrentSudokuCellUserControl.UnMark();
+            CurrentSudokuCellUserControl?.UnMark();
 
-			CurrentSudokuCellUserControl = SudokuCellUserControlGrid[row, column];
+            CurrentSudokuCellUserControl = SudokuCellUserControlGrid[row, column];
 
 			CurrentSudokuCellUserControl.Mark();
 
 		}
 
-		private bool _possibleValueSetVisibilty = false; //start invisible
+		private bool _possibleValueSetVisibility; //start invisible
 
-		public bool PossibleValueSetVisibilty
+		public bool PossibleValueSetVisibility
         {
 			set
             {
-				_possibleValueSetVisibilty = value;
-				SudokuCellUserControlGrid.Cast<SudokuCellUserControl>().ToList().ForEach( cell => { cell.PossibleValuesVisibilty = value ? Visibility.Visible : Visibility.Hidden; });
+				_possibleValueSetVisibility = value;
+				SudokuCellUserControlGrid.Cast<SudokuCellUserControl>().ToList().ForEach( cell => { cell.PossibleValuesVisibility = value ? Visibility.Visible : Visibility.Hidden; });
 			}
 
-			get
-            {
-				return _possibleValueSetVisibilty;
-
-			}
+			get => _possibleValueSetVisibility;
         }
     }
 }

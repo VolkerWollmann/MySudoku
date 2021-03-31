@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Navigation;
 using MySudoku.Interfaces;
-using MySudoku.Model.BruteForce;
-using MySudoku.Perfomance;
+using MySudoku.Model.Interfaces;
+using MySudoku.Model.Support;
 
 namespace MySudoku.Model
 {
@@ -17,9 +16,9 @@ namespace MySudoku.Model
 	/// </summary>
 	public class SudokuGame : ISudokuGameModel, ISudokuGenerator
 	{
-		private string Name { get; set; }
+		private string Name { get; }
 
-		SudokuCell[,] grid;
+        readonly SudokuCell[,] grid;
 
 		private const int InvalidDigit = -1;
 
@@ -30,7 +29,7 @@ namespace MySudoku.Model
 		private SudokuCell this[int i, int j] => grid[i, j];
 
 
-		private List<SudokuCell> cellList = null;
+		private List<SudokuCell> cellList;
 		private List<SudokuCell> GetCellList()
 		{
 			if (cellList == null)
@@ -63,9 +62,9 @@ namespace MySudoku.Model
 		}
 
 		public void GetFirstInvalid()
-		{
-			var x = GetCellList().First(c => !c.IsValid());
-		}
+        {
+            var firstInValidCell = GetCellList().First(c => !c.IsValid());
+        }
 
 		public bool IsEqual(SudokuGame other)
 		{
@@ -104,7 +103,7 @@ namespace MySudoku.Model
 
 		private SudokuGame Copy()
 		{
-			return new SudokuGame(this, this.Name +"_X");
+			return new SudokuGame(this, Name +"_X");
 		}
 
 		private void ClearGrid()
@@ -122,13 +121,13 @@ namespace MySudoku.Model
 
 		#region Generation
 
-		private void PopulateSubmatrix(int startRow, int EndRow, int startColumn, int EndColumn)
+		private void PopulateSubmatrix(int startRow, int endRow, int startColumn, int endColumn)
 		{
-			List<int> shuffledValues = RandomListAccess.GetShuffledList(SudokuCell.GetInitalPossibleValueList());
+			List<int> shuffledValues = RandomListAccess.GetShuffledList(SudokuCell.GetInitialPossibleValueList());
 			int i = 0;
-			for( int row=startRow; row <= EndRow; row++)
+			for( int row=startRow; row <= endRow; row++)
 			{
-				for(int column=startColumn; column<=EndColumn; column++)
+				for(int column=startColumn; column<=endColumn; column++)
 				{
 					this[row, column].SetValue(shuffledValues[i++]);
 				}
@@ -137,9 +136,7 @@ namespace MySudoku.Model
 
 		private SudokuGame Search(SudokuGame sudokuGame, int level)
 		{
-			var c1 = sudokuGame.GetCellList().Where(ce => (ce.CellValue > 0)).Count();
-
-			// check vor valid game
+            // check vor valid game
 			if (!sudokuGame.IsValid())
 			{
 				sudokuGame.GetFirstInvalid();
@@ -163,9 +160,8 @@ namespace MySudoku.Model
 
 				// try the value
 				if (tryGame.SetValue(cell.Row, cell.Column, possibleValue))
-				{
-					var c2 = tryGame.GetCellList().Where(ce => (ce.CellValue > 0)).Count();
-					// now try one recursion deeper, with one field more set
+				{ 
+                    // now try one recursion deeper, with one field more set
 					performanceCounter.Down();
 					tryGame = Search(tryGame, level + 1);
 					performanceCounter.Up();
@@ -250,7 +246,7 @@ namespace MySudoku.Model
 			List<IntegerTriple> result = iSudokuGenerator.Generate();
 			if (result != null)
 			{
-				RandomListAccess.GetShuffledList(result).Take(numberOfCellsToFill).ToList().ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
+				RandomListAccess.GetShuffledList(result).Take(numberOfCellsToFill).ToList().ForEach(cell => { SetValue(cell.Item1, cell.Item2, cell.Item3); });
 			}			
 		}
 		/// <summary>
@@ -258,11 +254,10 @@ namespace MySudoku.Model
 		/// </summary>
 		public void Back()
 		{
-			if (History.Count() == 0)
+			if (!History.Any())
 				return;
 
-			List<Tuple<int, int, int>> Replay;
-			Replay = History.Take(History.Count() - 1).ToList();
+            var Replay = History.Take(History.Count - 1).ToList();
 			Clear();
 			Replay.ForEach(elem => { SetValue(elem.Item1, elem.Item2, elem.Item3); });
 		}
@@ -289,14 +284,14 @@ namespace MySudoku.Model
 		public bool Solve()
 		{
 
-			SudokuGame solver = this.Copy();
+			SudokuGame solver = Copy();
 			solver = Search(solver);
 
 			if (solver == null)
 				return false;
 
-			var sublist = solver.History.GetRange(this.History.Count, (solver.History.Count - this.History.Count));
-			sublist.ForEach(cell => { this.SetValue(cell.Item1, cell.Item2, cell.Item3); });
+			var sublist = solver.History.GetRange(History.Count, (solver.History.Count - History.Count));
+			sublist.ForEach(cell => { SetValue(cell.Item1, cell.Item2, cell.Item3); });
 
 			return true;			
 		}
@@ -319,7 +314,7 @@ namespace MySudoku.Model
 				}
 			}
 
-			// Initalize the history
+			// Initialize the history
 			History = new List<IntegerTriple>();
 		}
 

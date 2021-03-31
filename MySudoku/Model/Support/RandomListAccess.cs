@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MySudoku.Model
+namespace MySudoku.Model.Support
 {
 	internal class RandomListAccess
 	{
-		private static Random random = new Random();
+		private static Random _random = new Random();
 
 		public static void SetSeed(int i)
 		{
-			random = new Random(i);
+			_random = new Random(i);
 		}
 		internal static T GetRandomElement<T>(List<T> list)
 		{
-			int index = random.Next(0, list.Count);
+			int index = _random.Next(0, list.Count);
 			return list[index];
 		}
 
@@ -24,7 +24,7 @@ namespace MySudoku.Model
 			list.ForEach(e => work.Add(e));
 			while (work.Count > 0)
 			{
-				int index = random.Next(0, work.Count);
+				int index = _random.Next(0, work.Count);
 				result.Add(work[index]);
 				work.RemoveAt(index);
 			}

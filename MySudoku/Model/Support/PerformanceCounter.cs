@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MySudoku.Perfomance
+namespace MySudoku.Model.Support
 {
 
 	internal class PerformanceCounterElement
@@ -56,12 +56,10 @@ namespace MySudoku.Perfomance
 	{
 		private const int StackSize = 82;
 
-		private int level = 0;
-		private ulong total = 0;
-		private ulong opsPersecond;
-		private DateTime start;
+		private int level;
+        private readonly DateTime start;
 
-		PerformanceCounterElement[] stack;
+        readonly PerformanceCounterElement[] stack;
 
 		public PerformanceCounter()
 		{
@@ -88,14 +86,12 @@ namespace MySudoku.Perfomance
 
 		public void Update( int max, int current)
 		{
-			total++;
-			stack[level].Update(max, current);
+            stack[level].Update(max, current);
 
 			ulong seconds = (ulong)DateTime.Now.Subtract(start).TotalSeconds;
 			if (seconds >= 1)
 			{
-				opsPersecond = total / seconds;
-			}
+            }
 		}
 	}
 }

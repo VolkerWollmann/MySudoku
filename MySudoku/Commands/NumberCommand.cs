@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using MySudoku.Controls;
 
@@ -10,7 +8,7 @@ namespace MySudoku.Commands
 {
 	public class NumberCommand : ICommand
 	{
-		SudokuCellUserControl SudokuCellUserControl;
+        readonly SudokuCellUserControl SudokuCellUserControl;
 		public event EventHandler CanExecuteChanged;
 
 		public bool CanExecute(object parameter)
@@ -35,10 +33,10 @@ namespace MySudoku.Commands
 					new Tuple<string, Key>( "8", Key.D8 ),
 					new Tuple<string, Key>( "9", Key.D9 ),
 				};
-				key = mapping.Where(e => (e.Item1 == (string)parameter)).First().Item2;
+				key = mapping.First(e => (e.Item1 == (string)parameter)).Item2;
 			}
-			else if (parameter is Key)
-				key = (Key)parameter;
+			else if (parameter is Key key1)
+				key = key1;
 
 			SudokuCellUserControl.RaiseEventHandlerKey(this, key);
 		}

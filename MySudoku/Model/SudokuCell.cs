@@ -10,10 +10,10 @@ namespace MySudoku.Model
 	internal class SudokuCell
 	{ 
 		// parent of the cell
-		SudokuGame Parent;
+        readonly SudokuGame Parent;
 
-		public int Row { get; private set; }
-		public int Column { get; private set; }
+		public int Row { get; }
+		public int Column { get; }
 
 		public const string SudokuCellValueName = "CellValue";
 		public const string SudokuCellPossibleValuesName = "CellPossibleValues";
@@ -65,7 +65,7 @@ namespace MySudoku.Model
 			return true;
 		}
 
-		public static List<int> GetInitalPossibleValueList()
+		public static List<int> GetInitialPossibleValueList()
 		{
 			return new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 		}
@@ -75,7 +75,7 @@ namespace MySudoku.Model
 			Row = row;
 			Column = column;
 
-			CellPossibleValues = GetInitalPossibleValueList();
+			CellPossibleValues = GetInitialPossibleValueList();
 		}
 
 		private SudokuCell(SudokuGame parent, SudokuCell original)
@@ -89,7 +89,7 @@ namespace MySudoku.Model
 		public void Clear()
 		{
 			CellValue = 0;
-			CellPossibleValues = GetInitalPossibleValueList();
+			CellPossibleValues = GetInitialPossibleValueList();
 		}
 
 		internal SudokuCell Copy(SudokuGame parent)

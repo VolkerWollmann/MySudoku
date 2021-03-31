@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using MySudoku.Controls;
 
@@ -10,7 +6,7 @@ namespace MySudoku.Commands
 {
     public class TogglePossibleValueSetVisibilityMenuCommand : ICommand
     {
-        SudokuCellUserControl SudokuCellUserControl;
+        readonly SudokuCellUserControl SudokuCellUserControl;
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)

@@ -1,10 +1,8 @@
 ﻿using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
 using MySudoku.Controls;
 using MySudoku.Interfaces;
 using System;
-using System.Threading;
 using System.ComponentModel;
 using System.Windows;
 using MySudoku.Constants;
@@ -30,16 +28,16 @@ namespace MySudoku.ViewModel
 		private Grid SudokuGrid;
 
 		// Model : game
-		private ISudokuGameModel SudokuGame;
+		private readonly ISudokuGameModel SudokuGame;
 
 		// View : board to display game
-		private ISudokuBoardView SudokuBoardView;
+		private readonly ISudokuBoardView SudokuBoardView;
 
 		// View : Command buttons 
-		private ISudokuCommandView SudokuCommands;
+		private readonly ISudokuCommandView SudokuCommands;
 
 		// View model data: Formatting of single cells from the model ot the view model
-		private CellViewModel[,] GameCellToViewCell = new CellViewModel[9, 9];
+		private readonly CellViewModel[,] GameCellToViewCell = new CellViewModel[9, 9];
 
 		// View model data: Number of cells to fill
 		private int NumberOfCellsToFill;
@@ -60,7 +58,7 @@ namespace MySudoku.ViewModel
 				}
 			}
 
-			SudokuBoardView.GetCurrentCellCoordiantes(out row, out column);
+			SudokuBoardView.GetCurrentCellCoordinates(out row, out column);
 			SudokuBoardView.MarkCell(row, column);
 		}
 
@@ -76,7 +74,7 @@ namespace MySudoku.ViewModel
 			// prepare game grid (view)
 			SudokuBoardView = (ISudokuBoardView)new SudokuBoardUserControl();
 
-			// add game grid to progam
+			// add game grid to program
 			sudokuGrid.Children.Add(SudokuBoardView.GetUIElement());
 			Grid.SetRow(SudokuBoardView.GetUIElement(), 0);
 			Grid.SetColumn(SudokuBoardView.GetUIElement(), 0);
@@ -120,8 +118,7 @@ namespace MySudoku.ViewModel
 
 		private void Move(MoveDirection moveDirection)
 		{
-			int row, column;
-			SudokuBoardView.GetCurrentCellCoordiantes(out row, out column);
+            SudokuBoardView.GetCurrentCellCoordinates(out var row, out var column);
 
 			bool moved = false;
 			if ((row >= 0) && (column >= 0))
@@ -220,12 +217,11 @@ namespace MySudoku.ViewModel
 				return;
             }
 
-			// Key to sukdou digit
+			// Key to sudoku digit
 			int sudokuDigit = SudokuDigitFromKey(key);
 			if (sudokuDigit != SudokuGame.GetInvalidDigit())
 			{
-				int row, column;
-				SudokuBoardView.GetCurrentCellCoordiantes(out row, out column);
+                SudokuBoardView.GetCurrentCellCoordinates(out var row, out var column);
 
 				if ((row >= 0) && (column >= 0))
 				{
@@ -256,9 +252,8 @@ namespace MySudoku.ViewModel
 			SudokuCommands.SetButtonsEnabled(false);
 			NumberOfCellsToFill = SudokuCommands.GetNumberOfCellsToFill();
 
-			BackgroundWorker backgroundWorker = new BackgroundWorker();
-			backgroundWorker.WorkerReportsProgress = false;
-			backgroundWorker.DoWork += doWorkEventHandler;
+            BackgroundWorker backgroundWorker = new BackgroundWorker {WorkerReportsProgress = false};
+            backgroundWorker.DoWork += doWorkEventHandler;
 			backgroundWorker.RunWorkerCompleted += workerCompletedEventHandler;
 			backgroundWorker.RunWorkerAsync(this);
 		}
@@ -302,10 +297,7 @@ namespace MySudoku.ViewModel
 
 		void BackGroundBackDoWork(object sender, DoWorkEventArgs e)
 		{
-			int row=0, column=0, value=0;
-			bool valid=false;
-
-			valid = SudokuGame.GetLastOperation(out row, out column, out value);
+            var valid = SudokuGame.GetLastOperation(out var row, out var column, out _);
 			SudokuGame.Back();
 			e.Result = new DataTriple(row, column, valid) ;
 		}
@@ -353,7 +345,7 @@ namespace MySudoku.ViewModel
 		#region TogglePossibleValues
 		void BackGroundTogglePossibleValuesVisibilityDoWork(object sender, DoWorkEventArgs e)
 		{
-			SudokuBoardView.PossibleValueSetVisibilty = !SudokuBoardView.PossibleValueSetVisibilty;
+			SudokuBoardView.PossibleValueSetVisibility = !SudokuBoardView.PossibleValueSetVisibility;
 		}
 
 		void BackGroundTogglePossibleValuesVisibilityCompleted(object sender, RunWorkerCompletedEventArgs e)

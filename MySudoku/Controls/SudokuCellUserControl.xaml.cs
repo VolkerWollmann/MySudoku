@@ -15,42 +15,26 @@ namespace MySudoku.Controls
 	public partial class SudokuCellUserControl : UserControl, INotifyPropertyChanged
 	{
 		#region Constants
-		private static SolidColorBrush SCBAntiAntiqueWhite = new SolidColorBrush(Colors.AntiqueWhite);
-		private static SolidColorBrush SCBWhite = new SolidColorBrush(Colors.White);
-		private static SolidColorBrush SCBLightGreen = new SolidColorBrush(Colors.LightGreen);
+		private static readonly SolidColorBrush SCBAntiAntiqueWhite = new SolidColorBrush(Colors.AntiqueWhite);
+		private static readonly SolidColorBrush SCBWhite = new SolidColorBrush(Colors.White);
 
-		#endregion
+        #endregion
 
-		private SudokuBoardUserControl SudokuBoardUserControl;
+		private readonly SudokuBoardUserControl SudokuBoardUserControl;
 
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		private void NotifyPropertyChanged(string info)
-		{
-			if (PropertyChanged != null)
-			{
-				PropertyChanged(this, new PropertyChangedEventArgs(info));
-			}
-		}
-
-		public ICommand NumberCommand
-		{
-			get
-			{
-				return new NumberCommand(this);
-			}
-		}
-
-		public ICommand TogglePossibleValueSetVisibiltyCommand
         {
-			get
-            {
-				return new TogglePossibleValueSetVisibilityMenuCommand(this);
-			}
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
 
-		public int Row { get; private set; }
-		public int Column { get; private set; }
+		public ICommand NumberCommand => new NumberCommand(this);
+
+        public ICommand TogglePossibleValueSetVisibilityCommand => new TogglePossibleValueSetVisibilityMenuCommand(this);
+
+        public int Row { get; }
+		public int Column { get; }
 
 		string _value;
 		public string Value {
@@ -60,11 +44,8 @@ namespace MySudoku.Controls
 				NotifyPropertyChanged("Value");
 			}
 
-			get
-			{
-				return _value;
-			}
-		}
+			get => _value;
+        }
 
 		string _possibleValueSet;
 		public string PossibleValueSet
@@ -76,11 +57,8 @@ namespace MySudoku.Controls
 				AdjustBackGroundColor();
 			}
 
-			get
-			{
-				return _possibleValueSet;
-			}
-		}
+			get => _possibleValueSet;
+        }
 
 		SolidColorBrush _backGroundColor;
 		public SolidColorBrush BackGroundColor
@@ -91,17 +69,14 @@ namespace MySudoku.Controls
 				NotifyPropertyChanged("BackGroundColor");
 			}
 
-			get
-			{
-				return _backGroundColor;
-			}
-		}
+			get => _backGroundColor;
+        }
 
 		private void AdjustBackGroundColor()
 		{
 			switch(_possibleValueSet)
             {
-				case SudokuConstants.EMPTY_SET:
+				case SudokuConstants.EmptySet:
 					Color red = new Color();
 					red.A = 255;
 					red.B = 150;
@@ -110,7 +85,7 @@ namespace MySudoku.Controls
 					BackGroundColor = new SolidColorBrush(red);
 					break;
 
-				case SudokuConstants.ONE_NUMBER_SET:
+				case SudokuConstants.OneNumberSet:
 					BackGroundColor = SCBAntiAntiqueWhite;
 					break;
 
@@ -125,18 +100,19 @@ namespace MySudoku.Controls
 		{
 			ContextMenu contextMenu = new ContextMenu();
 
-			MenuItem menuItemToggelPossibleValueSetVisibilty = new MenuItem();
-			menuItemToggelPossibleValueSetVisibilty.Header = "Toggle possible values";
-			menuItemToggelPossibleValueSetVisibilty.Command = TogglePossibleValueSetVisibiltyCommand;
-			contextMenu.Items.Add(menuItemToggelPossibleValueSetVisibilty);
+            MenuItem menuItemTogglePossibleValueSetVisibility = new MenuItem
+            {
+                Header = "Toggle possible values", Command = TogglePossibleValueSetVisibilityCommand
+            };
+            contextMenu.Items.Add(menuItemTogglePossibleValueSetVisibility);
 
 			possibleValueSet.ForEach(i =>
 		   {
-			   MenuItem menuItem = new MenuItem();
-			   menuItem.Header = i.ToString();
-			   menuItem.Command = NumberCommand;
-			   menuItem.CommandParameter = i.ToString();
-			   contextMenu.Items.Add(menuItem);
+               MenuItem menuItem = new MenuItem
+               {
+                   Header = i.ToString(), Command = NumberCommand, CommandParameter = i.ToString()
+               };
+               contextMenu.Items.Add(menuItem);
 		   });
 
 			SudokuCellControlPanel.ContextMenu = contextMenu;
@@ -196,22 +172,19 @@ namespace MySudoku.Controls
 		}
 
 
-		private Visibility _possibleValuesVisibilty = Visibility.Hidden;
-		public Visibility PossibleValuesVisibilty
+		private Visibility _possibleValuesVisibility = Visibility.Hidden;
+		public Visibility PossibleValuesVisibility
 		{
 			set
 			{
-				_possibleValuesVisibilty = value;
+				_possibleValuesVisibility = value;
 				
 
-				NotifyPropertyChanged("PossibleValuesVisibilty");
+				NotifyPropertyChanged("PossibleValuesVisibility");
 			}
 
-			get
-			{
-				return _possibleValuesVisibilty;
-			}
-		}
+			get => _possibleValuesVisibility;
+        }
       
 		private void SudokuCellControlPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
 		{
