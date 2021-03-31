@@ -42,7 +42,7 @@ namespace MySudoku.Model.BruteForce
 			return game[row, column].Value;
 		}
 
-		private List<Field> GetSubMartixFieldList(int squareRow, int squareColumn)
+		private List<Field> GetSubMatrixFieldList(int squareRow, int squareColumn)
 		{
 			List<Field> result = new List<Field>();
 

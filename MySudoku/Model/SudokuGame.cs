@@ -188,7 +188,7 @@ namespace MySudoku.Model
 		{
 			SudokuGame sudokuGameGenerator = new SudokuGame("L1");
 
-			// populate the 3x3 sub matrixs on the main diagonal
+			// populate the 3x3 sub matrix on the main diagonal
 			// that can be done without checks
 			sudokuGameGenerator.PopulateSubmatrix(0, 2, 0, 2);
 			sudokuGameGenerator.PopulateSubmatrix(3, 5, 3, 5);
