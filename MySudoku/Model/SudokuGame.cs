@@ -18,7 +18,7 @@ namespace MySudoku.Model
 	{
 		private string Name { get; }
 
-        readonly SudokuCell[,] grid;
+        private SudokuCell[,] Grid { get; }
 
 		private const int InvalidDigit = -1;
 
@@ -26,17 +26,14 @@ namespace MySudoku.Model
 
 		#region Methods
 
-		private SudokuCell this[int i, int j] => grid[i, j];
+		private SudokuCell this[int i, int j] => Grid[i, j];
 
 
-		private List<SudokuCell> cellList;
+		private List<SudokuCell> _CellList;
 		private List<SudokuCell> GetCellList()
-		{
-			if (cellList == null)
-				cellList = grid.Cast<SudokuCell>().ToList();
-
-			return cellList;
-		}
+        {
+            return _CellList ?? (_CellList = Grid.Cast<SudokuCell>().ToList());
+        }
 
 		public int GetInvalidDigit()
 		{
@@ -44,12 +41,12 @@ namespace MySudoku.Model
 		}
 		public int GetCellValue(int row, int column)
 		{
-			return grid[row, column].CellValue;
+			return Grid[row, column].CellValue;
 		}
 
 		public List<int> GetCellPossibleValues(int row, int column)
 		{
-			return grid[row, column].CellPossibleValues;
+			return Grid[row, column].CellPossibleValues;
 		}
 
 		/// <summary>
@@ -72,7 +69,7 @@ namespace MySudoku.Model
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					if (!grid[row, column].IsEqual(other[row, column]))
+					if (!Grid[row, column].IsEqual(other[row, column]))
 						return false;
 				}
 			}
@@ -84,8 +81,8 @@ namespace MySudoku.Model
 			// Exclude from rows and columns
 			for (int i = 0; i < 9; i++)
 			{
-				grid[row, i].Exclude(value);
-				grid[i, column].Exclude(value);
+				Grid[row, i].Exclude(value);
+				Grid[i, column].Exclude(value);
 			}
 
 			// Exclude from square
@@ -96,7 +93,7 @@ namespace MySudoku.Model
 			{
 				for ( int j = columnBase; j < columnBase+3; j++  )
 				{
-					grid[i,j].Exclude(value);
+					Grid[i,j].Exclude(value);
 				}
 			}
 		}
@@ -112,7 +109,7 @@ namespace MySudoku.Model
 			{
 				for (int column = 0; column < 9; column++)
 				{
-					grid[row, column].Clear();
+					Grid[row, column].Clear();
 				}
 			}
 		}
@@ -154,7 +151,7 @@ namespace MySudoku.Model
 
 			foreach (int possibleValue in cell.CellPossibleValues)
 			{
-				performanceCounter.Update(cell.CellPossibleValues.Count, ++c);
+				PerformanceCounter.Update(cell.CellPossibleValues.Count, ++c);
 				//make copy of the game
 				SudokuGame tryGame = sudokuGame.Copy();
 
@@ -162,9 +159,9 @@ namespace MySudoku.Model
 				if (tryGame.SetValue(cell.Row, cell.Column, possibleValue))
 				{ 
                     // now try one recursion deeper, with one field more set
-					performanceCounter.Down();
+					PerformanceCounter.Down();
 					tryGame = Search(tryGame, level + 1);
-					performanceCounter.Up();
+					PerformanceCounter.Up();
 					if (tryGame != null)
 					{
 						// the value contributes to a valid solution
@@ -177,10 +174,10 @@ namespace MySudoku.Model
 			return null;
 		}
 
-		PerformanceCounter performanceCounter;
+		PerformanceCounter PerformanceCounter;
 		private SudokuGame Search(SudokuGame sudokuGame )
 		{
-			performanceCounter = new PerformanceCounter();
+			PerformanceCounter = new PerformanceCounter();
 			return Search(sudokuGame, 1);
 		}
 
@@ -214,7 +211,7 @@ namespace MySudoku.Model
 		/// </summary>
 		public bool SetValue(int row, int column, int value)
 		{
-			if (grid[row, column].SetValue(value))
+			if (Grid[row, column].SetValue(value))
 			{
 				History.Add(new IntegerTriple(row, column, value));
 				return true;
@@ -257,9 +254,9 @@ namespace MySudoku.Model
 			if (!History.Any())
 				return;
 
-            var Replay = History.Take(History.Count - 1).ToList();
+            var replay = History.Take(History.Count - 1).ToList();
 			Clear();
-			Replay.ForEach(elem => { SetValue(elem.Item1, elem.Item2, elem.Item3); });
+			replay.ForEach(elem => { SetValue(elem.Item1, elem.Item2, elem.Item3); });
 		}
 
 		public bool GetLastOperation(out int x, out int y, out int value)
@@ -304,13 +301,13 @@ namespace MySudoku.Model
 			Name = name;
 
 			// Initialize the the array of sudoku cells
-			grid = new SudokuCell[9, 9];
+			Grid = new SudokuCell[9, 9];
 
 			for (int row = 0; row<9; row++)
 			{
 				for(int column=0; column<9; column++)
 				{
-					grid[row, column] = new SudokuCell(this, row, column );
+					Grid[row, column] = new SudokuCell(this, row, column );
 				}
 			}
 
@@ -321,8 +318,8 @@ namespace MySudoku.Model
 		private SudokuGame(SudokuGame original, string name)
 		{
 			Name = name;
-			grid = new SudokuCell[9, 9];
-			original.GetCellList().ForEach(cell => { grid[cell.Row, cell.Column] = cell.Copy(this);  });
+			Grid = new SudokuCell[9, 9];
+			original.GetCellList().ForEach(cell => { Grid[cell.Row, cell.Column] = cell.Copy(this);  });
 			History = new List<IntegerTriple>(original.History);
 		}
 		#endregion

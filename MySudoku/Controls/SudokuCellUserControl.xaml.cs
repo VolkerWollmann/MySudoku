@@ -15,8 +15,8 @@ namespace MySudoku.Controls
 	public partial class SudokuCellUserControl : UserControl, INotifyPropertyChanged
 	{
 		#region Constants
-		private static readonly SolidColorBrush SCBAntiAntiqueWhite = new SolidColorBrush(Colors.AntiqueWhite);
-		private static readonly SolidColorBrush SCBWhite = new SolidColorBrush(Colors.White);
+		private static readonly SolidColorBrush ScbAntiAntiqueWhite = new SolidColorBrush(Colors.AntiqueWhite);
+		private static readonly SolidColorBrush ScbWhite = new SolidColorBrush(Colors.White);
 
         #endregion
 
@@ -36,45 +36,45 @@ namespace MySudoku.Controls
         public int Row { get; }
 		public int Column { get; }
 
-		string _value;
+        private string _Value;
 		public string Value {
 			set
 			{
-				_value = value;
+				_Value = value;
 				NotifyPropertyChanged("Value");
 			}
 
-			get => _value;
+			get => _Value;
         }
 
-		string _possibleValueSet;
+		private string _PossibleValueSet;
 		public string PossibleValueSet
 		{
 			set
 			{
-				_possibleValueSet = value;
+				_PossibleValueSet = value;
 				NotifyPropertyChanged("PossibleValueSet");
 				AdjustBackGroundColor();
 			}
 
-			get => _possibleValueSet;
+			get => _PossibleValueSet;
         }
 
-		SolidColorBrush _backGroundColor;
+		private SolidColorBrush _BackGroundColor;
 		public SolidColorBrush BackGroundColor
 		{
 			set
 			{
-				_backGroundColor = value;
+				_BackGroundColor = value;
 				NotifyPropertyChanged("BackGroundColor");
 			}
 
-			get => _backGroundColor;
+			get => _BackGroundColor;
         }
 
 		private void AdjustBackGroundColor()
 		{
-			switch(_possibleValueSet)
+			switch(_PossibleValueSet)
             {
 				case SudokuConstants.EmptySet:
 					Color red = new Color();
@@ -86,11 +86,11 @@ namespace MySudoku.Controls
 					break;
 
 				case SudokuConstants.OneNumberSet:
-					BackGroundColor = SCBAntiAntiqueWhite;
+					BackGroundColor = ScbAntiAntiqueWhite;
 					break;
 
 				default:
-					BackGroundColor = SCBWhite;
+					BackGroundColor = ScbWhite;
 					break;
 			}
 
@@ -117,9 +117,9 @@ namespace MySudoku.Controls
 
 			SudokuCellControlPanel.ContextMenu = contextMenu;
 		}
-		public SudokuCellUserControl(SudokuBoardUserControl _sudokuBoardUserControl, int row, int column) : this()
+		public SudokuCellUserControl(SudokuBoardUserControl sudokuBoardUserControl, int row, int column) : this()
 		{
-			SudokuBoardUserControl = _sudokuBoardUserControl;
+			SudokuBoardUserControl = sudokuBoardUserControl;
 			Row = row;
 			Column = column;
 
@@ -133,7 +133,7 @@ namespace MySudoku.Controls
 			};
 
 			SudokuCellControlBorder.BorderBrush = new SolidColorBrush(Colors.Black);
-			BackGroundColor = SCBAntiAntiqueWhite;
+			BackGroundColor = ScbAntiAntiqueWhite;
 		}
 
 		public SudokuCellUserControl()
@@ -172,18 +172,18 @@ namespace MySudoku.Controls
 		}
 
 
-		private Visibility _possibleValuesVisibility = Visibility.Hidden;
+		private Visibility _PossibleValuesVisibility = Visibility.Hidden;
 		public Visibility PossibleValuesVisibility
 		{
 			set
 			{
-				_possibleValuesVisibility = value;
+				_PossibleValuesVisibility = value;
 				
 
 				NotifyPropertyChanged("PossibleValuesVisibility");
 			}
 
-			get => _possibleValuesVisibility;
+			get => _PossibleValuesVisibility;
         }
       
 		private void SudokuCellControlPanel_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)

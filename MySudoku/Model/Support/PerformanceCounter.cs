@@ -56,39 +56,39 @@ namespace MySudoku.Model.Support
 	{
 		private const int StackSize = 82;
 
-		private int level;
-        private readonly DateTime start;
+		private int Level;
+        private readonly DateTime Start;
 
-        readonly PerformanceCounterElement[] stack;
+        readonly PerformanceCounterElement[] Stack;
 
 		public PerformanceCounter()
 		{
-			level = 0;
-			start = DateTime.Now;
-			stack = new PerformanceCounterElement[StackSize];
+			Level = 0;
+			Start = DateTime.Now;
+			Stack = new PerformanceCounterElement[StackSize];
 			for(int i = 0; i< StackSize; i++)
 			{
-				stack[i] = new PerformanceCounterElement();
+				Stack[i] = new PerformanceCounterElement();
 			}
 		}
 
 		public void Down()
 		{
-			level = level + 1;
-			stack[level].Init();
+			Level = Level + 1;
+			Stack[Level].Init();
 		}
 
 		public void Up()
 		{
-			stack[level].Complete();
-			level = level - 1;
+			Stack[Level].Complete();
+			Level = Level - 1;
 		}
 
 		public void Update( int max, int current)
 		{
-            stack[level].Update(max, current);
+            Stack[Level].Update(max, current);
 
-			ulong seconds = (ulong)DateTime.Now.Subtract(start).TotalSeconds;
+			ulong seconds = (ulong)DateTime.Now.Subtract(Start).TotalSeconds;
 			if (seconds >= 1)
 			{
             }

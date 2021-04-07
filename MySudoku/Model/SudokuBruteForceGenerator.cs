@@ -35,11 +35,11 @@ namespace MySudoku.Model.BruteForce
 	}
 	public class SudokuBruteForceGenerator : ISudokuGenerator 
 	{
-        readonly Field[,] game;
+        readonly Field[,] _Game;
 
 		public int GetValue(int row, int column)
 		{
-			return game[row, column].Value;
+			return _Game[row, column].Value;
 		}
 
 		private List<Field> GetSubMatrixFieldList(int squareRow, int squareColumn)
@@ -50,7 +50,7 @@ namespace MySudoku.Model.BruteForce
 			{
 				for (int column = squareColumn * 3; column <= squareColumn * 3 + 2; column++)
 				{
-					result.Add(game[row, column]);
+					result.Add(_Game[row, column]);
 				}
 			}
 
@@ -65,7 +65,7 @@ namespace MySudoku.Model.BruteForce
 			{
 				for (int column = squareColumn*3; column <= squareColumn*3+2; column++)
 				{
-					game[row, column].Value =shuffledValues[i++];
+					_Game[row, column].Value =shuffledValues[i++];
 				}
 			}
 		}
@@ -100,42 +100,42 @@ namespace MySudoku.Model.BruteForce
 
 			List<Field> fieldsToFill = new List<Field>();
 
-			game.Cast<Field>().Where(field => (field.Value == 0)).ToList().ForEach(field => { fieldsToFill.Add(field); });
+			_Game.Cast<Field>().Where(field => (field.Value == 0)).ToList().ForEach(field => { fieldsToFill.Add(field); });
 
 			bool result = Search(fieldsToFill);
 			if (!result)
 				return null;
 		
 			List<IntegerTriple> list = new List<IntegerTriple>();
-			game.Cast<Field>().ToList().ForEach(field => { list.Add(new IntegerTriple(field.Row, field.Column, field.Value)); });
+			_Game.Cast<Field>().ToList().ForEach(field => { list.Add(new IntegerTriple(field.Row, field.Column, field.Value)); });
 			return list;
 		}
 		public SudokuBruteForceGenerator()
 		{
-			game = new Field[9, 9];
+			_Game = new Field[9, 9];
 			for (int row = 0; row < 9; row++)
 			{
 				for(int column=0; column < 9; column++)
 				{
-					game[row, column] = new Field(row, column);
+					_Game[row, column] = new Field(row, column);
 				}
 			}
 
-			game.Cast<Field>().ToList().ForEach( f =>
+			_Game.Cast<Field>().ToList().ForEach( f =>
 			{
 				// Row neighbours
-				IEnumerable<Field> rowNeighbours = game.Cast<Field>().Where(field => (field.Row == f.Row && field.Column != f.Column));
+				IEnumerable<Field> rowNeighbours = _Game.Cast<Field>().Where(field => (field.Row == f.Row && field.Column != f.Column));
 				f.Neighbours.AddRange(rowNeighbours.ToList());
 
 				// Column neighbours
-				IEnumerable<Field> columnNeighbours = game.Cast<Field>().Where(field => (field.Row != f.Row && field.Column == f.Column));
+				IEnumerable<Field> columnNeighbours = _Game.Cast<Field>().Where(field => (field.Row != f.Row && field.Column == f.Column));
 				f.Neighbours.AddRange(columnNeighbours.ToList());
 
 				// Square neighbours
 				int rowBase = (f.Row / 3) * 3;
 				int columnBase = (f.Column / 3) * 3;
 
-				IEnumerable<Field> l = game.Cast<Field>().Where(field => (field.Row >= rowBase) && (field.Row <= rowBase + 2) && (field.Column >= columnBase) && (field.Column <= columnBase + 2));
+				IEnumerable<Field> l = _Game.Cast<Field>().Where(field => (field.Row >= rowBase) && (field.Row <= rowBase + 2) && (field.Column >= columnBase) && (field.Column <= columnBase + 2));
 				l = l.Where(field => (field.Row != f.Row && field.Column != f.Column));
 				l = l.Where(field => (!f.Neighbours.Contains(field)));
 				f.Neighbours.AddRange(l);

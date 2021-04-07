@@ -40,7 +40,7 @@ namespace MySudoku.Controls
 
 		public UIElement GetUIElement()
 		{
-			return this as UIElement;
+			return this;
 		}
 
 		public void GetCurrentCellCoordinates(out int row, out int column)
@@ -93,17 +93,17 @@ namespace MySudoku.Controls
 
 		}
 
-		private bool _possibleValueSetVisibility; //start invisible
+		private bool _PossibleValueSetVisibility; //start invisible
 
 		public bool PossibleValueSetVisibility
         {
 			set
             {
-				_possibleValueSetVisibility = value;
+				_PossibleValueSetVisibility = value;
 				SudokuCellUserControlGrid.Cast<SudokuCellUserControl>().ToList().ForEach( cell => { cell.PossibleValuesVisibility = value ? Visibility.Visible : Visibility.Hidden; });
 			}
 
-			get => _possibleValueSetVisibility;
+			get => _PossibleValueSetVisibility;
         }
     }
 }

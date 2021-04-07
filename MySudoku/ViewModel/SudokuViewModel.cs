@@ -72,7 +72,7 @@ namespace MySudoku.ViewModel
 			SudokuGame = sudokuGame;
 
 			// prepare game grid (view)
-			SudokuBoardView = (ISudokuBoardView)new SudokuBoardUserControl();
+			SudokuBoardView = new SudokuBoardUserControl();
 
 			// add game grid to program
 			sudokuGrid.Children.Add(SudokuBoardView.GetUIElement());

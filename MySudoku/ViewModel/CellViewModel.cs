@@ -10,34 +10,31 @@ namespace MySudoku.ViewModel
 		public string Value { private set; get; }
 		public string PossibleValuesSetString { private set; get; }
 
-		private List<int> possibleValuesSet;
+		private List<int> _PossibleValuesSet;
 		public List<int> PossibleValuesSet
 		{
-			private set => possibleValuesSet = value;
+			private set => _PossibleValuesSet = value;
             get
 			{
 				if (Value == NotSet)
-					return possibleValuesSet;
+					return _PossibleValuesSet;
 				else
 					return new List<int>();
 			}
 		}
 
-		public int _value;
+		private int _Value;
 		public void SetValue(int value)
-		{
-			_value = value;
-			if (value == 0)
-				Value = NotSet;
-			else
-				Value = value.ToString();
-		}
+        {
+            _Value = value;
+            Value = value == 0 ? NotSet : value.ToString();
+        }
 
 		public void SetPossibleValuesSet(List<int> possibleValues)
 		{
 			PossibleValuesSet = possibleValues;
 
-			if (_value != 0)
+			if (_Value != 0)
 				PossibleValuesSetString = SudokuConstants.OneNumberSet;
 			else
 			{
@@ -60,7 +57,7 @@ namespace MySudoku.ViewModel
 		public CellViewModel()
 		{
 			Value = NotSet;
-			_value = 0;
+			_Value = 0;
 			PossibleValuesSetString = "---";
 			PossibleValuesSet = new List<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 		}

@@ -28,7 +28,7 @@ namespace MySudoku.Controls
 
 		public UIElement GetUIElement()
 		{
-			return this as UIElement;
+			return this;
 		}
 
 		public event PropertyChangedEventHandler PropertyChanged;
@@ -38,14 +38,14 @@ namespace MySudoku.Controls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(info));
         }
 
-		bool _buttonsEnabled = true;
+		bool _ButtonsEnabled = true;
 		public bool ButtonsEnabled
 		{
-			get => _buttonsEnabled;
+			get => _ButtonsEnabled;
 
             private set
 			{
-				_buttonsEnabled = value;
+				_ButtonsEnabled = value;
 				NotifyPropertyChanged("ButtonsEnabled");
 			}
 		}
